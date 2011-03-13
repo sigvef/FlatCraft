@@ -12,13 +12,17 @@
  * 
  */
 
+package no.ntnu.stud.flatcraft;
+
+import org.newdawn.slick.Graphics;
+
 public interface State {
 	public void init();
 	public void pause();
 	public void resume();
 	public void cleanup();
 	public void update(double dt);
-	public void draw();
+	public void render(Graphics g);
 	
 	
 }

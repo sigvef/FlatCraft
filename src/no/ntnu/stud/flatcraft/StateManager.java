@@ -6,10 +6,17 @@
  * 
  */
 
+package no.ntnu.stud.flatcraft;
+
 import java.util.Stack;
+import org.newdawn.slick.Graphics;
 
 public class StateManager {
 	private Stack<State> states;
+	
+	StateManager(){
+		states = new Stack<State>();
+	}
 	
 	public void push(State state){
 		if(states.size() > 0){
@@ -34,7 +41,7 @@ public class StateManager {
 		states.peek().update(dt);
 	}
 	
-	public void draw(){
-		states.peek().draw();
+	public void render(Graphics g){
+		states.peek().render(g);
 	}
 }
