@@ -17,6 +17,7 @@ public class Main extends StateBasedGame{
 	
 	public static int SCREEN_W = 800; //hard-coded screen sizes to begin with
 	public static int SCREEN_H = 480;
+	public static float GU = SCREEN_W/16;
 	
 	public Main() {
 		super("FlatCraft");

@@ -22,7 +22,7 @@ public class MainMenuState implements GameState {
 	}
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g){
-		g.drawString("Hello World!", Main.SCREEN_W*0.25f, Main.SCREEN_H*0.25f);		
+		g.drawString("Hello World!", Main.GU*4, Main.GU*3);		
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
