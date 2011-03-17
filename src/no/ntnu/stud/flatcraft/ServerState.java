@@ -1,5 +1,7 @@
 package no.ntnu.stud.flatcraft;
 
+import java.io.IOException;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -7,12 +9,15 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class MainMenuState extends BasicGameState {
+import com.esotericsoftware.kryonet.Server;
+
+public class ServerState extends BasicGameState {
 	
-	StateBasedGame game;
+	private Server server;
+	private StateBasedGame game;
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g){
-		g.drawString("This is the main menu!\nPress Enter to start a game.", Main.GU*4, Main.GU*3);		
+		g.drawString("A new game has been created.\nPress ESC to exit to main menu.", Main.GU*4, Main.GU*3);		
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
@@ -21,11 +26,8 @@ public class MainMenuState extends BasicGameState {
 
 	public void keyReleased(int key, char c) {
 		switch(key){
-			case Input.KEY_ENTER:
-				game.enterState(1); //enter ServerState
-				break;
 			case Input.KEY_ESCAPE:
-				System.exit(0);
+				game.enterState(0); //go back to MainMenuState
 				break;
 		}
 	}
@@ -34,8 +36,22 @@ public class MainMenuState extends BasicGameState {
 			throws SlickException {
 		
 	}
+	
+	public void enter(GameContainer container, StateBasedGame game){
+		server = new Server();
+		server.start();
+		try{
+			server.bind(54555,54777); //binds to TCP, UDP ports
+		}catch(IOException e){
+			System.out.print(e.toString());
+		}
+	}
+	
+	public void leave(GameContainer container, StateBasedGame game){
+		server.close();
+	}
 
 	public int getID() {
-		return 0;
+		return 1;
 	}
 }
