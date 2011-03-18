@@ -13,7 +13,7 @@ public class Character extends GameEntity {
 		
 	}
 	
-	public void setWeapon(weaponType weapon){
+	public void setWeapon(WeaponType weapon){
 		
 	}
 	
@@ -25,7 +25,7 @@ public class Character extends GameEntity {
 		
 	}
 	
-	public void takeDamage(Vector2f force, int fromPlayer, weaponType weapon){
+	public void takeDamage(Vector2f force, int fromPlayer, WeaponType weapon){
 		
 	}
 	
@@ -41,7 +41,7 @@ public class Character extends GameEntity {
 		return 0; //returns armor after increase;
 	}
 	
-	public void giveWeapon(weaponType weapon, int ammo){
+	public void giveWeapon(WeaponType weapon, int ammo){
 		
 	}
 	
