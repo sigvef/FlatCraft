@@ -5,8 +5,9 @@
  * 
  */
 
-package no.ntnu.stud.flatcraft;
+package no.ntnu.stud.flatcraft.entities;
 
+import no.ntnu.stud.flatcraft.GameWorld;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;

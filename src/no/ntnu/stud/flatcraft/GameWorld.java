@@ -9,6 +9,8 @@ package no.ntnu.stud.flatcraft;
 
 import java.util.ArrayList;
 
+import no.ntnu.stud.flatcraft.entities.GameEntity;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
