@@ -1,7 +1,7 @@
 /*
  * FlatCraft - Main.java
  * 
- * The entry point of the game. Initializes slick, kryonet (TODO), and 
+ * The entry point of the game. Initializes slick, kryonet, and 
  * starts the state manager.
  * 
  */

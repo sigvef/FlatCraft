@@ -1,3 +1,8 @@
+/*
+ * FlatCraft - ServerState.java
+ * 
+ */
+
 package no.ntnu.stud.flatcraft;
 
 import java.io.IOException;
