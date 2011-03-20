@@ -18,12 +18,15 @@ public class GameEntity {
 	//reset() - Called when the GameWorld resets. May destroy the object if
 	//needed.
 	public void reset(){
-		
+		position.set(0,0);
+		velocity.set(0,0);
+		acceleration.set(0,0);
 	}
 	
 	//update(GameContainer, StateBasedGame, int) - Updates the entity one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta){
-		
+		velocity.add(acceleration.scale(delta));
+		position.add(velocity.scale(delta));
 	}
 	
 	Rectangle boundingBox; //physical bounding box of the entity relative to the position vector.
