@@ -20,6 +20,7 @@ public class ServerState extends BasicGameState {
 	
 	private Server server;
 	private StateBasedGame game;
+	private GameWorld gameworld;
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g){
 		g.drawString("A new game has been created.\nPress ESC to exit to main menu.", Main.GU*4, Main.GU*3);		
