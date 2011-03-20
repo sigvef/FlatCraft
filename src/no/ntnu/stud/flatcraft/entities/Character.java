@@ -1,48 +1,87 @@
 package no.ntnu.stud.flatcraft.entities;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+import quicktime.std.anim.Sprite;
+
 public class Character extends GameEntity {
+	
+	public Character(){
+		try {
+			image = new Image((String)null);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void reset(){
-		
+		super.reset();
+		ammo = 0;
+		health = 0;
+		armor = 0;
+		reloadTimer = 0;
+		weapon = null;
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
-		
+		if(reloadTimer > 0){
+			reloadTimer -= delta;
+		}
+		if(reloadTimer < 0){
+			reloadTimer = 0;
+		}
 	}
 	
 	public void setWeapon(WeaponType weapon){
-		
+		this.weapon = weapon;
 	}
 	
 	public void fireWeapon(){
-		
+		reloadTimer = 1000; //time in ms to reload;
 	}
 	
 	public void die(){
-		
+		alive = false;
+		reset();
 	}
 	
 	public void takeDamage(Vector2f force, int fromPlayer, WeaponType weapon){
-		
+		if(armor > 0){
+			armor -= force.length();
+			health -= force.length()*0.3;
+		}
+		if(armor < 0){
+			armor = 0;
+		}
+		if(health < 0){
+			die();
+		}
 	}
 	
 	public void spawn(Vector2f position){
-		
+		alive = true;
+		this.position.set(position);
+		weapon = WeaponType.PISTOL;
+		ammo = 7;
 	}
 	
 	public int increaseHealth(int amount){
-		return 0; //returns health after increase;
+		health += amount;
+		return health;
 	}
 	
 	public int increaseArmor(int amount){
-		return 0; //returns armor after increase;
+		armor += amount;
+		return armor;
 	}
 	
 	public void giveWeapon(WeaponType weapon, int ammo){
-		
+		this.weapon = weapon;
+		this.ammo = ammo;
 	}
 	
 	public boolean isAlive(){
@@ -50,8 +89,10 @@ public class Character extends GameEntity {
 	}
 	
 	Player player; //handle to the player that controls this character.
+	Image image;
 	boolean alive;
-	float reloadTimer;
+	WeaponType weapon;
+	int reloadTimer;
 	int damageTaken;
 	int ammo;
 	int health;
