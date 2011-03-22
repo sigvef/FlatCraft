@@ -11,6 +11,7 @@ package no.ntnu.stud.flatcraft;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
  
 public class Main extends StateBasedGame{
@@ -18,6 +19,7 @@ public class Main extends StateBasedGame{
 	public static int SCREEN_W = 800; //hard-coded screen sizes to begin with
 	public static int SCREEN_H = 480;
 	public static float GU = SCREEN_W/16;
+	public static Vector2f GRAVITY = new Vector2f(0,0.00000001f);
 	
 	public Main() {
 		super("FlatCraft");

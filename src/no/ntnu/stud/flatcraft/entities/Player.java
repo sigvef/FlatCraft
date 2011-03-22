@@ -3,6 +3,9 @@ package no.ntnu.stud.flatcraft.entities;
 import java.awt.event.KeyEvent;
 import java.util.Queue;
 
+import no.ntnu.stud.flatcraft.GameWorld;
+import no.ntnu.stud.flatcraft.Main;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
@@ -11,8 +14,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Player {
 	
-	public Player(int clientId, int team, boolean localPlayer){
-		character = new Character();
+	public Player(int clientId, int team, boolean localPlayer, GameWorld gw){
+		character = new Character(gw);
 		this.clientId = clientId;
 		this.team = team;
 		this.localPlayer = localPlayer;
@@ -20,7 +23,7 @@ public class Player {
 	}
 	
 	public void render(Graphics g){
-		character.render(g);
+		//character.render(g);
 	}
 
 	public void respawn(){
@@ -32,13 +35,10 @@ public class Player {
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
-		while(input.size() > 0){
-			switch(input.peek()){
-			default: System.out.print(input.poll());
-			}
-		}
 		character.update(container,game,delta);
-		character.gameworld.setViewportPosition(character.position);
+		if(character.position.getY()>Main.GU*7){
+			character.gameworld.setViewportPosition(new Vector2f(character.position.getX(),character.position.getY()-Main.GU*7));
+		}
 	}
 	
 	public Character getCharacter(){

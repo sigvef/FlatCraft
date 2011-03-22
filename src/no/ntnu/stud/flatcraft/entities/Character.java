@@ -1,5 +1,7 @@
 package no.ntnu.stud.flatcraft.entities;
 
+import no.ntnu.stud.flatcraft.GameWorld;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -11,15 +13,13 @@ import quicktime.std.anim.Sprite;
 
 public class Character extends GameEntity {
 	
-	public Character(){
+	public Character(GameWorld gw){
+		super.init(gw);
 		try {
 			image = new Image("res/character.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		position = new Vector2f(0,0);
-		velocity = new Vector2f(0,0);
-		acceleration = new Vector2f(0,0);
 	}
 	
 	public void reset(){
@@ -32,6 +32,8 @@ public class Character extends GameEntity {
 	}
 	
 	public void render(Graphics g){
+		g.pushTransform();
+		g.translate(-gameworld.viewport.getX(), -gameworld.viewport.getY());
 		g.drawImage(image, position.getX(), position.getY());
 	}
 	
@@ -42,6 +44,7 @@ public class Character extends GameEntity {
 		if(reloadTimer < 0){
 			reloadTimer = 0;
 		}
+		super.update(container, game, delta);
 	}
 	
 	public void setWeapon(WeaponType weapon){

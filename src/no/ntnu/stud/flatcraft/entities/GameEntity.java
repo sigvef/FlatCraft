@@ -8,6 +8,8 @@
 package no.ntnu.stud.flatcraft.entities;
 
 import no.ntnu.stud.flatcraft.GameWorld;
+import no.ntnu.stud.flatcraft.Main;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
@@ -16,6 +18,13 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameEntity {
 
+	public void init(GameWorld gw){
+		gameworld = gw;
+		position = new Vector2f(0,0);
+		velocity = new Vector2f(0,0);
+		acceleration = new Vector2f(0,0);
+	}
+	
 	//reset() - Called when the GameWorld resets. May destroy the object if
 	//needed.
 	public void reset(){
@@ -30,8 +39,9 @@ public class GameEntity {
 	
 	//update(GameContainer, StateBasedGame, int) - Updates the entity one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta){
-		velocity.add(acceleration.scale(delta));
-		position.add(velocity.scale(delta));
+		acceleration.add(Main.GRAVITY.copy().scale(delta));
+		velocity.add(acceleration.copy().scale(delta));
+		position.add(velocity.copy().scale(delta));
 	}
 	
 	Rectangle boundingBox; //physical bounding box of the entity relative to the position vector.

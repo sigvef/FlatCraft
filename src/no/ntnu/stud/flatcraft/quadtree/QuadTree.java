@@ -43,11 +43,14 @@ float y;
   public void render(Graphics g,Rectangle viewport){
     dummy = 0;
     depth = 0;
+    g.pushTransform();
+    g.translate(-viewport.getX(),-viewport.getY());
     //enter the recursive render traversing
     g.setDrawMode(g.MODE_NORMAL);
     g.setColor(Color.black);
     g.fill(viewport);
     traverseTree(startNode,g,viewport);
+    g.popTransform();
     }
 
   //-----------------------------------

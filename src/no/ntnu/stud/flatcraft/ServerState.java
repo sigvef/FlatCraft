@@ -29,6 +29,7 @@ public class ServerState extends BasicGameState {
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
 		this.game = game;
+		gameworld.update(container, game, delta);
 	}
 
 	public void keyReleased(int key, char c) {

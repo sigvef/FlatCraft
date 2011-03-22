@@ -23,7 +23,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GameWorld {
 	
 	QuadTree terrain;
-	Rectangle viewport;
+	public Rectangle viewport;
 	ArrayList<Player> players;
 	ArrayList<GameEntity> entities;
 	
@@ -32,7 +32,8 @@ public class GameWorld {
 		viewport = new Rectangle(0,0,16*Main.GU,9*Main.GU);
 		players = new ArrayList<Player>();
 		entities = new ArrayList<GameEntity>();
-		players.add(new Player(0, 0,true));
+		players.add(new Player(0, 0,true,this));
+		entities.add(players.get(players.size()-1).getCharacter());
 	}
 	
 	//reset() - resets the map, calls reset on all the things it controls.
