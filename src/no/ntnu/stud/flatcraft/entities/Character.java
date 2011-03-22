@@ -1,6 +1,7 @@
 package no.ntnu.stud.flatcraft.entities;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -12,10 +13,13 @@ public class Character extends GameEntity {
 	
 	public Character(){
 		try {
-			image = new Image((String)null);
+			image = new Image("res/character.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+		position = new Vector2f(0,0);
+		velocity = new Vector2f(0,0);
+		acceleration = new Vector2f(0,0);
 	}
 	
 	public void reset(){
@@ -25,6 +29,10 @@ public class Character extends GameEntity {
 		armor = 0;
 		reloadTimer = 0;
 		weapon = null;
+	}
+	
+	public void render(Graphics g){
+		g.drawImage(image, position.getX(), position.getY());
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){

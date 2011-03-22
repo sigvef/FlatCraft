@@ -23,7 +23,8 @@ public class ServerState extends BasicGameState {
 	private GameWorld gameworld;
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g){
-		g.drawString("A new game has been created.\nPress ESC to exit to main menu.", Main.GU*4, Main.GU*3);		
+		g.drawString("A new game has been created.\nPress ESC to exit to main menu.", Main.GU*4, Main.GU*3);
+		gameworld.render(g);
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
@@ -40,6 +41,8 @@ public class ServerState extends BasicGameState {
 
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
+			gameworld = new GameWorld();
+			
 		
 	}
 	

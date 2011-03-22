@@ -9,6 +9,7 @@ package no.ntnu.stud.flatcraft.entities;
 
 import no.ntnu.stud.flatcraft.GameWorld;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
@@ -21,6 +22,10 @@ public class GameEntity {
 		position.set(0,0);
 		velocity.set(0,0);
 		acceleration.set(0,0);
+	}
+	
+	public void render(Graphics g){
+		
 	}
 	
 	//update(GameContainer, StateBasedGame, int) - Updates the entity one tick.

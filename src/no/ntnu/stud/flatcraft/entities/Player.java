@@ -4,14 +4,23 @@ import java.awt.event.KeyEvent;
 import java.util.Queue;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Player {
 	
-	public Player(int clientId, int team){
+	public Player(int clientId, int team, boolean localPlayer){
 		character = new Character();
+		this.clientId = clientId;
+		this.team = team;
+		this.localPlayer = localPlayer;
+		respawn();
+	}
+	
+	public void render(Graphics g){
+		character.render(g);
 	}
 
 	public void respawn(){
@@ -29,6 +38,7 @@ public class Player {
 			}
 		}
 		character.update(container,game,delta);
+		character.gameworld.setViewportPosition(character.position);
 	}
 	
 	public Character getCharacter(){
@@ -43,4 +53,5 @@ public class Player {
 	boolean spawning;
 	int kills;
 	int deaths;
+	boolean localPlayer;
 }

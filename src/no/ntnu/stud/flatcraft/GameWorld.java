@@ -10,21 +10,42 @@ package no.ntnu.stud.flatcraft;
 import java.util.ArrayList;
 
 import no.ntnu.stud.flatcraft.entities.GameEntity;
+import no.ntnu.stud.flatcraft.entities.Player;
+import no.ntnu.stud.flatcraft.quadtree.QuadTree;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GameWorld {
 	
-	public GameWorld(){
-		
+	QuadTree terrain;
+	Rectangle viewport;
+	ArrayList<Player> players;
+	ArrayList<GameEntity> entities;
+	
+	public GameWorld() throws SlickException{
+		terrain = new QuadTree(0,0,160*Main.GU,8); //hardcoded level width: a square 10x the with of the screen.
+		viewport = new Rectangle(0,0,16*Main.GU,9*Main.GU);
+		players = new ArrayList<Player>();
+		entities = new ArrayList<GameEntity>();
+		players.add(new Player(0, 0,true));
 	}
 	
 	//reset() - resets the map, calls reset on all the things it controls.
 	public void reset(){
 		
+	}
+	
+	public void setViewportPosition(Vector2f position){
+		viewport.setLocation(position);
+	}
+	
+	public Vector2f getViewportPosition(){
+		return new Vector2f(viewport.getX(),viewport.getY());
 	}
 	
 	//removeEntities() - removes all the GameEntities it controls.
@@ -57,6 +78,21 @@ public class GameWorld {
 	//update(GameContainer, StateBasedGame,int) - updates itself and all it's
 	//children one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta){
-		
+		for(Player player : players){
+			player.update(container, game, delta);
+		}
+		for(GameEntity entity : entities){
+			entity.update(container, game, delta);
+		}
+	}
+	
+	public void render(Graphics g){
+		terrain.render(g, viewport);
+		for(GameEntity entity : entities){
+			entity.render(g);
+		}
+		for(Player player : players){
+			player.render(g);
+		}
 	}
 }
