@@ -18,35 +18,39 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameEntity {
 
+	public Rectangle boundingBox; //physical bounding box of the entity relative to the position vector.
+	public Vector2f position; //physical position of the entity;
+	public Vector2f oldposition;
+	public Vector2f velocity; //physical velocity of the entity;
+	public Vector2f acceleration; //physical acceleration of the entity;
+	GameWorld gameworld; //handle back to the parent GameWorld.
+
 	public void init(GameWorld gw){
 		gameworld = gw;
+		boundingBox = new Rectangle(-Main.GU,-Main.GU,Main.GU,Main.GU);
 		position = new Vector2f(0,0);
 		velocity = new Vector2f(0,0);
-		acceleration = new Vector2f(0,0);
+		oldposition = new Vector2f(0,0);
 	}
 	
 	//reset() - Called when the GameWorld resets. May destroy the object if
 	//needed.
 	public void reset(){
 		position.set(0,0);
+		oldposition.set(0,0);
 		velocity.set(0,0);
-		acceleration.set(0,0);
 	}
 	
 	public void render(Graphics g){
-		
+		g.draw(boundingBox);
 	}
 	
 	//update(GameContainer, StateBasedGame, int) - Updates the entity one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta){
-		acceleration.add(Main.GRAVITY.copy().scale(delta));
-		velocity.add(acceleration.copy().scale(delta));
+		oldposition.set(position.copy());
+		velocity.add(Main.GRAVITY.copy().scale(delta));
 		position.add(velocity.copy().scale(delta));
+		position.add(gameworld.terrain.collide(this));
+		boundingBox.setLocation(position);
 	}
-	
-	Rectangle boundingBox; //physical bounding box of the entity relative to the position vector.
-	Vector2f position; //physical position of the entity;
-	Vector2f velocity; //physical velocity of the entity;
-	Vector2f acceleration; //physical acceleration of the entity;
-	GameWorld gameworld; //handle back to the parent GameWorld.
 }

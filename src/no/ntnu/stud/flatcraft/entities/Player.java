@@ -8,22 +8,29 @@ import no.ntnu.stud.flatcraft.Main;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Player {
 	
-	public Player(int clientId, int team, boolean localPlayer, GameWorld gw){
+	Rectangle viewport;
+	Character character;
+	Queue<Integer> input;
+	int clientId;
+	int team;
+	boolean spawning;
+	int kills;
+	int deaths;
+	boolean localPlayer;
+
+	public Player(GameWorld gw){
 		character = new Character(gw);
-		this.clientId = clientId;
-		this.team = team;
-		this.localPlayer = localPlayer;
 		respawn();
 	}
 	
 	public void render(Graphics g){
-		//character.render(g);
 	}
 
 	public void respawn(){
@@ -35,23 +42,42 @@ public class Player {
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
-		character.update(container,game,delta);
-		if(character.position.getY()>Main.GU*7){
-			character.gameworld.setViewportPosition(new Vector2f(character.position.getX(),character.position.getY()-Main.GU*7));
+		//character.update(container,game,delta);
+		
+		if(Main.KEYDOWN[Input.KEY_UP]){
+
+			character.velocitize(new Vector2f(0,-Main.GU));
 		}
+		if(Main.KEYDOWN[Input.KEY_LEFT] || Main.KEYDOWN[Input.KEY_A]){
+			character.velocitize(new Vector2f(-Main.GU,0));
+		}
+		if(Main.KEYDOWN[Input.KEY_DOWN]){
+
+			character.velocitize(new Vector2f(0,Main.GU));
+		}
+		if(Main.KEYDOWN[Input.KEY_RIGHT] || Main.KEYDOWN[Input.KEY_D]){
+			character.velocitize(new Vector2f(Main.GU,0));
+		}
+		
+		
+		if(character.position.getY()>Main.GU*64+character.gameworld.getViewportPosition().getY()){
+			character.gameworld.setViewportPosition(new Vector2f(character.gameworld.getViewportPosition().getX(),character.position.getY()-Main.GU*64));
+		}
+		if(character.position.getY()<Main.GU*8+character.gameworld.getViewportPosition().getY()){
+			character.gameworld.setViewportPosition(new Vector2f(character.gameworld.getViewportPosition().getX(),character.position.getY()-Main.GU*8));
+		}
+		if(character.position.getX()>Main.GU*120+character.gameworld.getViewportPosition().getX()){
+			character.gameworld.setViewportPosition(new Vector2f(character.position.getX()-Main.GU*120,character.gameworld.getViewportPosition().getY()));
+		}
+		if(character.position.getX()<Main.GU*8+character.gameworld.getViewportPosition().getX()){
+			character.gameworld.setViewportPosition(new Vector2f(character.position.getX()-Main.GU*8,character.gameworld.getViewportPosition().getY()));
+		}
+	
 	}
 	
 	public Character getCharacter(){
 		return character;
 	}
 	
-	Rectangle viewport;
-	Character character;
-	Queue<Integer> input;
-	int clientId;
-	int team;
-	boolean spawning;
-	int kills;
-	int deaths;
-	boolean localPlayer;
+
 }

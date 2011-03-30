@@ -17,23 +17,25 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GameWorld {
 	
-	QuadTree terrain;
+	public QuadTree terrain;
 	public Rectangle viewport;
-	ArrayList<Player> players;
+	Player player;
 	ArrayList<GameEntity> entities;
+	float viewportzoom;
 	
 	public GameWorld() throws SlickException{
-		terrain = new QuadTree(0,0,160*Main.GU,8); //hardcoded level width: a square 10x the with of the screen.
-		viewport = new Rectangle(0,0,16*Main.GU,9*Main.GU);
-		players = new ArrayList<Player>();
+		terrain = new QuadTree(0,0,1280*Main.GU,8); //hardcoded level width: a square 10x the with of the screen.
+		viewport = new Rectangle(0,0,128*Main.GU,72*Main.GU);
+		viewportzoom = 1;
+		player = new Player(this);
 		entities = new ArrayList<GameEntity>();
-		players.add(new Player(0, 0,true,this));
-		entities.add(players.get(players.size()-1).getCharacter());
+		entities.add(player.getCharacter());
 	}
 	
 	//reset() - resets the map, calls reset on all the things it controls.
@@ -79,9 +81,7 @@ public class GameWorld {
 	//update(GameContainer, StateBasedGame,int) - updates itself and all it's
 	//children one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta){
-		for(Player player : players){
-			player.update(container, game, delta);
-		}
+		player.update(container, game, delta);		
 		for(GameEntity entity : entities){
 			entity.update(container, game, delta);
 		}
@@ -92,8 +92,6 @@ public class GameWorld {
 		for(GameEntity entity : entities){
 			entity.render(g);
 		}
-		for(Player player : players){
-			player.render(g);
-		}
+		player.render(g);
 	}
 }

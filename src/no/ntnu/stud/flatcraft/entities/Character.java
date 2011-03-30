@@ -28,13 +28,13 @@ public class Character extends GameEntity {
 		health = 0;
 		armor = 0;
 		reloadTimer = 0;
-		weapon = null;
 	}
 	
 	public void render(Graphics g){
 		g.pushTransform();
 		g.translate(-gameworld.viewport.getX(), -gameworld.viewport.getY());
 		g.drawImage(image, position.getX(), position.getY());
+		super.render(g);
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
@@ -47,36 +47,16 @@ public class Character extends GameEntity {
 		super.update(container, game, delta);
 	}
 	
-	public void setWeapon(WeaponType weapon){
-		this.weapon = weapon;
-	}
-	
-	public void fireWeapon(){
-		reloadTimer = 1000; //time in ms to reload;
-	}
 	
 	public void die(){
 		alive = false;
 		reset();
 	}
 	
-	public void takeDamage(Vector2f force, int fromPlayer, WeaponType weapon){
-		if(armor > 0){
-			armor -= force.length();
-			health -= force.length()*0.3;
-		}
-		if(armor < 0){
-			armor = 0;
-		}
-		if(health < 0){
-			die();
-		}
-	}
 	
 	public void spawn(Vector2f position){
 		alive = true;
 		this.position.set(position);
-		weapon = WeaponType.PISTOL;
 		ammo = 7;
 	}
 	
@@ -90,10 +70,6 @@ public class Character extends GameEntity {
 		return armor;
 	}
 	
-	public void giveWeapon(WeaponType weapon, int ammo){
-		this.weapon = weapon;
-		this.ammo = ammo;
-	}
 	
 	public boolean isAlive(){
 		return alive;
@@ -102,10 +78,12 @@ public class Character extends GameEntity {
 	Player player; //handle to the player that controls this character.
 	Image image;
 	boolean alive;
-	WeaponType weapon;
 	int reloadTimer;
 	int damageTaken;
 	int ammo;
 	int health;
 	int armor;
+	public void velocitize(Vector2f vel) {
+		velocity.add(vel);
+	}
 }

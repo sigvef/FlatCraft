@@ -3,6 +3,9 @@ package no.ntnu.stud.flatcraft.quadtree;
 import java.io.*;
 import java.util.ArrayList;
 
+import no.ntnu.stud.flatcraft.Main;
+import no.ntnu.stud.flatcraft.entities.GameEntity;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -129,6 +132,10 @@ float y;
 	  return startNode.getLeaf(_x, _y);
   }
   
+  public Node getLeaf(Vector2f v){
+	  return startNode.getLeaf(v.getX(), v.getY());
+  }
+  
 
   //--------------------------------
   // toString
@@ -136,6 +143,67 @@ float y;
   public String toString(){
     return("Quadtree: nodes:"+numberOfNodes+", leaves:"+numberOfLeaves);
   }
+
+
+
+public Vector2f collide(GameEntity ge) {
+
+	Node tl = getLeaf(ge.boundingBox.getX(),ge.boundingBox.getY()); //topleft
+	Node tr = getLeaf(ge.boundingBox.getX()+ge.boundingBox.getWidth(),ge.boundingBox.getY()); //topright
+	Node bl = getLeaf(ge.boundingBox.getX(),ge.boundingBox.getY()+ge.boundingBox.getHeight()); //bottomleft
+	Node br = getLeaf(ge.boundingBox.getX()+ge.boundingBox.getWidth(),ge.boundingBox.getY()+ge.boundingBox.getHeight()); //bottomright
+
+	boolean verticoll = false;
+	boolean coll = false;
+	
+	if(ge.boundingBox.getX()<0 ){
+		verticoll = true;
+		coll = true;
+	}
+	
+	if(ge.boundingBox.getX()+ge.boundingBox.getWidth()>initialSize ){
+		verticoll = true;
+		coll = true;
+	}
+	
+	if(ge.boundingBox.getY()<0 ){
+		coll = true;
+	}
+	
+	if(ge.boundingBox.getY()+ge.boundingBox.getHeight()>initialSize ){
+		coll = true;
+	}
+	
+	if(coll){
+		if(verticoll){
+			ge.velocity.set(0, ge.velocity.getY());
+			System.out.println("verticoll");
+		}
+		else{
+			ge.velocity.set(ge.velocity.getX(), 0);
+		}
+		System.out.println("COLLISION!");
+		return ge.oldposition.copy().sub(ge.position.copy());
+	}
+	
+//	if(ge.boundingBox.getX()<0 ||
+//		ge.boundingBox.getY()<0 ||
+//		 ge.boundingBox.getX()+ge.boundingBox.getWidth() > initialSize ||
+//		  ge.boundingBox.getY()+ge.boundingBox.getHeight() > initialSize ||
+//		  
+//		  (tl != null && tl.filled && tl.rect.intersects(ge.boundingBox)) ||
+//		  (tr != null && tr.filled && tr.rect.intersects(ge.boundingBox)) ||
+//		  (bl != null && bl.filled && bl.rect.intersects(ge.boundingBox)) ||
+//		  (br != null && br.filled && br.rect.intersects(ge.boundingBox))){
+//		
+//		System.out.println("COLLISION!");
+//	
+//		
+//	
+//		return ge.oldposition.copy().sub(ge.position.copy());
+//	}
+	return new Vector2f(0,0);
+}
 
 
 }

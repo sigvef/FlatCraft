@@ -18,11 +18,13 @@ public class Main extends StateBasedGame{
 	
 	public static int SCREEN_W = 800; //hard-coded screen sizes to begin with
 	public static int SCREEN_H = 480;
-	public static float GU = SCREEN_W/16;
-	public static Vector2f GRAVITY = new Vector2f(0,0.00000001f);
+	public static float GU = SCREEN_W/128;
+	public static boolean[] KEYDOWN;
+	public static Vector2f GRAVITY = new Vector2f(0,Main.GU*0.05f);
 	
 	public Main() {
 		super("FlatCraft");
+		KEYDOWN = new boolean[256];
 	}
 	
 	public static void main(String[] args) throws SlickException {
@@ -34,7 +36,18 @@ public class Main extends StateBasedGame{
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		addState(new MainMenuState());
-		addState(new ServerState());
-		addState(new ClientState());
+		addState(new GameState());
+	}
+	
+	@Override
+	public void keyPressed(int key, char c) {
+		KEYDOWN[key] = true;
+		System.out.println(key);
+	}
+
+	@Override
+	public void keyReleased(int key, char c) {
+		KEYDOWN[key] = false;
+		
 	}
 }

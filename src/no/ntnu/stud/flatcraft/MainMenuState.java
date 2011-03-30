@@ -20,22 +20,21 @@ public class MainMenuState extends BasicGameState {
 		g.drawString("This is the main menu!\nPress Enter to start a game.\nPress Space to join localhost's game.", Main.GU*4, Main.GU*3);		
 	}
 	
+	public void enter(GameContainer container, StateBasedGame game){
+		Main.KEYDOWN[Input.KEY_ESCAPE] = false;
+	}
+	
 	public void update(GameContainer container, StateBasedGame game, int delta){
 		this.game = game;
-	}
 
-	public void keyReleased(int key, char c) {
-		switch(key){
-			case Input.KEY_ENTER:
-				game.enterState(1); //enter ServerState
-				break;
-			case Input.KEY_SPACE:
-				game.enterState(2); //enter ClientState
-				break;
-			case Input.KEY_ESCAPE:
-				System.exit(0);
-				break;
+
+		if(Main.KEYDOWN[Input.KEY_ENTER]){
+			game.enterState(1); //enter GameState
 		}
+		if(Main.KEYDOWN[Input.KEY_ESCAPE]){
+			System.exit(0);
+		}
+		
 	}
 
 	public void init(GameContainer container, StateBasedGame game)
