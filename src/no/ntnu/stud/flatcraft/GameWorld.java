@@ -32,7 +32,7 @@ public class GameWorld {
 	
 	public GameWorld() throws SlickException{
 		terrain = new QuadTree(0,0,1280*Main.GU,8); //hardcoded level width: a square 10x the with of the screen.
-		viewport = new Rectangle(0,0,128*Main.GU,72*Main.GU);
+		viewport = new Rectangle(0,0,Main.SCREEN_W,Main.SCREEN_H);
 		viewportgoal =  new Vector2f(viewport.getX(),viewport.getY());
 		viewportzoom = 1;
 		player = new Player(this);
@@ -46,7 +46,8 @@ public class GameWorld {
 			e.reset();
 		}
 		player.reset();
-		viewport = new Rectangle(0,0,128*Main.GU,72*Main.GU);
+		viewport = new Rectangle(0,0,Main.SCREEN_W,Main.SCREEN_H);
+		
 		viewportzoom = 1;
 		//reload terrain also TODO
 	}
