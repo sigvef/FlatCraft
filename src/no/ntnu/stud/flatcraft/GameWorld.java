@@ -24,14 +24,16 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GameWorld {
 	
 	public QuadTree terrain;
-	public Rectangle viewport;
 	Player player;
 	ArrayList<GameEntity> entities;
 	float viewportzoom;
+	Vector2f viewportgoal;
+	public Rectangle viewport;
 	
 	public GameWorld() throws SlickException{
 		terrain = new QuadTree(0,0,1280*Main.GU,8); //hardcoded level width: a square 10x the with of the screen.
 		viewport = new Rectangle(0,0,128*Main.GU,72*Main.GU);
+		viewportgoal =  new Vector2f(viewport.getX(),viewport.getY());
 		viewportzoom = 1;
 		player = new Player(this);
 		entities = new ArrayList<GameEntity>();
@@ -40,11 +42,20 @@ public class GameWorld {
 	
 	//reset() - resets the map, calls reset on all the things it controls.
 	public void reset(){
-		
+		for(GameEntity e : entities){
+			e.reset();
+		}
+		player.reset();
+		viewport = new Rectangle(0,0,128*Main.GU,72*Main.GU);
+		viewportzoom = 1;
+		//reload terrain also TODO
 	}
 	
 	public void setViewportPosition(Vector2f position){
 		viewport.setLocation(position);
+	}
+	public void setViewportPositionGoal(Vector2f position){
+		viewportgoal = position;
 	}
 	
 	public Vector2f getViewportPosition(){
@@ -84,6 +95,10 @@ public class GameWorld {
 		player.update(container, game, delta);		
 		for(GameEntity entity : entities){
 			entity.update(container, game, delta);
+		}
+		if(viewportgoal.getX() != viewport.getX() || viewportgoal.getY() != viewport.getY()){
+			viewport.setLocation(viewport.getX()-(viewport.getX()-viewportgoal.getX())*0.5f,
+					viewport.getY()-(viewport.getY()-viewportgoal.getY())*0.5f);
 		}
 	}
 	

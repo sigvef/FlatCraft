@@ -42,7 +42,7 @@ public class GameState extends BasicGameState {
 	}
 	
 	public void enter(GameContainer container, StateBasedGame game){
-
+		gameworld.reset();
 	}
 	
 	public void leave(GameContainer container, StateBasedGame game){

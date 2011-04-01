@@ -28,7 +28,7 @@ public class MainMenuState extends BasicGameState {
 		this.game = game;
 
 
-		if(Main.KEYDOWN[Input.KEY_ENTER]){
+		if(Main.KEYDOWN[Input.KEY_ENTER] || Main.MOUSEDOWN[0]){
 			game.enterState(1); //enter GameState
 		}
 		if(Main.KEYDOWN[Input.KEY_ESCAPE]){

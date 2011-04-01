@@ -14,7 +14,6 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Player {
-	
 	Rectangle viewport;
 	Character character;
 	Queue<Integer> input;
@@ -30,11 +29,15 @@ public class Player {
 		respawn();
 	}
 	
+	public void reset(){
+		character.spawn(new Vector2f(Main.GU*10,Main.GU*10));
+	}
+	
 	public void render(Graphics g){
 	}
 
 	public void respawn(){
-		character.spawn(new Vector2f(10,10)); //Test numbers, should ask for spawn locations
+		character.spawn(new Vector2f(Main.GU*10,Main.GU*10)); //Test numbers, should ask for spawn locations
 	}
 	
 	public void SetTeam(int team){
@@ -44,35 +47,46 @@ public class Player {
 	public void update(GameContainer container, StateBasedGame game, int delta){
 		//character.update(container,game,delta);
 		
-		if(Main.KEYDOWN[Input.KEY_UP]){
-
-			character.velocitize(new Vector2f(0,-Main.GU));
+		if(Main.KEYDOWN[Input.KEY_UP] || Main.KEYDOWN[Input.KEY_W] || Main.KEYDOWN[Input.KEY_SPACE]){
+			if(character.grounded){
+				character.velocitize(new Vector2f(0,-Main.GU*8f));
+			}
 		}
 		if(Main.KEYDOWN[Input.KEY_LEFT] || Main.KEYDOWN[Input.KEY_A]){
 			character.velocitize(new Vector2f(-Main.GU,0));
 		}
-		if(Main.KEYDOWN[Input.KEY_DOWN]){
-
-			character.velocitize(new Vector2f(0,Main.GU));
-		}
 		if(Main.KEYDOWN[Input.KEY_RIGHT] || Main.KEYDOWN[Input.KEY_D]){
 			character.velocitize(new Vector2f(Main.GU,0));
+		}
+		if(Main.KEYDOWN[Input.KEY_DOWN] || Main.KEYDOWN[Input.KEY_S]){
+			character.velocitize(new Vector2f(0,Main.GU));
+		}
+		
+		if(Main.MOUSEDOWN[0]){
+			character.gameworld.terrain.fillCell(Main.MOUSEX+character.gameworld.viewport.getX(), Main.MOUSEY+character.gameworld.viewport.getY(),true);
+		}
+		if(Main.MOUSEDOWN[1]){
+			character.gameworld.terrain.fillCell(Main.MOUSEX+character.gameworld.viewport.getX(), Main.MOUSEY+character.gameworld.viewport.getY(),false);	
 		}
 		
 		
 		if(character.position.getY()>Main.GU*64+character.gameworld.getViewportPosition().getY()){
-			character.gameworld.setViewportPosition(new Vector2f(character.gameworld.getViewportPosition().getX(),character.position.getY()-Main.GU*64));
+			character.gameworld.setViewportPositionGoal(new Vector2f(character.gameworld.getViewportPosition().getX(),character.position.getY()-Main.GU*64));
 		}
 		if(character.position.getY()<Main.GU*8+character.gameworld.getViewportPosition().getY()){
-			character.gameworld.setViewportPosition(new Vector2f(character.gameworld.getViewportPosition().getX(),character.position.getY()-Main.GU*8));
+			character.gameworld.setViewportPositionGoal(new Vector2f(character.gameworld.getViewportPosition().getX(),character.position.getY()-Main.GU*8));
 		}
 		if(character.position.getX()>Main.GU*120+character.gameworld.getViewportPosition().getX()){
-			character.gameworld.setViewportPosition(new Vector2f(character.position.getX()-Main.GU*120,character.gameworld.getViewportPosition().getY()));
+			character.gameworld.setViewportPositionGoal(new Vector2f(character.position.getX()-Main.GU*120,character.gameworld.getViewportPosition().getY()));
 		}
 		if(character.position.getX()<Main.GU*8+character.gameworld.getViewportPosition().getX()){
-			character.gameworld.setViewportPosition(new Vector2f(character.position.getX()-Main.GU*8,character.gameworld.getViewportPosition().getY()));
+			character.gameworld.setViewportPositionGoal(new Vector2f(character.position.getX()-Main.GU*8,character.gameworld.getViewportPosition().getY()));
 		}
-	
+		
+		if(character.grounded){
+			//tween this
+			character.gameworld.setViewportPositionGoal(new Vector2f(character.gameworld.getViewportPosition().getX(),character.position.getY()-Main.GU*48));
+		}
 	}
 	
 	public Character getCharacter(){

@@ -18,6 +18,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameEntity {
 
+
+	public boolean grounded = false;
 	public Rectangle boundingBox; //physical bounding box of the entity relative to the position vector.
 	public Vector2f position; //physical position of the entity;
 	public Vector2f oldposition;
@@ -27,7 +29,7 @@ public class GameEntity {
 
 	public void init(GameWorld gw){
 		gameworld = gw;
-		boundingBox = new Rectangle(-Main.GU,-Main.GU,Main.GU,Main.GU);
+		boundingBox = new Rectangle(-Main.GU*5,-Main.GU*5,Main.GU*5,Main.GU*5);
 		position = new Vector2f(0,0);
 		velocity = new Vector2f(0,0);
 		oldposition = new Vector2f(0,0);
@@ -49,8 +51,10 @@ public class GameEntity {
 	public void update(GameContainer container, StateBasedGame game, int delta){
 		oldposition.set(position.copy());
 		velocity.add(Main.GRAVITY.copy().scale(delta));
-		position.add(velocity.copy().scale(delta));
-		position.add(gameworld.terrain.collide(this));
+		//boundingBox.setLocation(position);
+		gameworld.terrain.collide(this);
+		position.add(velocity.scale(Main.µ));
+		
 		boundingBox.setLocation(position);
 	}
 }

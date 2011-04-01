@@ -3,13 +3,16 @@ package no.ntnu.stud.flatcraft.quadtree;
 import java.io.*;
 import java.util.ArrayList;
 
+import no.ntnu.stud.flatcraft.GameWorld;
 import no.ntnu.stud.flatcraft.Main;
 import no.ntnu.stud.flatcraft.entities.GameEntity;
+import no.ntnu.stud.flatcraft.entities.Player;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
@@ -24,10 +27,12 @@ int numberOfLeaves;
 int dummy;
 float x;
 float y;
+Polygon forwards[];
 
 
   public QuadTree(float _x, float _y, float _size,int _maxDepth) throws SlickException{
-    x = _x;
+	  forwards = new Polygon[4];
+	  x = _x;
     y = _y;
     initialSize = _size;
     depth = 0;
@@ -39,8 +44,11 @@ float y;
     fillCell(253,63);
     fillCell(51,123);
     fillCell(425,425);
-  }
-
+    nodelines = new Line[4];
+    movelines = new Line[4];
+    }
+  Line nodelines[];
+  Line movelines[];
   
   
   public void render(Graphics g,Rectangle viewport){
@@ -53,6 +61,19 @@ float y;
     g.setColor(Color.black);
     g.fill(viewport);
     traverseTree(startNode,g,viewport);
+    if(Main.DEBUG){
+	    g.setColor(Color.red);
+	    for(Line n: nodelines){
+	    	if(n!=null)g.draw(n);
+	    }
+	    for(Line m: movelines){
+	    	if(m!=null)g.draw(m);
+	    }
+	    for(Polygon p : forwards){
+	    	if(p!= null)g.draw(p);
+	    }
+	    g.setColor(Color.white);
+    }
     g.popTransform();
     }
 
@@ -146,63 +167,101 @@ float y;
 
 
 
-public Vector2f collide(GameEntity ge) {
+public boolean collide(GameEntity ge) {
 
-	Node tl = getLeaf(ge.boundingBox.getX(),ge.boundingBox.getY()); //topleft
-	Node tr = getLeaf(ge.boundingBox.getX()+ge.boundingBox.getWidth(),ge.boundingBox.getY()); //topright
-	Node bl = getLeaf(ge.boundingBox.getX(),ge.boundingBox.getY()+ge.boundingBox.getHeight()); //bottomleft
-	Node br = getLeaf(ge.boundingBox.getX()+ge.boundingBox.getWidth(),ge.boundingBox.getY()+ge.boundingBox.getHeight()); //bottomright
-
-	boolean verticoll = false;
-	boolean coll = false;
+	ge.grounded = false;
+	//get the nodes that are close enough to collide with the ge
+	Node[] nodes = new Node[5];
 	
-	if(ge.boundingBox.getX()<0 ){
-		verticoll = true;
-		coll = true;
+	ArrayList<Node> collnodes = new ArrayList<Node>();
+	nodes[0] = getLeaf(ge.boundingBox.getX(),ge.boundingBox.getY()); //topleft
+	nodes[1] = getLeaf(ge.boundingBox.getX()+ge.boundingBox.getWidth(),ge.boundingBox.getY()); //topright
+	nodes[2] = getLeaf(ge.boundingBox.getX(),ge.boundingBox.getY()+ge.boundingBox.getHeight()); //bottomleft
+	nodes[3] = getLeaf(ge.boundingBox.getX()+ge.boundingBox.getWidth(),ge.boundingBox.getY()+ge.boundingBox.getHeight()); //bottomright
+	
+	boolean collision = false;
+	float points[] =  ge.boundingBox.getPoints();	
+	
+	
+	forwards[0] = new Polygon();
+	forwards[0].addPoint(points[0], points[1]);
+	forwards[0].addPoint(points[2], points[3]);
+	forwards[0].addPoint(points[2]+ge.velocity.getX(), points[3]+ge.velocity.getY());
+	forwards[0].addPoint(points[0]+ge.velocity.getX(), points[1]+ge.velocity.getY());
+	forwards[0].setClosed(true);
+	
+	forwards[1] = new Polygon();
+	forwards[1].addPoint(points[2], points[3]);
+	forwards[1].addPoint(points[4], points[5]);
+	forwards[1].addPoint(points[4]+ge.velocity.getX(), points[5]+ge.velocity.getY());
+	forwards[1].addPoint(points[2]+ge.velocity.getX(), points[3]+ge.velocity.getY());
+	forwards[1].setClosed(true);
+	
+	forwards[2] = new Polygon();
+	forwards[2].addPoint(points[4], points[5]);
+	forwards[2].addPoint(points[6], points[7]);
+	forwards[2].addPoint(points[6]+ge.velocity.getX(), points[7]+ge.velocity.getY());
+	forwards[2].addPoint(points[4]+ge.velocity.getX(), points[5]+ge.velocity.getY());
+	forwards[2].setClosed(true);
+	
+	forwards[3] = new Polygon();
+	forwards[3].addPoint(points[6], points[7]);
+	forwards[3].addPoint(points[0], points[1]);
+	forwards[3].addPoint(points[6]+ge.velocity.getX(), points[7]+ge.velocity.getY());
+	forwards[3].addPoint(points[0]+ge.velocity.getX(), points[1]+ge.velocity.getY());
+	forwards[3].setClosed(true);
+	
+	for(Polygon forward : forwards){
+		for(Node n : nodes){
+			if(n != null && n.filled && (forward.contains(n.rect) || forward.intersects(n.rect) || n.rect.contains(forward)) && !collnodes.contains(n)){
+				collnodes.add(n);
+			}
+		}
 	}
 	
-	if(ge.boundingBox.getX()+ge.boundingBox.getWidth()>initialSize ){
-		verticoll = true;
-		coll = true;
-	}
+	Vector2f target = null;
 	
-	if(ge.boundingBox.getY()<0 ){
-		coll = true;
-	}
-	
-	if(ge.boundingBox.getY()+ge.boundingBox.getHeight()>initialSize ){
-		coll = true;
-	}
-	
-	if(coll){
-		if(verticoll){
+	for(Node n :collnodes){
+		if(Math.abs(n.rect.getCenterX()-ge.boundingBox.getCenterX()) >= Math.abs(n.rect.getCenterY()-ge.boundingBox.getCenterY())){
+			if(ge.velocity.getX()>0 && ge.position.getX() != n.rect.getMaxX()){ //slight hack after the && to stop phasing through stuff from right to left
+				//going right
+				target = new Vector2f(n.rect.getX()-ge.boundingBox.getWidth(),ge.position.getY());
+			}
+			else if(ge.velocity.getX()<0){
+				//going left
+				//ge.position.add(new Vector2f(ge.position.getX()+ge.velocity.getX()-(n.rect.getX()+n.rect.getWidth()),0));
+				target = new Vector2f(n.rect.getMaxX(),ge.position.getY());
+			}
 			ge.velocity.set(0, ge.velocity.getY());
 			System.out.println("verticoll");
 		}
 		else{
-			ge.velocity.set(ge.velocity.getX(), 0);
+			if(ge.velocity.getY()<0){
+				//going up
+				target = new Vector2f(ge.position.getX(),n.rect.getMaxY());
+				ge.velocity.add(new Vector2f(ge.velocity.getX(), Main.GRAVITY.getY()));
+			}
+			else if(ge.velocity.getY()>0 && ge.position.getY() != n.rect.getMaxY()){
+				//going down
+				target = new Vector2f(ge.position.getX(),n.rect.getY()-ge.boundingBox.getHeight());
+				ge.grounded = true;
+				ge.velocity.set(ge.velocity.getX(), 0);
+				System.out.println("grounded.");
+			}
 		}
-		System.out.println("COLLISION!");
-		return ge.oldposition.copy().sub(ge.position.copy());
 	}
 	
-//	if(ge.boundingBox.getX()<0 ||
-//		ge.boundingBox.getY()<0 ||
-//		 ge.boundingBox.getX()+ge.boundingBox.getWidth() > initialSize ||
-//		  ge.boundingBox.getY()+ge.boundingBox.getHeight() > initialSize ||
-//		  
-//		  (tl != null && tl.filled && tl.rect.intersects(ge.boundingBox)) ||
-//		  (tr != null && tr.filled && tr.rect.intersects(ge.boundingBox)) ||
-//		  (bl != null && bl.filled && bl.rect.intersects(ge.boundingBox)) ||
-//		  (br != null && br.filled && br.rect.intersects(ge.boundingBox))){
-//		
-//		System.out.println("COLLISION!");
-//	
-//		
-//	
-//		return ge.oldposition.copy().sub(ge.position.copy());
-//	}
-	return new Vector2f(0,0);
+	
+	if(target != null){
+		ge.position.set(target);
+		ge.boundingBox.setLocation(ge.position);
+	}
+	
+	if(collnodes.size()>0){
+		System.out.println("");
+		return true;
+	}
+	return false;
 }
 
 

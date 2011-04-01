@@ -20,11 +20,16 @@ public class Main extends StateBasedGame{
 	public static int SCREEN_H = 480;
 	public static float GU = SCREEN_W/128;
 	public static boolean[] KEYDOWN;
-	public static Vector2f GRAVITY = new Vector2f(0,Main.GU*0.05f);
+	public static boolean[] MOUSEDOWN;
+	public static int MOUSEX,MOUSEY;
+	public static Vector2f GRAVITY = new Vector2f(0,Main.GU*0.5f);
+	public static float µ =0.8f;
+	public static boolean DEBUG = true;
 	
 	public Main() {
 		super("FlatCraft");
 		KEYDOWN = new boolean[256];
+		MOUSEDOWN = new boolean[3];
 	}
 	
 	public static void main(String[] args) throws SlickException {
@@ -49,5 +54,30 @@ public class Main extends StateBasedGame{
 	public void keyReleased(int key, char c) {
 		KEYDOWN[key] = false;
 		
+	}
+	@Override
+	public void mousePressed(int button, int x, int y){
+		MOUSEDOWN[button] = true;
+		MOUSEX = x;
+		MOUSEY = y;
+		System.out.println("mouse button "+button+" pressed.");
+	}
+	
+	@Override
+	public void mouseReleased(int button, int x, int y){
+		MOUSEDOWN[button] = false;
+		MOUSEX = x;
+		MOUSEY = y;
+		System.out.println("mouse button "+button+" released.");
+	}
+	
+	@Override
+	public void mouseMoved(int oldx, int oldy, int newx, int newy){
+		MOUSEX = newx;
+		MOUSEY = newy;
+	}
+	public void mouseDragged(int oldx, int oldy, int newx, int newy){
+		MOUSEX = newx;
+		MOUSEY = newy;
 	}
 }
