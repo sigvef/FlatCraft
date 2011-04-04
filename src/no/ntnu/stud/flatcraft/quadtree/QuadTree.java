@@ -41,9 +41,9 @@ Polygon forwards[];
     numberOfLeaves = 1;
 	startNode = new Node(0);
 	startNode.rect = new Rectangle(x,y,initialSize,initialSize);
-    fillCell(253,63);
-    fillCell(51,123);
-    fillCell(425,425);
+    fillCell(253,63,Block.METAL);
+    fillCell(51,123,Block.ROCK);
+    fillCell(425,425,Block.ACID);
     nodelines = new Line[4];
     movelines = new Line[4];
     }
@@ -91,8 +91,15 @@ Polygon forwards[];
     	
 	    //draw the box if we reached a leaf...
 	    if ((node.leaf)||(depth>maxDepth)){
-	      if(node.filled){
-	    	  g.setColor(Color.orange);
+	      if(node.type != Block.EMPTY){
+	    	  switch(node.type){
+	    	  case METAL: g.setColor(Color.darkGray);break;
+	    	  case EARTH: g.setColor(Color.orange);break;
+	    	  case ROCK: g.setColor(Color.lightGray);break;
+	    	  case RUBBER: g.setColor(Color.pink);break;
+	    	  case WATER: g.setColor(Color.blue);break;
+	    	  case ACID: g.setColor(Color.green);break;
+	    	  }
 	    	  g.fill(node.rect);
 	    	//draw outline of node - this is for debugging
 	      	g.setColor(Color.white);
@@ -118,10 +125,10 @@ Polygon forwards[];
 	  if(n!=startNode){ n = n.parent;
 		  if(n.children[0].leaf && n.children[1].leaf &&
 		      n.children[2].leaf && n.children[3].leaf &&
-			   n.children[0].filled == n.children[1].filled &&
-			    n.children[1].filled == n.children[2].filled &&
-		         n.children[2].filled == n.children[3].filled){
-			      n.filled = n.children[0].filled;
+			   n.children[0].type == n.children[1].type &&
+			    n.children[1].type == n.children[2].type &&
+		         n.children[2].type == n.children[3].type){
+			      n.type = n.children[0].type;
 			  for(int i=0;i<4;i++){ n.children[i]=null;}
 			  numberOfLeaves-=3;
 			  numberOfNodes-=4;
@@ -131,20 +138,18 @@ Polygon forwards[];
 	  }
   }
   
-  public void fillCell(float _x,float _y){
-	  fillCell(_x,_y,true);
-  }
-  public void fillCell(float _x, float _y,boolean _filled){
+ 
+  public void fillCell(float _x, float _y,Block _type){
 	  Node temp = getLeaf(_x,_y);
 	  if(temp != null){
-		  if(temp.filled != _filled){
+		  if(temp.type != _type){
 			  while(temp.level < maxDepth){
 				  temp.split();
 				  temp =  getLeaf(_x,_y);
 				  numberOfLeaves += 3;
 				  numberOfNodes += 4;
 			  }
-			  temp.filled = _filled;
+			  temp.type = _type;
 			  trySimplify(temp);
 		  }
 	  }
@@ -212,7 +217,7 @@ public boolean collide(GameEntity ge) {
 	forwards[3].setClosed(true);
 	for(Polygon forward : forwards){
 		for(Node n : nodes){
-			if(n != null && n.filled && (forward.contains(n.rect) || forward.intersects(n.rect) || n.rect.contains(forward)) && !collnodes.contains(n)){
+			if(n != null && n.type != Block.EMPTY && (forward.contains(n.rect) || forward.intersects(n.rect) || n.rect.contains(forward)) && !collnodes.contains(n)){
 				collnodes.add(n);
 			}
 		}

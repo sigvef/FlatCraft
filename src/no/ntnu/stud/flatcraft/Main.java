@@ -16,8 +16,8 @@ import org.newdawn.slick.state.StateBasedGame;
  
 public class Main extends StateBasedGame{
 	
-	public static int SCREEN_W = 800; //hard-coded screen sizes to begin with
-	public static int SCREEN_H = 480;
+	public static int SCREEN_W = 1280; //hard-coded screen sizes to begin with
+	public static int SCREEN_H = 720;
 	public static float GU = SCREEN_W/128;
 	public static boolean[] KEYDOWN;
 	public static boolean[] MOUSEDOWN;

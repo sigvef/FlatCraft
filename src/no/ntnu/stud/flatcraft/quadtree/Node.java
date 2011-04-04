@@ -4,17 +4,17 @@ import org.newdawn.slick.geom.Rectangle;
 
 public class Node {
   boolean leaf;
-  boolean filled;
   int level;
   Node parent;
   Node[] children;
   Rectangle rect;
+  Block type;
   
   public Node(int _level){
       children = new Node[4];
-      filled = false;
       leaf = true;
       level = _level;
+      type = Block.EMPTY; //just because
   }
   
   public void split(){
@@ -22,7 +22,7 @@ public class Node {
 	  for(int i=0;i<4;i++){
 		  children[i] = new Node(level+1);
 		  children[i].parent = this;
-		  children[i].filled = filled;
+		  children[i].type = type;
 	  }
 	  children[0].rect = new Rectangle(rect.getX(),rect.getY(),rect.getWidth()*0.5f,rect.getHeight()*0.5f);
 	  children[1].rect = new Rectangle(rect.getX()+rect.getWidth()*0.5f,rect.getY(),rect.getWidth()*0.5f,rect.getHeight()*0.5f);

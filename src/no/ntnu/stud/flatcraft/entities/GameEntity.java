@@ -51,7 +51,7 @@ public class GameEntity {
 	public void update(GameContainer container, StateBasedGame game, int delta){
 		oldposition.set(position.copy());
 		velocity.add(Main.GRAVITY.copy().scale(delta));
-		//boundingBox.setLocation(position);
+		boundingBox.setLocation(position);
 		gameworld.terrain.collide(this);
 		position.add(velocity.scale(Main.µ));
 		
