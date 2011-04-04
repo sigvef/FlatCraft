@@ -9,8 +9,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-import quicktime.std.anim.Sprite;
-
 public class Character extends GameEntity {
 	
 	public Character(GameWorld gw){
