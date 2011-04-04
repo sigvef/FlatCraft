@@ -1,8 +1,10 @@
 package no.ntnu.stud.flatcraft.quadtree;
 
+import java.io.Serializable;
+
 import org.newdawn.slick.geom.Rectangle;
 
-public class Node {
+public class Node implements Serializable {
   boolean leaf;
   int level;
   Node parent;

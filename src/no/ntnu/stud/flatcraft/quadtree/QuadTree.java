@@ -17,7 +17,7 @@ import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
-public class QuadTree {
+public class QuadTree implements Serializable {
 Node startNode;
 float initialSize;
 int depth;
