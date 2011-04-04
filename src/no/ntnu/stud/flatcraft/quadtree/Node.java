@@ -5,6 +5,8 @@ import java.io.Serializable;
 import org.newdawn.slick.geom.Rectangle;
 
 public class Node implements Serializable {
+	private static final long serialVersionUID = 7854866124996621554L;
+	
 	boolean leaf;
 	int level;
 	Node parent;
