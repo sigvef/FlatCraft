@@ -53,7 +53,7 @@ public class GameEntity {
 		velocity.add(Main.GRAVITY.copy().scale(delta));
 		boundingBox.setLocation(position);
 		gameworld.terrain.collide(this);
-		position.add(velocity.scale(Main.µ));
+		position.add(velocity.scale(Main.mu));
 		
 		boundingBox.setLocation(position);
 	}

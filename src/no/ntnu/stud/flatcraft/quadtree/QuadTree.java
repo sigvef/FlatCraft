@@ -191,29 +191,29 @@ public boolean collide(GameEntity ge) {
 	forwards[0] = new Polygon();
 	forwards[0].addPoint(points[0], points[1]);
 	forwards[0].addPoint(points[2], points[3]);
-	forwards[0].addPoint(points[2]+ge.velocity.getX()*Main.µ, points[3]+ge.velocity.getY()*Main.µ);
-	forwards[0].addPoint(points[0]+ge.velocity.getX()*Main.µ, points[1]+ge.velocity.getY()*Main.µ);
+	forwards[0].addPoint(points[2]+ge.velocity.getX()*Main.mu, points[3]+ge.velocity.getY()*Main.mu);
+	forwards[0].addPoint(points[0]+ge.velocity.getX()*Main.mu, points[1]+ge.velocity.getY()*Main.mu);
 	forwards[0].setClosed(true);
 	
 	forwards[1] = new Polygon();
 	forwards[1].addPoint(points[2], points[3]);
 	forwards[1].addPoint(points[4], points[5]);
-	forwards[1].addPoint(points[4]+ge.velocity.getX()*Main.µ, points[5]+ge.velocity.getY()*Main.µ);
-	forwards[1].addPoint(points[2]+ge.velocity.getX()*Main.µ, points[3]+ge.velocity.getY()*Main.µ);
+	forwards[1].addPoint(points[4]+ge.velocity.getX()*Main.mu, points[5]+ge.velocity.getY()*Main.mu);
+	forwards[1].addPoint(points[2]+ge.velocity.getX()*Main.mu, points[3]+ge.velocity.getY()*Main.mu);
 	forwards[1].setClosed(true);
 	
 	forwards[2] = new Polygon();
 	forwards[2].addPoint(points[4], points[5]);
 	forwards[2].addPoint(points[6], points[7]);
-	forwards[2].addPoint(points[6]+ge.velocity.getX()*Main.µ, points[7]+ge.velocity.getY()*Main.µ);
-	forwards[2].addPoint(points[4]+ge.velocity.getX()*Main.µ, points[5]+ge.velocity.getY()*Main.µ);
+	forwards[2].addPoint(points[6]+ge.velocity.getX()*Main.mu, points[7]+ge.velocity.getY()*Main.mu);
+	forwards[2].addPoint(points[4]+ge.velocity.getX()*Main.mu, points[5]+ge.velocity.getY()*Main.mu);
 	forwards[2].setClosed(true);
 	
 	forwards[3] = new Polygon();
 	forwards[3].addPoint(points[6], points[7]);
 	forwards[3].addPoint(points[0], points[1]);
-	forwards[3].addPoint(points[0]+ge.velocity.getX()*Main.µ, points[1]+ge.velocity.getY()*Main.µ);
-	forwards[3].addPoint(points[6]+ge.velocity.getX()*Main.µ, points[7]+ge.velocity.getY()*Main.µ);
+	forwards[3].addPoint(points[0]+ge.velocity.getX()*Main.mu, points[1]+ge.velocity.getY()*Main.mu);
+	forwards[3].addPoint(points[6]+ge.velocity.getX()*Main.mu, points[7]+ge.velocity.getY()*Main.mu);
 	forwards[3].setClosed(true);
 	for(Polygon forward : forwards){
 		for(Node n : nodes){

@@ -23,7 +23,7 @@ public class Main extends StateBasedGame{
 	public static boolean[] MOUSEDOWN;
 	public static int MOUSEX,MOUSEY;
 	public static Vector2f GRAVITY = new Vector2f(0,Main.GU*0.5f);
-	public static float µ =0.8f;
+	public static float mu =0.8f;
 	public static boolean DEBUG = true;
 	
 	public Main() {
@@ -34,7 +34,7 @@ public class Main extends StateBasedGame{
 	
 	public static void main(String[] args) throws SlickException {
 		AppGameContainer app = new AppGameContainer(new Main());
-		app.setDisplayMode(SCREEN_W, SCREEN_H, false);
+		app.setDisplayMode(SCREEN_W, SCREEN_H, true);
 		app.start();
 	}
 
