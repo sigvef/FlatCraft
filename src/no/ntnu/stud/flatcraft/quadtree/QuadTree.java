@@ -43,9 +43,9 @@ public class QuadTree implements Serializable {
 		numberOfLeaves = 1;
 		startNode = new Node(0);
 		startNode.rect = new Rectangle(x, y, initialSize, initialSize);
-		fillCell(253, 63, Block.METAL);
-		fillCell(51, 123, Block.ROCK);
-		fillCell(425, 425, Block.ACID);
+//		fillCell(253, 63, Block.METAL);
+//		fillCell(51, 123, Block.ROCK);
+//		fillCell(425, 425, Block.ACID);
 		nodelines = new Line[4];
 		movelines = new Line[4];
 	}
@@ -114,6 +114,8 @@ public class QuadTree implements Serializable {
 					case ACID:
 						g.setColor(Color.green);
 						break;
+					case GOAL:
+						g.setColor(Color.white);
 					}
 					g.fill(node.rect);
 					// draw outline of node - this is for debugging
