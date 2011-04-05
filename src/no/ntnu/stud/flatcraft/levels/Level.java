@@ -28,7 +28,7 @@ public final class Level implements Serializable {
 		ObjectInputStream in;
 		Level level;
 		
-		in = new ObjectInputStream(Level.class.getClass().getResourceAsStream("levels/" + levelName + ".flat"));
+		in = new ObjectInputStream(Level.class.getClass().getResourceAsStream("res/levels/" + levelName + ".ser"));
 		level = (Level) in.readObject();
 		in.close();
 		
