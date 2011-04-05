@@ -8,6 +8,8 @@
 
 package no.ntnu.stud.flatcraft;
  
+import no.ntnu.stud.flatcraft.levels.generator.GeneratorState;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -34,7 +36,7 @@ public class Main extends StateBasedGame{
 	
 	public static void main(String[] args) throws SlickException {
 		AppGameContainer app = new AppGameContainer(new Main());
-		app.setDisplayMode(SCREEN_W, SCREEN_H, true);
+		app.setDisplayMode(SCREEN_W, SCREEN_H, false);
 		app.start();
 	}
 
@@ -42,6 +44,7 @@ public class Main extends StateBasedGame{
 	public void initStatesList(GameContainer container) throws SlickException {
 		addState(new MainMenuState());
 		addState(new GameState());
+		addState(new GeneratorState());
 	}
 	
 	@Override
