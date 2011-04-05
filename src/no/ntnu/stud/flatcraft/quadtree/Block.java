@@ -9,7 +9,7 @@ public enum Block {
 	}
 	
 	public Block previous() {
-		int index = (this.ordinal() - 1) % Block.values().length;  
+		int index = (this.ordinal() + Block.values().length - 1) % Block.values().length;  
         return Block.values()[index];
 	}
 }
