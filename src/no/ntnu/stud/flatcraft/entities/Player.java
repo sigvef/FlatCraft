@@ -73,6 +73,9 @@ public class Player {
 		if(Main.KEYDOWN[Input.KEY_DOWN] || Main.KEYDOWN[Input.KEY_S]){
 			character.velocitize(new Vector2f(0,Main.GU));
 		}
+		if(Main.KEYDOWN[Input.KEY_UP] || Main.KEYDOWN[Input.KEY_W]){
+			character.velocitize(new Vector2f(0,-Main.GU));
+		}
 		
 		if(Main.MOUSEDOWN[0]){
 			character.gameworld.terrain.fillCell(Main.MOUSEX+character.gameworld.viewport.getX(), Main.MOUSEY+character.gameworld.viewport.getY(),activeBlock);

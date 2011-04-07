@@ -51,6 +51,7 @@ public class Main extends StateBasedGame{
 	public void keyPressed(int key, char c) {
 		KEYDOWN[key] = true;
 		System.out.println(key);
+		if(key == 57) DEBUG = !DEBUG; //spacebar
 	}
 
 	@Override

@@ -1,8 +1,20 @@
 package no.ntnu.stud.flatcraft;
 
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Shape;
 
 public class Hack {
+	
+	public static Line[] getLines(Shape shape){
+		float points[] = shape.getPoints();
+		Line[] result = new Line[(int) (points.length*0.5)];
+		result[(int) (points.length*0.5-1)] = new Line(points[points.length-2],points[points.length-1],points[0],points[1]);
+		for(int i=0;i<points.length-2;i+=2){
+			result[(int) (i*0.5)] = new Line(points[i],points[i+1],points[i+2],points[i+3]);
+		}
+		return result;
+	}
+	
 	public static boolean intersects(Shape shape, Shape otherShape){
 		boolean result = false;
 	    float points[] = shape.getPoints();           // (x3, y3)  and (x4, y4)

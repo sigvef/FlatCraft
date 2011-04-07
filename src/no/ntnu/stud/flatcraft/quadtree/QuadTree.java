@@ -2,8 +2,10 @@ package no.ntnu.stud.flatcraft.quadtree;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import no.ntnu.stud.flatcraft.GameWorld;
+import no.ntnu.stud.flatcraft.Hack;
 import no.ntnu.stud.flatcraft.Main;
 import no.ntnu.stud.flatcraft.entities.GameEntity;
 import no.ntnu.stud.flatcraft.entities.Player;
@@ -15,12 +17,14 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class QuadTree implements Serializable {
 	private static final long serialVersionUID = -8798887499766580371L;
 	
 	Node startNode;
+	Node containingNode; //for debug only
 	float initialSize;
 	int depth;
 	int maxDepth;
@@ -41,9 +45,9 @@ public class QuadTree implements Serializable {
 		maxDepth = _maxDepth;
 		numberOfNodes = 1;
 		numberOfLeaves = 1;
-		startNode = new Node(0);
+		startNode = new Node(0,this);
 		startNode.rect = new Rectangle(x, y, initialSize, initialSize);
-//		fillCell(253, 63, Block.METAL);
+		fillCell(100, 600, Block.METAL);
 //		fillCell(51, 123, Block.ROCK);
 //		fillCell(425, 425, Block.ACID);
 		nodelines = new Line[4];
@@ -66,6 +70,9 @@ public class QuadTree implements Serializable {
 		if (Main.DEBUG) {
 			g.setColor(Color.red);
 			g.draw(viewport);
+			if(containingNode != null){
+				g.draw(containingNode.rect);
+			}
 			for (Line n : nodelines) {
 				if (n != null)
 					g.draw(n);
@@ -120,7 +127,9 @@ public class QuadTree implements Serializable {
 					g.fill(node.rect);
 					// draw outline of node - this is for debugging
 					g.setColor(Color.white);
-					g.draw(node.rect);
+					if(Main.DEBUG){
+						g.draw(node.rect);
+					}
 
 				}
 			}
@@ -128,7 +137,7 @@ public class QuadTree implements Serializable {
 			else {
 				// draw outline of node - this is for debugging
 				g.setColor(Color.white);
-				g.draw(node.rect);
+				if(Main.DEBUG)g.draw(node.rect);
 				for (int i = 0; i < 4; i++) {
 					traverseTree(node.children[i], g, viewport);
 				}
@@ -190,96 +199,179 @@ public class QuadTree implements Serializable {
 	public String toString() {
 		return ("Quadtree: nodes:" + numberOfNodes + ", leaves:" + numberOfLeaves);
 	}
+	
+	public Node getContainingNode(GameEntity ge){
+		return startNode.getContainingNode(ge);
+	}
 
+	public float intervalDistance(float[] A, float[] B) {
+	    if (A[0] < B[0]) {
+	        return B[0] - A[1];
+	    } else {
+	        return A[0] - B[1];
+	    }
+	}
+	
+	
+	
+	public float[] projectPolygon(Vector2f axis, Shape shape) {
+	
+		float[] points = shape.getPoints();
+		float dotProduct = axis.dot(new Vector2f(points[0], points[1]));
+		float[] A = new float[2];
+		A[0] = dotProduct;
+		A[1] = dotProduct;
+		return projectPolygon(axis, shape, A);
+	}	
+	public float[] projectPolygon(Vector2f axis, Shape shape,float[] A) {
+		// To project a point on an axis use the dot product
+
+		float[] points = shape.getPoints();
+
+		//float dotProduct = axis.dot(new Vector2f(points[0], points[1]));
+		float min = A[0];
+		float max = A[1];
+		for (int i = 0; i < points.length; i += 2) {
+			float dotProduct = axis.dot(new Vector2f(points[i], points[i + 1]));
+			if (dotProduct < min) {
+				min = dotProduct;
+			} else {
+				if (dotProduct > max) {
+					max = dotProduct;
+				}
+			}
+		}
+		float[] result = { min, max };
+		return result;
+	}
+	
 	public boolean collide(GameEntity ge) {
 
 		ge.grounded = false;
 		// get the nodes that are close enough to collide with the ge
-		Node[] nodes = new Node[5];
-
+		containingNode = getContainingNode(ge);
 		ArrayList<Node> collnodes = new ArrayList<Node>();
-		nodes[0] = getLeaf(ge.boundingBox.getX(), ge.boundingBox.getY()); // topleft
-		nodes[1] = getLeaf(ge.boundingBox.getX() + ge.boundingBox.getWidth(), ge.boundingBox.getY()); // topright
-		nodes[2] = getLeaf(ge.boundingBox.getX(), ge.boundingBox.getY() + ge.boundingBox.getHeight()); // bottomleft
-		nodes[3] = getLeaf(ge.boundingBox.getX() + ge.boundingBox.getWidth(), ge.boundingBox.getY() + ge.boundingBox.getHeight()); // bottomright
-
+		
+		Node decidingNode = null;
+		Vector2f decidingAxis = null;
+		
+		try{
+		containingNode.getAllLeaves(collnodes);
+		}
+		catch(Exception e){
+			containingNode = getContainingNode(ge); //hook for debugging only
+			containingNode.getAllLeaves(collnodes);
+		}
+		
+		
 		boolean collision = false;
-		float points[] = ge.boundingBox.getPoints();
-
-		forwards[0] = new Polygon();
-		forwards[0].addPoint(points[0], points[1]);
-		forwards[0].addPoint(points[2], points[3]);
-		forwards[0].addPoint(points[2] + ge.velocity.getX() * Main.mu, points[3] + ge.velocity.getY() * Main.mu);
-		forwards[0].addPoint(points[0] + ge.velocity.getX() * Main.mu, points[1] + ge.velocity.getY() * Main.mu);
-		forwards[0].setClosed(true);
-
-		forwards[1] = new Polygon();
-		forwards[1].addPoint(points[2], points[3]);
-		forwards[1].addPoint(points[4], points[5]);
-		forwards[1].addPoint(points[4] + ge.velocity.getX() * Main.mu, points[5] + ge.velocity.getY() * Main.mu);
-		forwards[1].addPoint(points[2] + ge.velocity.getX() * Main.mu, points[3] + ge.velocity.getY() * Main.mu);
-		forwards[1].setClosed(true);
-
-		forwards[2] = new Polygon();
-		forwards[2].addPoint(points[4], points[5]);
-		forwards[2].addPoint(points[6], points[7]);
-		forwards[2].addPoint(points[6] + ge.velocity.getX() * Main.mu, points[7] + ge.velocity.getY() * Main.mu);
-		forwards[2].addPoint(points[4] + ge.velocity.getX() * Main.mu, points[5] + ge.velocity.getY() * Main.mu);
-		forwards[2].setClosed(true);
-
-		forwards[3] = new Polygon();
-		forwards[3].addPoint(points[6], points[7]);
-		forwards[3].addPoint(points[0], points[1]);
-		forwards[3].addPoint(points[0] + ge.velocity.getX() * Main.mu, points[1] + ge.velocity.getY() * Main.mu);
-		forwards[3].addPoint(points[6] + ge.velocity.getX() * Main.mu, points[7] + ge.velocity.getY() * Main.mu);
-		forwards[3].setClosed(true);
-		for (Polygon forward : forwards) {
-			for (Node n : nodes) {
-				if (n != null && n.type != Block.EMPTY && (forward.contains(n.rect) || forward.intersects(n.rect) || n.rect.contains(forward)) && !collnodes.contains(n)) {
-					collnodes.add(n);
+		
+		int[] remover = new int[collnodes.size()];
+		Arrays.fill(remover,4);
+		for (Polygon forward : ge.forwards) {
+			for(int i=0; i<collnodes.size();i++){
+				if(collnodes.get(i) != null && (collnodes.get(i).type == Block.EMPTY || (!Hack.contains(forward, collnodes.get(i).rect) && !Hack.contains(collnodes.get(i).rect, forward) && !Hack.intersects(collnodes.get(i).rect, forward)))){
+					remover[i]--;
 				}
 			}
 		}
 
 		Vector2f target = null;
-
-		for (Node n : collnodes) {
-			if (Math.abs(n.rect.getCenterX() - ge.boundingBox.getCenterX()) >= Math.abs(n.rect.getCenterY() - ge.boundingBox.getCenterY())) {
-				if (ge.velocity.getX() > 0 && ge.position.getX() != n.rect.getMaxX()) { // slight hack after the && to stop phasing through stuff from right to left
-					// going right
-					target = new Vector2f(n.rect.getX() - ge.boundingBox.getWidth(), ge.position.getY());
-				} else if (ge.velocity.getX() < 0) {
-					// going left
-					// ge.position.add(new
-					// Vector2f(ge.position.getX()+ge.velocity.getX()-(n.rect.getX()+n.rect.getWidth()),0));
-					target = new Vector2f(n.rect.getMaxX(), ge.position.getY());
+//		float distanceToRevert = Integer.MIN_VALUE;
+		float distanceToRevert = 0;
+		Vector2f axis = null;
+		
+		for (int i=0;i<collnodes.size();i++) {
+				if(remover[i] == 0) continue;
+				System.out.println("COLLISION!");
+				
+				Line[] nodelines = Hack.getLines(collnodes.get(i).rect);
+				
+				int[] nodelineintersects = new int[4];
+				
+				for(Polygon forward : ge.forwards){
+					Line[] forwardlines = Hack.getLines(forward);
+					for(Line fl : forwardlines){
+						if(fl == forwardlines[forwardlines.length-1]) continue;
+						for(int j=0;j<nodelines.length;j++){
+							if(Hack.intersects(nodelines[j], fl)){
+								nodelineintersects[j]++;
+								
+							}
+						}
+					}
 				}
-				ge.velocity.set(0, ge.velocity.getY());
-				System.out.println("verticoll");
-			} else {
-				if (ge.velocity.getY() < 0) {
-					// going up
-					target = new Vector2f(ge.position.getX(), n.rect.getMaxY());
-					ge.velocity.add(new Vector2f(ge.velocity.getX(), Main.GRAVITY.getY()));
-				} else if (ge.velocity.getY() > 0 && ge.position.getY() != n.rect.getMaxY()) {
-					// going down
-					target = new Vector2f(ge.position.getX(), n.rect.getY() - ge.boundingBox.getHeight());
-					ge.grounded = true;
-					ge.velocity.set(ge.velocity.getX(), 0);
-					System.out.println("grounded.");
+				
+				
+				int index = 0;
+				int max = nodelineintersects[index];
+				for(int j=0;j<nodelineintersects.length;j++){
+					if(nodelineintersects[j]>max){
+						max = nodelineintersects[j];
+						index = j;
+					}
+				}
+				
+				axis = new Vector2f(nodelines[index].getDX(),nodelines[index].getDY());	
+				axis = axis.normalise().getPerpendicular();
+				System.out.println(axis);
+				
+				
+				
+				collision = true;
+				float A[] = projectPolygon(axis, collnodes.get(i).rect);
+				
+				
+					float B[] = projectPolygon(axis, ge.boundingBox);
+					for(Polygon forward : ge.forwards){
+						B = projectPolygon(axis, forward, B);
+					}
+				float dist = intervalDistance(A,B);
+				
+				System.out.println("dist: "+dist);
+				
+				if (dist < distanceToRevert) {
+					distanceToRevert = dist;
+					decidingAxis = axis.copy();
 				}
 			}
-		}
+		
+			
+			//ge.position.add(ge.velocity.copy().normalise().scale(-distanceToRevert).scale(Main.mu));
+			if(collision){
+				if(distanceToRevert <= -99999999) distanceToRevert = 0;
+				System.out.println("distanceToRevert: "+distanceToRevert);
+				Vector2f reverter = new Vector2f(ge.velocity.getTheta());
+				reverter.normalise();
+				if(distanceToRevert < 0){
+					System.out.println("REVERTING!");
+					System.out.println(distanceToRevert);
+					reverter.scale((float) (distanceToRevert));
+					//float theta = (float) ((Math.PI*0.5)-ge.velocity.getTheta()*Math.PI/180f);
+					float theta = (float) decidingAxis.dot(ge.velocity.copy().normalise());
+					if(theta == 0) theta = 1;
+					System.out.println("scaler: "+1/theta);
+					reverter.scale((float) (1/theta));
+					System.out.println(reverter);
+					ge.position.add(reverter);
+					ge.boundingBox.setLocation(ge.position);
+				
+				if(decidingAxis.getY() == 0){
+					System.out.println("verticoll");
+					ge.velocity.set(0,ge.velocity.getY());
+				}else{
+					if(ge.velocity.getY()>0d)ge.grounded = true;
+					ge.velocity.set(ge.velocity.getX(), 0);
+				}
+				ge.position.add(ge.velocity);
+				ge.boundingBox.setLocation(ge.position);
+				}
+				
+			}
+	
+		
 
-		if (target != null) {
-			ge.position.set(target);
-			ge.boundingBox.setLocation(ge.position);
-		}
-
-		if (collnodes.size() > 0) {
-			System.out.println("");
-			return true;
-		}
+		
 		return false;
 	}
 

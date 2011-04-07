@@ -24,13 +24,13 @@ public class GameState extends BasicGameState {
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
 		timer += delta;
-		while(timer > 20){
+		while(timer > 50){
 			this.game = game;
 			if(Main.KEYDOWN[Input.KEY_ESCAPE]){
 				game.enterState(0); //go back to MainMenuState
 			}
 			gameworld.update(container, game, 1);
-			timer -= 20;
+			timer -= 50;
 		}
 	}
 
