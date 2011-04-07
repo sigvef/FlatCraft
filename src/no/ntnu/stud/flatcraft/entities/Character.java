@@ -33,6 +33,7 @@ public class Character extends GameEntity {
 		g.translate(-gameworld.viewport.getX(), -gameworld.viewport.getY());
 		g.drawImage(image, position.getX(), position.getY());
 		super.render(g);
+		g.popTransform();
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
