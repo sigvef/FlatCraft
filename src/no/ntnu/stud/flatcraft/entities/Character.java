@@ -1,88 +1,55 @@
 package no.ntnu.stud.flatcraft.entities;
 
+import net.phys2d.math.Vector2f;
 import no.ntnu.stud.flatcraft.GameWorld;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Character extends GameEntity {
-	
-	public Character(GameWorld gw){
-		super.init(gw);
+
+	Animation runningAnimation;
+
+	public Character(GameWorld gw, float _x, float _y, float _width,
+			float _height, float _mass) {
+		super.init(gw, _x, _y, _width, _height, _mass);
+		body.setCanRest(false);
 		try {
-			image = new Image("res/character.png");
+			// image = new Image("res/character.png");
+			runningAnimation = new Animation(new SpriteSheet("res/charss.png",
+					50, 50), 0, 0, 4, 0, true, 50, true);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		super.reset();
-		ammo = 0;
-		health = 0;
-		armor = 0;
-		reloadTimer = 0;
 	}
-	
-	public void render(Graphics g){
+
+	public void render(Graphics g) {
 		g.pushTransform();
 		g.translate(-gameworld.viewport.getX(), -gameworld.viewport.getY());
-		g.drawImage(image, position.getX(), position.getY());
-		super.render(g);
+		// g.drawImage(image, body.getPosition().getX(),
+		// body.getPosition().getY());
+		runningAnimation.draw(boundingBox.getX(), boundingBox.getY());
 		g.popTransform();
+		super.render(g);
 	}
-	
-	public void update(GameContainer container, StateBasedGame game, int delta){
-		if(reloadTimer > 0){
-			reloadTimer -= delta;
-		}
-		if(reloadTimer < 0){
-			reloadTimer = 0;
-		}
+
+	public void update(GameContainer container, StateBasedGame game, int delta) {
 		super.update(container, game, delta);
 	}
-	
-	
-	public void die(){
-		alive = false;
-		reset();
+
+	public void spawn(Vector2f pos) {
+		body.setPosition(pos.getX(), pos.getY());
 	}
-	
-	
-	public void spawn(Vector2f position){
-		alive = true;
-		this.position.set(position);
-		ammo = 7;
-	}
-	
-	public int increaseHealth(int amount){
-		health += amount;
-		return health;
-	}
-	
-	public int increaseArmor(int amount){
-		armor += amount;
-		return armor;
-	}
-	
-	
-	public boolean isAlive(){
-		return alive;
-	}
-	
-	Player player; //handle to the player that controls this character.
+
+	Player player; // handle to the player that controls this character.
 	Image image;
-	boolean alive;
-	int reloadTimer;
-	int damageTaken;
-	int ammo;
-	int health;
-	int armor;
-	public void velocitize(Vector2f vel) {
-		velocity.add(vel);
-	}
 }

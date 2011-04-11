@@ -3,7 +3,16 @@ package no.ntnu.stud.flatcraft.quadtree;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import net.phys2d.math.Vector2f;
+import net.phys2d.raw.Body;
+import net.phys2d.raw.StaticBody;
+import net.phys2d.raw.World;
+import net.phys2d.raw.shapes.AABox;
+import net.phys2d.raw.shapes.Box;
+import no.ntnu.stud.flatcraft.GameWorld;
 import no.ntnu.stud.flatcraft.Hack;
+import no.ntnu.stud.flatcraft.Main;
+import no.ntnu.stud.flatcraft.SweetBox;
 import no.ntnu.stud.flatcraft.entities.GameEntity;
 
 import org.newdawn.slick.geom.Polygon;
@@ -17,64 +26,55 @@ public class Node implements Serializable {
 	int level;
 	Node parent;
 	Node[] children;
-	Rectangle rect;
+	StaticBody body;
 	Block type;
+	Rectangle rect;
+	World world;
 	QuadTree tree; //handle back to the quadtree
 	
-	public Node(int _level, QuadTree _tree) {
+	public Node(int _level, QuadTree _tree, World _world) {
+		world = _world;
 		children = new Node[4];
 		leaf = true;
 		level = _level;
 		type = Block.EMPTY; // just because
 		tree = _tree;
+		body = new StaticBody(new Box((float)(_tree.initialSize/(Math.pow(2, level))),(float)(_tree.initialSize/(Math.pow(2, level)))));
+		body.setUserData(this);
+		body.setRestitution(0);
+		body.setFriction(Main.mu);
+		body.setRotatable(false);
+		body.setPosition(0,0);
+		body.setEnabled(false);
+		world.add(body);
+		rect = new Rectangle(0,0,(float)(_tree.initialSize/(Math.pow(2, level))),(float)(_tree.initialSize/(Math.pow(2, level))));
 	}
 
 	public void split() {
 		leaf = false;
+		body.setEnabled(false);
 		for (int i = 0; i < 4; i++) {
-			children[i] = new Node(level + 1, tree);
+			children[i] = new Node(level + 1, tree, world);
 			children[i].parent = this;
 			children[i].type = type;
+			if(children[i].type == Block.EMPTY || children[i].type == Block.WATER) children[i].body.setEnabled(false);
+			else children[i].body.setEnabled(true);
 		}
-		children[0].rect = new Rectangle(rect.getX(), rect.getY(), rect.getWidth() * 0.5f, rect.getHeight() * 0.5f);
-		children[1].rect = new Rectangle(rect.getX() + rect.getWidth() * 0.5f, rect.getY(), rect.getWidth() * 0.5f, rect.getHeight() * 0.5f);
-		children[2].rect = new Rectangle(rect.getX(), rect.getY() + rect.getHeight() * 0.5f, rect.getWidth() * 0.5f, rect.getHeight() * 0.5f);
-		children[3].rect = new Rectangle(rect.getX() + rect.getWidth() * 0.5f, rect.getY() + rect.getHeight() * 0.5f, rect.getWidth() * 0.5f, rect.getHeight() * 0.5f);
-	}
-	
-	public Node getContainingNode(GameEntity ge){
-		float x = ge.boundingBox.getX();
-		float y = ge.boundingBox.getY();
-		for(Polygon forward : ge.forwards){
-			if(forward.getMinX() < x) x= forward.getMinX();
-			if(forward.getMinY() < y) y= forward.getMinY();
-		}
-		if(!(Hack.contains(rect, ge.boundingBox)&&Hack.contains(rect, ge.forwards[0])&&
-				Hack.contains(rect, ge.forwards[1]) && Hack.contains(rect,ge.forwards[2]) && Hack.contains(rect, ge.forwards[3]))){
-			return parent;
-		}else if(leaf || level == tree.maxDepth){
-			return this;
-		}else{
-			if (x >= rect.getX() + rect.getWidth() * 0.5f && y >= rect.getY() + rect.getHeight() * 0.5f) {
-				return children[3].getContainingNode(ge);
-			}
-			if (x <= rect.getX() + rect.getWidth() * 0.5f && y >= rect.getY() + rect.getHeight() * 0.5f) {
-				return children[2].getContainingNode(ge);
-			}
-			if (x >= rect.getX() + rect.getWidth() * 0.5f && y <= rect.getY() + rect.getHeight() * 0.5f) {
-				return children[1].getContainingNode(ge);
-			}
-			return children[0].getContainingNode(ge);
+		children[0].body.setPosition(rect.getX(), rect.getY());
+		children[1].body.setPosition(rect.getX()+rect.getWidth()*0.5f, rect.getY());
+		children[2].body.setPosition(rect.getX(), rect.getY()+rect.getHeight()*0.5f);
+		children[3].body.setPosition(rect.getX()+rect.getWidth()*0.5f, rect.getY()+rect.getHeight()*0.5f);
+				
+		children[0].rect.setLocation(rect.getX(), rect.getY());
+		children[1].rect.setLocation(rect.getX()+rect.getWidth()*0.5f, rect.getY());
+		children[2].rect.setLocation(rect.getX(), rect.getY()+rect.getHeight()*0.5f);
+		children[3].rect.setLocation(rect.getX()+rect.getWidth()*0.5f, rect.getY()+rect.getHeight()*0.5f);
+		
+		for(Node child : children){
+			child.body.adjustPosition(new Vector2f(child.rect.getWidth()*0.5f,child.rect.getHeight()*0.5f));
 		}
 	}
 	
-	public void getAllLeaves(ArrayList<Node> list){
-		if(leaf || level == tree.maxDepth) list.add(this);
-		else for(Node n : children){
-			n.getAllLeaves(list);
-		}
-	}
-
 	public Node getLeaf(float x, float y) {
 		// System.out.println("Entered a node. level = "+level+" rect = "+rect.getX()+" "+rect.getY()+" x = "+x+" y = "+y+" size = "+rect.getWidth());
 		if (leaf)
@@ -95,6 +95,6 @@ public class Node implements Serializable {
 	}
 	
 	public String toString(){
-		return "[NODE | level: "+level+"; x: "+rect.getX()+"; y: "+rect.getY()+"]";
+		return "[NODE | level: "+level+"; x: "+body.getPosition().getX()+"; y: "+body.getPosition().getY()+"]";
 	}
 }

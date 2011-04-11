@@ -13,39 +13,39 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GameState extends BasicGameState {
-	
+
 	private StateBasedGame game;
 	private GameWorld gameworld;
 	int timer;
-	
-	public void render(GameContainer container, StateBasedGame game, Graphics g){
+
+	public void render(GameContainer container, StateBasedGame game, Graphics g) {
 		gameworld.render(g);
 	}
-	
-	public void update(GameContainer container, StateBasedGame game, int delta){
+
+	public void update(GameContainer container, StateBasedGame game, int delta) {
 		timer += delta;
-		while(timer > 50){
+		while (timer > 20) {
 			this.game = game;
-			if(Main.KEYDOWN[Input.KEY_ESCAPE]){
-				game.enterState(0); //go back to MainMenuState
+			if (Main.KEYDOWN[Input.KEY_ESCAPE]) {
+				game.enterState(0); // go back to MainMenuState
 			}
 			gameworld.update(container, game, 1);
-			timer -= 50;
+			timer -= 20;
 		}
 	}
 
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-			gameworld = new GameWorld();
-			timer = 0;
-		
+		gameworld = new GameWorld();
+		timer = 0;
+
 	}
-	
-	public void enter(GameContainer container, StateBasedGame game){
+
+	public void enter(GameContainer container, StateBasedGame game) {
 		gameworld.reset();
 	}
-	
-	public void leave(GameContainer container, StateBasedGame game){
+
+	public void leave(GameContainer container, StateBasedGame game) {
 
 	}
 
