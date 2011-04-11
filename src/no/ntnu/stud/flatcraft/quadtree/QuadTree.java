@@ -48,7 +48,7 @@ public class QuadTree implements Serializable {
 		world = _world;
 		waternodes = new ArrayList<Node>();
 		startNode = new Node(0, this, world);
-		fillCell(105, 605, Block.METAL);
+//		fillCell(105, 605, Block.METAL);
 	}
 
 	public void update() {
@@ -236,6 +236,7 @@ public class QuadTree implements Serializable {
 	// toString
 	// --------------------------------
 	public String toString() {
-		return ("Quadtree: nodes:" + numberOfNodes + ", leaves:" + numberOfLeaves);
+		//return ("Quadtree: nodes:" + numberOfNodes + ", leaves:" + numberOfLeaves);
+		return startNode.toString();
 	}
 }

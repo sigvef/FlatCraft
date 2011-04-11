@@ -7,14 +7,18 @@
 
 package no.ntnu.stud.flatcraft;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 import net.phys2d.math.Vector2f;
 import net.phys2d.raw.Body;
 import net.phys2d.raw.BodyList;
 import net.phys2d.raw.World;
+import no.ntnu.stud.flatcraft.entities.Character;
 import no.ntnu.stud.flatcraft.entities.GameEntity;
 import no.ntnu.stud.flatcraft.entities.Player;
+import no.ntnu.stud.flatcraft.quadtree.Block;
 import no.ntnu.stud.flatcraft.quadtree.QuadTree;
 
 import org.newdawn.slick.Color;
@@ -22,6 +26,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.openal.OpenALStreamPlayer;
@@ -31,16 +36,16 @@ import org.newdawn.slick.state.StateBasedGame;
 public class GameWorld {
 
 	public QuadTree terrain;
-	Player player;
+	
 	ArrayList<GameEntity> entities;
 	public World world;
-	float viewportzoom;
-	Vector2f viewportgoal;
+	public float viewportzoom;
+	public Vector2f viewportgoal;
 	Image bg;
 	public Rectangle viewport;
-	StreamSound music;
+	Music music;
 
-	public GameWorld() throws SlickException {
+	public GameWorld(String level) throws SlickException {
 		world = new World(Main.GRAVITY, Main.ITERATIONS);
 		bg = new Image("res/bgtex.png");
 		terrain = new QuadTree(0, 0, 1280 * Main.GU, 8, world); // hardcoded
@@ -48,16 +53,15 @@ public class GameWorld {
 																// a square 10x
 																// the with of
 																// the screen.
+		load(level);
 		viewport = new Rectangle(0, 0, Main.SCREEN_W, Main.SCREEN_H);
 		viewportgoal = new Vector2f(viewport.getX(), viewport.getY());
 		viewportzoom = 1;
-		player = new Player(this, Main.GU, Main.GU, Main.GU * 5, Main.GU * 5, 1);
 		entities = new ArrayList<GameEntity>();
-		entities.add(player.getCharacter());
-		world.add(player.getBody());
+		
 		// music = new StreamSound(new OpenALStreamPlayer(0,
 		// "res/flatcraft2.ogg"));
-
+		music = new Music("res/flatcraft2.ogg");
 	}
 
 	// reset() - resets the map, calls reset on all the things it controls.
@@ -65,11 +69,27 @@ public class GameWorld {
 		for (GameEntity e : entities) {
 			e.reset();
 		}
-		player.reset();
+		
 		viewport = new Rectangle(0, 0, Main.SCREEN_W, Main.SCREEN_H);
 		// music.playAsMusic(1, 1, true);
+		music.play();
 		viewportzoom = 1;
 		// reload terrain also TODO
+	}
+	
+	public void load(String s){
+		BufferedReader bufferedReader;
+		try {
+			bufferedReader = new BufferedReader(new FileReader(s));
+			String level = bufferedReader.readLine();
+			for(String node : level.split("\\|")){
+				String[] n = node.split(",");
+				terrain.fillCell(Float.parseFloat(n[0]), Float.parseFloat(n[1]), Block.valueOf(n[2]));
+			}
+			bufferedReader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setViewportPosition(Vector2f position) {
@@ -116,7 +136,6 @@ public class GameWorld {
 	// children one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		terrain.update();
-		player.update(container, game, delta);
 		// world.collide(1);
 		world.step();
 		
@@ -147,7 +166,6 @@ public class GameWorld {
 //														, world.getBodies().get(i).getPosition().getY(), 
 //															Main.GU, Main.GU));
 //		g.popTransform();
-		player.render(g);
 		
 		
 		
@@ -161,5 +179,17 @@ public class GameWorld {
 	public void addBody(Body body) {
 		world.add(body);
 
+	}
+
+	public void leave() {
+		music.stop();
+	}
+
+	public void add(Character character) {
+		entities.add(character);
+	}
+
+	public void add(Body body) {
+		world.add(body);		
 	}
 }

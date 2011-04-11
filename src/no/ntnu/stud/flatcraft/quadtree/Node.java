@@ -94,6 +94,17 @@ public class Node implements Serializable {
 	}
 	
 	public String toString(){
-		return "[NODE | level: "+level+"; x: "+body.getPosition().getX()+"; y: "+body.getPosition().getY()+"]";
+		//return "[NODE | level: "+level+"; x: "+body.getPosition().getX()+"; y: "+body.getPosition().getY()+"]";
+		String returnstring = "";
+		//returnstring = returnstring + "{"+body.getPosition().getX()+","+body.getPosition().getY()+","+type;
+		if(leaf && type != Block.EMPTY){
+			returnstring = returnstring + "|"+body.getPosition().getX()+","+body.getPosition().getY()+","+type;
+		}
+		if(children[0] != null){
+			for(Node c : children){
+				returnstring = returnstring +c.toString();
+			}
+		}
+		return returnstring;
 	}
 }
