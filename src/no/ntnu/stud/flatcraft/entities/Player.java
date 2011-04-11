@@ -17,6 +17,8 @@ public class Player {
 	Character character;
 	Block activeBlock;
 	Vector2f fireVector;
+	
+	Inventory inventory;
 
 	public Player(GameWorld gw, float _x, float _y, float _width,
 			float _height, float _mass) {
@@ -24,6 +26,7 @@ public class Player {
 		activeBlock = Block.METAL;
 		respawn();
 		fireVector = new Vector2f(0, 0);
+		inventory = new Inventory();
 	}
 
 	public void reset() {
@@ -39,6 +42,8 @@ public class Player {
 						.getCenterX() + fireVector.getX(),
 				character.boundingBox.getCenterY() + fireVector.getY()));
 		g.popTransform();
+		
+		inventory.render(g);
 	}
 
 	public void respawn() {
@@ -54,10 +59,12 @@ public class Player {
 
 		if (Main.KEYDOWN[Input.KEY_Q]) {
 			activeBlock = activeBlock.next();
+			inventory.prev();
 			System.out.println(activeBlock);
 		}
 		if (Main.KEYDOWN[Input.KEY_E]) {
 			activeBlock = activeBlock.previous();
+			inventory.next();
 			System.out.println(activeBlock);
 		}
 
