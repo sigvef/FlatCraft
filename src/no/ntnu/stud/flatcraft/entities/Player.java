@@ -15,15 +15,15 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Player {
 	Character character;
-	Block activeBlock;
 	Vector2f fireVector;
 	
 	Inventory inventory;
+	
+	private boolean blockSelected = false;
 
 	public Player(GameWorld gw, float _x, float _y, float _width,
 			float _height, float _mass) {
 		character = new Character(gw, _x, _y, _width, _height, _mass);
-		activeBlock = Block.METAL;
 		respawn();
 		fireVector = new Vector2f(0, 0);
 		inventory = new Inventory();
@@ -57,15 +57,17 @@ public class Player {
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 
-		if (Main.KEYDOWN[Input.KEY_Q]) {
-			activeBlock = activeBlock.next();
+		if (Main.KEYDOWN[Input.KEY_Q] && !blockSelected) {
 			inventory.prev();
-			System.out.println(activeBlock);
+			blockSelected = true;
 		}
-		if (Main.KEYDOWN[Input.KEY_E]) {
-			activeBlock = activeBlock.previous();
+		if (Main.KEYDOWN[Input.KEY_E] && !blockSelected) {
 			inventory.next();
-			System.out.println(activeBlock);
+			blockSelected = true;
+		}
+		
+		if (!Main.KEYDOWN[Input.KEY_Q] && !Main.KEYDOWN[Input.KEY_E] && blockSelected) {
+			blockSelected = false;
 		}
 
 		if (Main.KEYDOWN[Input.KEY_UP] || Main.KEYDOWN[Input.KEY_W]
@@ -90,16 +92,22 @@ public class Player {
 		if (Main.MOUSEDOWN[0]) {
 			// character.gameworld.terrain.fillCell(Main.MOUSEX+character.gameworld.viewport.getX(),
 			// Main.MOUSEY+character.gameworld.viewport.getY(),activeBlock);
+			Block out = inventory.peek();	
 			fireVector.set(Main.MOUSEX + character.gameworld.viewport.getX()
 					- character.boundingBox.getCenterX(), Main.MOUSEY
 					+ character.gameworld.viewport.getY()
 					- character.boundingBox.getCenterY());
 			fireVector.normalise();
 			fireVector.scale(Main.GU * 6);
-			character.gameworld.terrain.fillCell(
-					character.boundingBox.getCenterX() + fireVector.getX(),
-					character.boundingBox.getCenterY() + fireVector.getY(),
-					activeBlock);
+			
+			if (out != null && character.gameworld.terrain.getLeaf(character.boundingBox.getCenterX() + fireVector.getX(),
+					character.boundingBox.getCenterY() + fireVector.getY()).type == Block.EMPTY) {
+				inventory.pop();
+				character.gameworld.terrain.fillCell(
+						character.boundingBox.getCenterX() + fireVector.getX(),
+						character.boundingBox.getCenterY() + fireVector.getY(),
+						out);
+			}
 		}
 		if (Main.MOUSEDOWN[1]) {
 			fireVector.set(Main.MOUSEX + character.gameworld.viewport.getX()
@@ -108,9 +116,22 @@ public class Player {
 					- character.boundingBox.getCenterY());
 			fireVector.normalise();
 			fireVector.scale(Main.GU * 6);
-			character.gameworld.terrain.emptyCell(
-					character.boundingBox.getCenterX() + fireVector.getX(),
-					character.boundingBox.getCenterY() + fireVector.getY());
+			
+			switch (character.gameworld.terrain.getLeaf(character.boundingBox.getCenterX() + fireVector.getX(),
+					character.boundingBox.getCenterY() + fireVector.getY()).type) {
+				case ROCK:
+				case RUBBER:
+				case WATER:
+					inventory.push(character.gameworld.terrain.getLeaf(character.boundingBox.getCenterX() + fireVector.getX(),
+					character.boundingBox.getCenterY() + fireVector.getY()).type);
+				case EARTH:
+					character.gameworld.terrain.emptyCell(
+							character.boundingBox.getCenterX() + fireVector.getX(),
+							character.boundingBox.getCenterY() + fireVector.getY());
+					break;
+				default:
+					break;
+			}
 		}
 
 		if (character.body.getPosition().getY() > Main.GU * 48

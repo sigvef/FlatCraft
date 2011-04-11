@@ -26,7 +26,7 @@ public class Node implements Serializable {
 	Node parent;
 	Node[] children;
 	StaticBody body;
-	Block type;
+	public Block type;
 	Rectangle rect;
 	World world;
 	QuadTree tree; //handle back to the quadtree

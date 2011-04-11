@@ -15,9 +15,9 @@ public class Inventory {
 	
 	public Inventory() {
 		inventory = new HashMap<Block, Integer>();
-		inventory.put(Block.ROCK, 1);
-		inventory.put(Block.RUBBER, 0);
-		inventory.put(Block.WATER, 1);
+		inventory.put(Block.ROCK, 99);
+		inventory.put(Block.RUBBER, 99);
+		inventory.put(Block.WATER, 99);
 	}
 	
 	public void render(Graphics g) {
@@ -111,6 +111,15 @@ public class Inventory {
 			next();
 		}
 		next();
+	}
+	
+	public Block peek() {
+		if (activeElement == null || inventory.get(activeElement) == 0) {
+			prev();
+			return null;
+		}
+		
+		return activeElement;
 	}
 	
 	public Block pop() {
