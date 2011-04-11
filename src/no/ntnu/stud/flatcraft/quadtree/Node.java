@@ -12,7 +12,6 @@ import net.phys2d.raw.shapes.Box;
 import no.ntnu.stud.flatcraft.GameWorld;
 import no.ntnu.stud.flatcraft.Hack;
 import no.ntnu.stud.flatcraft.Main;
-import no.ntnu.stud.flatcraft.SweetBox;
 import no.ntnu.stud.flatcraft.entities.GameEntity;
 
 import org.newdawn.slick.geom.Polygon;
