@@ -76,7 +76,11 @@ public class Player {
 		if (Main.KEYDOWN[Input.KEY_UP] || Main.KEYDOWN[Input.KEY_W]
 				|| Main.KEYDOWN[Input.KEY_SPACE]) {
 			if (character.grounded) {
-				character.applyForce(0, -Main.GU * 1600f);
+				if (character.gameworld.terrain.getLeaf(character.boundingBox.getX()+Main.GU, character.boundingBox.getY() + 5.1f*Main.GU).type == Block.RUBBER || character.gameworld.terrain.getLeaf(character.boundingBox.getX()+4*Main.GU, character.boundingBox.getY() + 5.1f*Main.GU).type == Block.RUBBER) {
+					character.applyForce(0, -Main.GU * 3200f);
+				} else {
+					character.applyForce(0, -Main.GU * 1600f);
+				}
 			}
 		}	
 		if (Main.KEYDOWN[Input.KEY_LEFT] || Main.KEYDOWN[Input.KEY_A]) {
