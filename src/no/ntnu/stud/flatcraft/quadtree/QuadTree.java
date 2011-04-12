@@ -107,6 +107,10 @@ public class QuadTree implements Serializable {
 						break;
 					case GOAL:
 						g.setColor(Color.white);
+						break;
+					case START:
+						g.setColor(Color.magenta);
+						break;
 					}
 					g.fill(node.rect);
 					// draw outline of node - this is for debugging
@@ -129,6 +133,25 @@ public class QuadTree implements Serializable {
 			}
 		}
 		depth--;
+	}
+	
+	public Vector2f findBlockPosition(Block block) {
+		return findBlockPosition(block, startNode);
+	}
+	
+	public Vector2f findBlockPosition(Block block, Node node) {
+		for (Node child : node.children) {
+			if (child.leaf && child.type == block) {
+				return new Vector2f(child.rect.getX(), child.rect.getY());
+			} else if (!child.leaf) {
+				Vector2f temp;
+				
+				if ((temp = findBlockPosition(block, child)) != null) {
+					return temp;
+				}
+			}
+		}
+		return null;
 	}
 
 	public void trySimplify(Node n) {

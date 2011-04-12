@@ -14,6 +14,7 @@ import no.ntnu.stud.flatcraft.GameWorld;
 import no.ntnu.stud.flatcraft.Main;
 import no.ntnu.stud.flatcraft.quadtree.Block;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -59,10 +60,42 @@ public class GeneratorState extends BasicGameState {
 	
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g){
-//		g.pushTransform();
-//		g.scale(generatorWorld.viewportzoom,generatorWorld.viewportzoom);
 		generatorWorld.render(g);
-//		g.popTransform();
+		
+		g.pushTransform();
+		switch (activeBlock) {
+		case METAL:
+			g.setColor(Color.darkGray);
+			break;
+		case EARTH:
+			g.setColor(Color.orange);
+			break;
+		case ROCK:
+			g.setColor(Color.lightGray);
+			break;
+		case RUBBER:
+			g.setColor(Color.pink);
+			break;
+		case WATER:
+			g.setColor(Color.blue);
+			break;
+		case ACID:
+			g.setColor(Color.green);
+			break;
+		case GOAL:
+			g.setColor(Color.white);
+			break;
+		case START:
+			g.setColor(Color.magenta);
+			break;
+		}
+		
+		g.translate(0, 0);
+		g.fillRect(Main.SCREEN_W-32, 0, 32, 32);
+		g.setColor(Color.magenta);
+		g.drawRect(Main.SCREEN_W-32, 0, 32, 32);
+//		g.scale(generatorWorld.viewportzoom,generatorWorld.viewportzoom);
+		g.popTransform();
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){

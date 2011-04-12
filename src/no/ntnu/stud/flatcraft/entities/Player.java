@@ -19,10 +19,13 @@ public class Player {
 	
 	Inventory inventory;
 	
+	private Vector2f startPosition;
+	
 	private boolean blockSelected = false;
 
 	public Player(GameWorld gw, float _x, float _y, float _width,
 			float _height, float _mass) {
+		startPosition = new Vector2f(_x, _y);
 		character = new Character(gw, _x, _y, _width, _height, _mass);
 		respawn();
 		fireVector = new Vector2f(0, 0);
@@ -30,7 +33,7 @@ public class Player {
 	}
 
 	public void reset() {
-		character.spawn(new Vector2f(Main.GU * 10, Main.GU * 10));
+		character.spawn(new Vector2f(startPosition.getX(), startPosition.getY()));
 	}
 
 	public void render(Graphics g) {

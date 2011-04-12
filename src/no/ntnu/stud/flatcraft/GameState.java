@@ -6,11 +6,13 @@
 package no.ntnu.stud.flatcraft;
 
 import no.ntnu.stud.flatcraft.entities.Player;
+import no.ntnu.stud.flatcraft.quadtree.Block;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -44,8 +46,15 @@ public class GameState extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		gameworld = new GameWorld("level.flt");
+		
+		Vector2f startPos = gameworld.terrain.findBlockPosition(Block.START);
+		if (startPos != null) {
+			gameworld.terrain.emptyCell(startPos.getX(), startPos.getY());
+		} else {
+			startPos = new Vector2f(Main.GU, Main.GU);
+		}
 
-		player = new Player(gameworld, Main.GU, Main.GU, Main.GU * 3, Main.GU * 4, 1);
+		player = new Player(gameworld, startPos.getX(), startPos.getY(), Main.GU * 5, Main.GU * 5, 1);
 		gameworld.add(player.getCharacter());
 		gameworld.add(player.getBody());
 		timer = 0;
