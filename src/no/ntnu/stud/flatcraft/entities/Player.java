@@ -78,7 +78,7 @@ public class Player {
 			if (character.grounded) {
 				character.applyForce(0, -Main.GU * 1600f);
 			}
-		}
+		}	
 		if (Main.KEYDOWN[Input.KEY_LEFT] || Main.KEYDOWN[Input.KEY_A]) {
 			character.applyForce(-Main.GU * 200, 0);
 		}
@@ -165,7 +165,7 @@ public class Player {
 		if (character.grounded) {
 			// tween this
 			character.gameworld.setViewportPositionGoal(new Vector2f(
-					character.gameworld.getViewportPosition().getX(),
+					character.gameworld.viewportgoal.getX(),
 					character.body.getPosition().getY() - Main.GU * 48));
 		}
 	}
