@@ -73,21 +73,21 @@ public class Player {
 		if (Main.KEYDOWN[Input.KEY_UP] || Main.KEYDOWN[Input.KEY_W]
 				|| Main.KEYDOWN[Input.KEY_SPACE]) {
 			if (character.grounded) {
-				character.body.addForce((new Vector2f(0, -Main.GU * 8f)));
+				character.applyForce(0, -Main.GU * 1600f);
 			}
 		}
 		if (Main.KEYDOWN[Input.KEY_LEFT] || Main.KEYDOWN[Input.KEY_A]) {
-			character.body.addForce((new Vector2f(-Main.GU * 200, 0)));
+			character.applyForce(-Main.GU * 200, 0);
 		}
 		if (Main.KEYDOWN[Input.KEY_RIGHT] || Main.KEYDOWN[Input.KEY_D]) {
-			character.body.addForce((new Vector2f(Main.GU * 200, 0)));
+			character.applyForce(Main.GU * 200, 0);
 		}
-		if (Main.KEYDOWN[Input.KEY_DOWN] || Main.KEYDOWN[Input.KEY_S]) {
-			character.body.addForce((new Vector2f(0, Main.GU * 1000)));
-		}
-		if (Main.KEYDOWN[Input.KEY_UP] || Main.KEYDOWN[Input.KEY_W]) {
-			character.body.addForce((new Vector2f(0, -Main.GU * 1000)));
-		}
+//		if (Main.KEYDOWN[Input.KEY_DOWN] || Main.KEYDOWN[Input.KEY_S]) {
+//			character.body.addForce((new Vector2f(0, Main.GU * 1000)));
+//		}
+//		if (Main.KEYDOWN[Input.KEY_UP] || Main.KEYDOWN[Input.KEY_W]) {
+//			character.body.addForce((new Vector2f(0, -Main.GU * 1000)));
+//		}
 
 		if (Main.MOUSEDOWN[0]) {
 			// character.gameworld.terrain.fillCell(Main.MOUSEX+character.gameworld.viewport.getX(),

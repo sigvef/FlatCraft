@@ -2,23 +2,14 @@ package no.ntnu.stud.flatcraft.quadtree;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import net.phys2d.raw.World;
-import no.ntnu.stud.flatcraft.GameWorld;
-import no.ntnu.stud.flatcraft.Hack;
 import no.ntnu.stud.flatcraft.Main;
-import no.ntnu.stud.flatcraft.entities.GameEntity;
-import no.ntnu.stud.flatcraft.entities.Player;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Line;
-import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 
 public class QuadTree implements Serializable {
@@ -52,7 +43,7 @@ public class QuadTree implements Serializable {
 	}
 
 	public void update() {
-
+		
 		for (int i = 0; i < waternodes.size(); i++) {
 			float x = waternodes.get(i).rect.getX();
 			float y = waternodes.get(i).rect.getY();
@@ -141,7 +132,6 @@ public class QuadTree implements Serializable {
 	}
 
 	public void trySimplify(Node n) {
-		// System.out.println("Simplifying...");
 		if (n != startNode) {
 			n = n.parent;
 			if (n.children[0].leaf && n.children[1].leaf && n.children[2].leaf
@@ -162,22 +152,32 @@ public class QuadTree implements Serializable {
 				numberOfNodes -= 4;
 				n.leaf = true;
 			if (n.type == Block.EMPTY || n.type == Block.WATER)
-					n.body.setEnabled(false);
-				else
-					n.body.setEnabled(true);
-				if (n.type == Block.WATER) {
-					waternodes.add(n);
-				}
+				n.body.setEnabled(false);
+			else
+				n.body.setEnabled(true);
+			if (n.type == Block.WATER) {
+				waternodes.add(n);
+			}
+			if(n.type == Block.RUBBER){
+				n.body.setRestitution(1);
+			}else 
+				n.body.setRestitution(0);
+			
 				trySimplify(n);
 			}
 		}
 	}
 
-	public void fillCell(float _x, float _y, Block _type) {
+	
+	public void fillCell(float _x, float _y, Block _type){
+		fillCell(_x, _y, _type, maxDepth);
+	}
+	
+	public void fillCell(float _x, float _y, Block _type, int level) {
 		Node temp = getLeaf(_x, _y);
 		if (temp != null) {
 			if (temp.type != _type && temp.type == Block.EMPTY) {
-				while (temp.level < maxDepth) {
+				while (temp.level < level) {
 					temp.split();
 					temp = temp.getLeaf(_x, _y);
 					numberOfLeaves += 3;
@@ -212,14 +212,8 @@ public class QuadTree implements Serializable {
 				if (temp.type == Block.WATER)
 					waternodes.remove(temp);
 				temp.type = Block.EMPTY;
-				if (temp.type == Block.EMPTY || temp.type == Block.WATER)
 					temp.body.setEnabled(false);
-				else
-					temp.body.setEnabled(true);
 				trySimplify(temp);
-				if (temp.type == Block.WATER)
-					waternodes.add(temp);
-
 			}
 		}
 	}
@@ -239,4 +233,13 @@ public class QuadTree implements Serializable {
 		//return ("Quadtree: nodes:" + numberOfNodes + ", leaves:" + numberOfLeaves);
 		return startNode.toString();
 	}
+	
+	public int getNumberOfNodes(){
+		return numberOfNodes;
+	}
+	
+	public int getNumberOfLeaves(){
+		return numberOfLeaves;
+	}
+	
 }

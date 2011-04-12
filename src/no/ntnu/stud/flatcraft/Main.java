@@ -27,7 +27,7 @@ public class Main extends StateBasedGame {
 	public static int MOUSEX, MOUSEY;
 	public static Vector2f GRAVITY = new Vector2f(0, Main.GU * 100);
 	public static float mu = 0.8f;
-	public static boolean FULLSCREEN = true;
+	public static boolean FULLSCREEN = false;
 	public static boolean DEBUG = false;
 
 	public Main() {

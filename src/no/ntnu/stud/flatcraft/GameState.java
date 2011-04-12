@@ -22,6 +22,7 @@ public class GameState extends BasicGameState {
 	int timer;
 
 	public void render(GameContainer container, StateBasedGame game, Graphics g) {
+
 		gameworld.render(g);
 		player.render(g);
 	}
@@ -34,8 +35,8 @@ public class GameState extends BasicGameState {
 				game.enterState(0); // go back to MainMenuState
 			}
 
-			player.update(container, game, 1);
-			gameworld.update(container, game, 1);
+			player.update(container, game, delta);
+			gameworld.update(container, game, delta);
 			timer -= 20;
 		}
 	}
@@ -44,7 +45,7 @@ public class GameState extends BasicGameState {
 			throws SlickException {
 		gameworld = new GameWorld("level.flt");
 
-		player = new Player(gameworld, Main.GU, Main.GU, Main.GU * 5, Main.GU * 5, 1);
+		player = new Player(gameworld, Main.GU, Main.GU, Main.GU * 3, Main.GU * 4, 1);
 		gameworld.add(player.getCharacter());
 		gameworld.add(player.getBody());
 		timer = 0;

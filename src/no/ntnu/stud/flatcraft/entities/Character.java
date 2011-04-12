@@ -13,15 +13,18 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Character extends GameEntity {
 
-	Animation runningAnimation;
+	Animation runningLeftAnimation;
+	Animation runningRightAnimation;
 
 	public Character(GameWorld gw, float _x, float _y, float _width,
 			float _height, float _mass) {
 		super.init(gw, _x, _y, _width, _height, _mass);
-		body.setCanRest(false);
+		body.setCanRest(true);
 		try {
 			// image = new Image("res/character.png");
-			runningAnimation = new Animation(new SpriteSheet("res/charss.png",
+			runningLeftAnimation = new Animation(new SpriteSheet("res/runningLeft_ss.png",
+					50, 50), 0, 0, 4, 0, true, 50, true);
+			runningRightAnimation = new Animation(new SpriteSheet("res/runningRight_ss.png",
 					50, 50), 0, 0, 4, 0, true, 50, true);
 		} catch (SlickException e) {
 			e.printStackTrace();
@@ -37,7 +40,9 @@ public class Character extends GameEntity {
 		g.translate(-gameworld.viewport.getX(), -gameworld.viewport.getY());
 		// g.drawImage(image, body.getPosition().getX(),
 		// body.getPosition().getY());
-		runningAnimation.draw(boundingBox.getX(), boundingBox.getY());
+		if(facingRight)
+			runningRightAnimation.draw(boundingBox.getX(), boundingBox.getY());
+		else	runningLeftAnimation.draw(boundingBox.getX(), boundingBox.getY());
 		g.popTransform();
 		super.render(g);
 	}

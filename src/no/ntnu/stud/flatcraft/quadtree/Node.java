@@ -1,22 +1,14 @@
 package no.ntnu.stud.flatcraft.quadtree;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import net.phys2d.math.Vector2f;
-import net.phys2d.raw.Body;
 import net.phys2d.raw.StaticBody;
 import net.phys2d.raw.World;
-import net.phys2d.raw.shapes.AABox;
 import net.phys2d.raw.shapes.Box;
-import no.ntnu.stud.flatcraft.GameWorld;
-import no.ntnu.stud.flatcraft.Hack;
 import no.ntnu.stud.flatcraft.Main;
-import no.ntnu.stud.flatcraft.entities.GameEntity;
 
-import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 
 public class Node implements Serializable {
 	private static final long serialVersionUID = 7854866124996621554L;
@@ -52,12 +44,15 @@ public class Node implements Serializable {
 	public void split() {
 		leaf = false;
 		body.setEnabled(false);
+		world.remove(body);
 		for (int i = 0; i < 4; i++) {
 			children[i] = new Node(level + 1, tree, world);
 			children[i].parent = this;
 			children[i].type = type;
 			if(children[i].type == Block.EMPTY || children[i].type == Block.WATER) children[i].body.setEnabled(false);
 			else children[i].body.setEnabled(true);
+			if(children[i].type == Block.RUBBER) children[i].body.setRestitution(1);
+			else children[i].body.setRestitution(0);
 		}
 		children[0].body.setPosition(rect.getX(), rect.getY());
 		children[1].body.setPosition(rect.getX()+rect.getWidth()*0.5f, rect.getY());
@@ -98,7 +93,7 @@ public class Node implements Serializable {
 		String returnstring = "";
 		//returnstring = returnstring + "{"+body.getPosition().getX()+","+body.getPosition().getY()+","+type;
 		if(leaf && type != Block.EMPTY){
-			returnstring = returnstring + "|"+body.getPosition().getX()+","+body.getPosition().getY()+","+type;
+			returnstring = returnstring + "|"+body.getPosition().getX()+","+body.getPosition().getY()+","+level+","+type;
 		}
 		if(children[0] != null){
 			for(Node c : children){
