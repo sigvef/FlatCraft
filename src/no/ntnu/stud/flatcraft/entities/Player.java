@@ -1,16 +1,16 @@
 package no.ntnu.stud.flatcraft.entities;
 
 
-import net.phys2d.math.Vector2f;
-import net.phys2d.raw.Body;
 import no.ntnu.stud.flatcraft.GameWorld;
 import no.ntnu.stud.flatcraft.Main;
 import no.ntnu.stud.flatcraft.quadtree.Block;
 
+import org.newdawn.fizzy.Body;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Line;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Player {
@@ -40,10 +40,10 @@ public class Player {
 		g.pushTransform();
 		g.translate(-character.gameworld.viewport.getX(),
 				-character.gameworld.viewport.getY());
-		g.draw(new Line(character.boundingBox.getCenterX(),
-				character.boundingBox.getCenterY(), character.boundingBox
+		g.draw(new Line(character.physrect.getCenterX(),
+				character.physrect.getCenterY(), character.physrect
 						.getCenterX() + fireVector.getX(),
-				character.boundingBox.getCenterY() + fireVector.getY()));
+				character.physrect.getCenterY() + fireVector.getY()));
 		g.popTransform();
 		
 		inventory.render(g);
@@ -76,18 +76,21 @@ public class Player {
 		if (Main.KEYDOWN[Input.KEY_UP] || Main.KEYDOWN[Input.KEY_W]
 				|| Main.KEYDOWN[Input.KEY_SPACE]) {
 			if (character.grounded) {
-				if (character.gameworld.terrain.getLeaf(character.boundingBox.getX()+Main.GU, character.boundingBox.getY() + 5.1f*Main.GU).type == Block.RUBBER || character.gameworld.terrain.getLeaf(character.boundingBox.getX()+4*Main.GU, character.boundingBox.getY() + 5.1f*Main.GU).type == Block.RUBBER) {
-					character.applyForce(0, -Main.GU * 3200f);
+				if (character.gameworld.terrain.getLeaf(character.physrect.getX()+Main.GU, character.physrect.getY() + 5.1f*Main.GU).type == Block.RUBBER || character.gameworld.terrain.getLeaf(character.physrect.getX()+4*Main.GU, character.physrect.getY() + 5.1f*Main.GU).type == Block.RUBBER) {
+					character.applyForce(0, -Main.UPDATES * 80000f);
 				} else {
-					character.applyForce(0, -Main.GU * 1600f);
+					character.applyForce(0, -Main.UPDATES * 40000f);
 				}
+			}
+			if(character.swimming){
+				character.applyForce(0, -Main.UPDATES * 10000f);
 			}
 		}	
 		if (Main.KEYDOWN[Input.KEY_LEFT] || Main.KEYDOWN[Input.KEY_A]) {
-			character.applyForce(-Main.GU * 200, 0);
+			character.applyForce(-Main.UPDATES*500, 0);
 		}
 		if (Main.KEYDOWN[Input.KEY_RIGHT] || Main.KEYDOWN[Input.KEY_D]) {
-			character.applyForce(Main.GU * 200, 0);
+			character.applyForce(Main.UPDATES*500, 0);
 		}
 //		if (Main.KEYDOWN[Input.KEY_DOWN] || Main.KEYDOWN[Input.KEY_S]) {
 //			character.body.addForce((new Vector2f(0, Main.GU * 1000)));
@@ -99,70 +102,71 @@ public class Player {
 		if (Main.MOUSEDOWN[0]) {
 			// character.gameworld.terrain.fillCell(Main.MOUSEX+character.gameworld.viewport.getX(),
 			// Main.MOUSEY+character.gameworld.viewport.getY(),activeBlock);
-			Block out = inventory.peek();	
-			fireVector.set(Main.MOUSEX + character.gameworld.viewport.getX()
-					- character.boundingBox.getCenterX(), Main.MOUSEY
-					+ character.gameworld.viewport.getY()
-					- character.boundingBox.getCenterY());
-			fireVector.normalise();
-			fireVector.scale(Main.GU * 6);
+			float x = character.gameworld.viewport.getX()+Main.MOUSEX/Main.GULOL-character.physrect.getCenterX();
+			float y = character.gameworld.viewport.getY()+Main.MOUSEY/Main.GULOL-character.physrect.getCenterY();
 			
-			if (out != null && character.gameworld.terrain.getLeaf(character.boundingBox.getCenterX() + fireVector.getX(),
-					character.boundingBox.getCenterY() + fireVector.getY()).type == Block.EMPTY) {
+			Block out = inventory.peek();	
+			fireVector.set(x, y);
+			fireVector.normalise();
+			fireVector.scale(6);
+			
+			if (out != null && character.gameworld.terrain.getLeaf(character.physrect.getCenterX() + fireVector.getX(),
+					character.physrect.getCenterY() + fireVector.getY()).type == Block.EMPTY) {
 				inventory.pop();
 				character.gameworld.terrain.fillCell(
-						character.boundingBox.getCenterX() + fireVector.getX(),
-						character.boundingBox.getCenterY() + fireVector.getY(),
+						character.physrect.getCenterX() + fireVector.getX(),
+						character.physrect.getCenterY() + fireVector.getY(),
 						out);
 			}
 		}
 		if (Main.MOUSEDOWN[1]) {
-			fireVector.set(Main.MOUSEX + character.gameworld.viewport.getX()
-					- character.boundingBox.getCenterX(), Main.MOUSEY
-					+ character.gameworld.viewport.getY()
-					- character.boundingBox.getCenterY());
+
+			float x = character.gameworld.viewport.getX()+Main.MOUSEX/Main.GULOL-character.physrect.getCenterX();
+			float y = character.gameworld.viewport.getY()+Main.MOUSEY/Main.GULOL-character.physrect.getCenterY();
+			
+			fireVector.set(x,y);
 			fireVector.normalise();
 			fireVector.scale(Main.GU * 6);
 			
-			switch (character.gameworld.terrain.getLeaf(character.boundingBox.getCenterX() + fireVector.getX(),
-					character.boundingBox.getCenterY() + fireVector.getY()).type) {
+			switch (character.gameworld.terrain.getLeaf(character.physrect.getCenterX() + fireVector.getX(),
+					character.physrect.getCenterY() + fireVector.getY()).type) {
 				case ROCK:
 				case RUBBER:
 				case WATER:
-					inventory.push(character.gameworld.terrain.getLeaf(character.boundingBox.getCenterX() + fireVector.getX(),
-					character.boundingBox.getCenterY() + fireVector.getY()).type);
+					inventory.push(character.gameworld.terrain.getLeaf(character.physrect.getCenterX() + fireVector.getX(),
+					character.physrect.getCenterY() + fireVector.getY()).type);
 				case EARTH:
 					character.gameworld.terrain.emptyCell(
-							character.boundingBox.getCenterX() + fireVector.getX(),
-							character.boundingBox.getCenterY() + fireVector.getY());
+							character.physrect.getCenterX() + fireVector.getX(),
+							character.physrect.getCenterY() + fireVector.getY());
 					break;
 				default:
 					break;
 			}
 		}
 
-		if (character.body.getPosition().getY() > Main.GU * 48
+		if (character.physrect.getMaxY() > 44
 				+ character.gameworld.getViewportPosition().getY()) {
 			character.gameworld.setViewportPositionGoal(new Vector2f(
 					character.gameworld.getViewportPosition().getX(),
-					character.body.getPosition().getY() - Main.GU * 48));
+					character.physrect.getMaxY() - 44));
 		}
-		if (character.body.getPosition().getY() < Main.GU * 16
+		if (character.physrect.getMinY() < 28
 				+ character.gameworld.getViewportPosition().getY()) {
 			character.gameworld.setViewportPositionGoal(new Vector2f(
 					character.gameworld.getViewportPosition().getX(),
-					character.body.getPosition().getY() - Main.GU * 16));
+					character.physrect.getMinY() - 28));
 		}
-		if (character.body.getPosition().getX() > Main.GU * 100
+		if (character.physrect.getMaxX() > 80
 				+ character.gameworld.getViewportPosition().getX()) {
 			character.gameworld.setViewportPositionGoal(new Vector2f(
-					character.body.getPosition().getX() - Main.GU * 100,
+					character.physrect.getMaxX() - 80,
 					character.gameworld.getViewportPosition().getY()));
 		}
-		if (character.body.getPosition().getX() < Main.GU * 16
+		if (character.physrect.getMinX() < 48
 				+ character.gameworld.getViewportPosition().getX()) {
 			character.gameworld.setViewportPositionGoal(new Vector2f(
-					character.body.getPosition().getX() - Main.GU * 16,
+					character.physrect.getMinX() - 48,
 					character.gameworld.getViewportPosition().getY()));
 		}
 
@@ -170,7 +174,7 @@ public class Player {
 			// tween this
 			character.gameworld.setViewportPositionGoal(new Vector2f(
 					character.gameworld.viewportgoal.getX(),
-					character.body.getPosition().getY() - Main.GU * 48));
+					character.body.getY() - Main.GU * 48));
 		}
 	}
 

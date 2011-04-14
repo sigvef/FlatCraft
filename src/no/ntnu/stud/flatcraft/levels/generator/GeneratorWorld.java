@@ -22,7 +22,7 @@ public class GeneratorWorld {
 	public Rectangle viewport;
 	
 	public GeneratorWorld() throws SlickException{
-		terrain = new QuadTree(0,0,1280*Main.GU,8,null); //hardcoded level width: a square 10x the with of the screen.
+		terrain = new QuadTree(0,0,320*Main.GU,8,null); //hardcoded level width: a square 10x the with of the screen.
 		viewport = new Rectangle(0,0,Main.SCREEN_W,Main.SCREEN_H);
 		viewportgoal =  new Vector2f(viewport.getX(),viewport.getY());
 		viewportzoom = 1;

@@ -10,30 +10,27 @@ package no.ntnu.stud.flatcraft;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-
-import net.phys2d.math.Vector2f;
-import net.phys2d.raw.Body;
-import net.phys2d.raw.BodyList;
-import net.phys2d.raw.World;
-import net.phys2d.raw.strategies.QuadSpaceStrategy;
 import no.ntnu.stud.flatcraft.entities.Character;
 import no.ntnu.stud.flatcraft.entities.GameEntity;
-import no.ntnu.stud.flatcraft.entities.Player;
 import no.ntnu.stud.flatcraft.quadtree.Block;
 import no.ntnu.stud.flatcraft.quadtree.QuadTree;
 
+import org.newdawn.fizzy.Body;
+import org.newdawn.fizzy.CollisionEvent;
+import org.newdawn.fizzy.World;
+import org.newdawn.fizzy.WorldListener;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class GameWorld {
 
-	public QuadTree terrain;
-	
+	public QuadTree terrain; 
 	ArrayList<GameEntity> entities;
 	public World world;
 	public float viewportzoom;
@@ -43,9 +40,10 @@ public class GameWorld {
 	Music music;
 
 	public GameWorld(String level) throws SlickException {
-		world = new World(Main.GRAVITY, Main.ITERATIONS, new QuadSpaceStrategy(16,4));
+//		world = new World(Main.GRAVITY, Main.ITERATIONS);//, new QuadSpaceStrategy(16,4));
+		world = new World(0, 0, 320*Main.GU, 320*Main.GU, Main.GRAVITY.getY(), Main.ITERATIONS);
 		bg = new Image("res/bgtex.png");
-		terrain = new QuadTree(0, 0, 320 * Main.GU, 6, world); // hardcoded
+		terrain = new QuadTree(0, 0, 320 * Main.GU, 6, world,this); // hardcoded
 																// level width:
 																// a square 10x
 																// the with of
@@ -55,6 +53,32 @@ public class GameWorld {
 		viewportgoal = new Vector2f(viewport.getX(), viewport.getY());
 		viewportzoom = 1;
 		entities = new ArrayList<GameEntity>();
+//		world.addListener(new WorldListener() {
+//			
+//			@Override
+//			public void separated(CollisionEvent event) {
+//				if(event.getBodyA().getUserData() instanceof GameEntity){
+//					GameEntity A = (GameEntity) event.getBodyA().getUserData();
+//					A.grounded = false;
+//				}
+//				if(event.getBodyB().getUserData() instanceof GameEntity){
+//					GameEntity B = (GameEntity) event.getBodyB().getUserData();
+//					B.grounded = false;
+//				}
+//			}
+//			
+//			@Override
+//			public void collided(CollisionEvent event) {
+//				if(event.getBodyA().getUserData() instanceof GameEntity){
+//					GameEntity A = (GameEntity) event.getBodyA().getUserData();
+//					A.grounded = true;
+//				}
+//				if(event.getBodyB().getUserData() instanceof GameEntity){
+//					GameEntity B = (GameEntity) event.getBodyB().getUserData();
+//					B.grounded = true;
+//				}
+//			}
+//		});
 		
 		// music = new StreamSound(new OpenALStreamPlayer(0,
 		// "res/flatcraft2.ogg"));
@@ -95,6 +119,7 @@ public class GameWorld {
 
 	public void setViewportPositionGoal(Vector2f pos) {
 		viewportgoal = pos;
+//		viewportagoal.scale(Main.GULOL);
 	}
 
 	public Vector2f getViewportPosition() {
@@ -133,10 +158,10 @@ public class GameWorld {
 	// children one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		terrain.update();
-		world.step();
-		System.out.println("numberOfNodes: "+terrain.getNumberOfNodes());
-		System.out.println("numberOfLeaves: "+terrain.getNumberOfLeaves());
-		System.out.println("numberOfBodies: "+world.getBodies().size());
+		for(int i=Main.UPDATES;i --> 0;) world.update(1/60f);
+//		System.out.println("numberOfNodes: "+terrain.getNumberOfNodes());
+//		System.out.println("numberOfLeaves: "+terrain.getNumberOfLeaves());
+//		System.out.println("numberOfBodies: "+world.getBodies().size());
 
 		for (GameEntity entity : entities) {
 			entity.update(container, game, delta);
@@ -153,12 +178,15 @@ public class GameWorld {
 	}
 
 	public void render(Graphics g) {
+		
 		g.drawImage(bg, -viewport.getX() / Main.GU, -viewport.getY() / Main.GU);
+		
 		for (GameEntity entity : entities) {
 			entity.render(g);
 		}
+		g.pushTransform();
 		terrain.render(g, viewport);
-
+		g.popTransform();
 //		g.pushTransform();
 //		g.translate(-viewport.getX(), -viewport.getY());
 //		for(int i=world.getBodies().size();i-->0;)
@@ -192,4 +220,5 @@ public class GameWorld {
 	public void add(Body body) {
 		world.add(body);		
 	}
+
 }
