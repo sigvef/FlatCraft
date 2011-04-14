@@ -60,9 +60,9 @@ public class GeneratorState extends BasicGameState {
 	
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g){
-		generatorWorld.render(g);
 		
 		g.pushTransform();
+		generatorWorld.render(g);
 		switch (activeBlock) {
 		case METAL:
 			g.setColor(Color.darkGray);
@@ -90,7 +90,6 @@ public class GeneratorState extends BasicGameState {
 			break;
 		}
 		
-		g.translate(0, 0);
 		g.fillRect(Main.SCREEN_W-32, 0, 32, 32);
 		g.setColor(Color.magenta);
 		g.drawRect(Main.SCREEN_W-32, 0, 32, 32);
@@ -106,16 +105,16 @@ public class GeneratorState extends BasicGameState {
 			}
 			
 			if(Main.KEYDOWN[Input.KEY_W]){
-				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX(), generatorWorld.viewportgoal.getY()-Main.GU);
+				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX(), generatorWorld.viewportgoal.getY()-Main.GULOL);
 			}
 			if(Main.KEYDOWN[Input.KEY_A]){
-				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX()-Main.GU, generatorWorld.viewportgoal.getY());
+				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX()-Main.GULOL, generatorWorld.viewportgoal.getY());
 			}
 			if(Main.KEYDOWN[Input.KEY_S]){
-				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX(), generatorWorld.viewportgoal.getY()+Main.GU);
+				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX(), generatorWorld.viewportgoal.getY()+Main.GULOL);
 			}
 			if(Main.KEYDOWN[Input.KEY_D]){
-				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX()+Main.GU, generatorWorld.viewportgoal.getY());
+				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX()+Main.GULOL, generatorWorld.viewportgoal.getY());
 			}
 			
 			if(Main.KEYDOWN[Input.KEY_0]){
@@ -139,12 +138,14 @@ public class GeneratorState extends BasicGameState {
 			}
 			
 			if (Main.MOUSEDOWN[0]) {
-				 generatorWorld.terrain.fillCell(Main.MOUSEX+generatorWorld.viewport.getX(),
-				 Main.MOUSEY+generatorWorld.viewport.getY(),activeBlock);
+				float x = generatorWorld.viewport.getX()+Main.MOUSEX/Main.GULOL;
+				float y = generatorWorld.viewport.getY()+Main.MOUSEY/Main.GULOL;
+				 generatorWorld.terrain.fillCell(x,y,activeBlock);
 			}
 			if (Main.MOUSEDOWN[1]) {
-				 generatorWorld.terrain.emptyCell(Main.MOUSEX+generatorWorld.viewport.getX(),
-				 Main.MOUSEY+generatorWorld.viewport.getY());
+				float x = generatorWorld.viewport.getX()+Main.MOUSEX/Main.GULOL;
+				float y = generatorWorld.viewport.getY()+Main.MOUSEY/Main.GULOL;
+				 generatorWorld.terrain.emptyCell(x,y);
 			}
 
 			generatorWorld.update(container, game, 1);
