@@ -32,7 +32,7 @@ public class Main extends StateBasedGame {
 	public static float MOUSEX, MOUSEY;
 	public static Vector2f GRAVITY = new Vector2f(0,10);
 	public static float mu = 0.8f;
-	public static boolean FULLSCREEN = true;
+	public static boolean FULLSCREEN = false;
 	public static boolean DEBUG = false;
 	public static ArrayList<Rectangle> debugrect;
 

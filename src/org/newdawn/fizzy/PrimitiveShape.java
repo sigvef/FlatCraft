@@ -40,19 +40,16 @@ public abstract class PrimitiveShape<T extends ShapeDef> implements Shape {
 		this.def = localDef;
 	}
 	
-	@Override
 	public void createInBody(Body body) {
 		this.body = body;
 		jbox2DShape = body.getJBoxBody().createShape(def);
 		jbox2DShapes.add(jbox2DShape);
 	}
 
-	@Override
 	public ArrayList<org.jbox2d.collision.Shape> getJBoxShapes() {
 		return jbox2DShapes;
 	}
 
-	@Override
 	public void setDensity(float density) {
 		if (jbox2DShape == null) {
 			def.density = density;
@@ -61,7 +58,6 @@ public abstract class PrimitiveShape<T extends ShapeDef> implements Shape {
 		}
 	}
 
-	@Override
 	public void setFriction(float friction) {
 		if (jbox2DShape == null) {
 			def.friction = friction;
@@ -70,7 +66,6 @@ public abstract class PrimitiveShape<T extends ShapeDef> implements Shape {
 		}
 	}
 
-	@Override
 	public void setRestitution(float rest) {
 		if (jbox2DShape == null) {
 			def.restitution = rest;

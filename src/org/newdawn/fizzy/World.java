@@ -215,7 +215,6 @@ public class World {
 	 */
 	private class ProxyContactListener implements ContactListener {
 
-		@Override
 		public void add(ContactPoint point) {
 			Body bodyA = shapeMap.get(point.shape1);
 			Body bodyB = shapeMap.get(point.shape2);
@@ -230,11 +229,9 @@ public class World {
 			}
 		}
 
-		@Override
 		public void persist(ContactPoint point) {
 		}
 
-		@Override
 		public void remove(ContactPoint point) {
 			Body bodyA = shapeMap.get(point.shape1);
 			Body bodyB = shapeMap.get(point.shape2);
@@ -249,7 +246,6 @@ public class World {
 			}
 		}
 
-		@Override
 		public void result(ContactResult point) {
 		}
 		
