@@ -27,6 +27,7 @@ public class GeneratorState extends BasicGameState {
 	int timer;
 	Block activeBlock;
 	boolean changedBlock = false;
+	boolean fillmode = false;
 	
 	public void save(){
 		BufferedWriter bufferedWriter;
@@ -105,16 +106,16 @@ public class GeneratorState extends BasicGameState {
 			}
 			
 			if(Main.KEYDOWN[Input.KEY_W]){
-				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX(), generatorWorld.viewportgoal.getY()-Main.GULOL);
+				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX(), generatorWorld.viewportgoal.getY()-Main.GU);
 			}
 			if(Main.KEYDOWN[Input.KEY_A]){
-				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX()-Main.GULOL, generatorWorld.viewportgoal.getY());
+				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX()-Main.GU, generatorWorld.viewportgoal.getY());
 			}
 			if(Main.KEYDOWN[Input.KEY_S]){
-				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX(), generatorWorld.viewportgoal.getY()+Main.GULOL);
+				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX(), generatorWorld.viewportgoal.getY()+Main.GU);
 			}
 			if(Main.KEYDOWN[Input.KEY_D]){
-				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX()+Main.GULOL, generatorWorld.viewportgoal.getY());
+				generatorWorld.viewportgoal.set(generatorWorld.viewportgoal.getX()+Main.GU, generatorWorld.viewportgoal.getY());
 			}
 			
 			if(Main.KEYDOWN[Input.KEY_0]){
@@ -124,6 +125,12 @@ public class GeneratorState extends BasicGameState {
 				load();
 			}
 			
+			if(Main.KEYDOWN[Input.KEY_LSHIFT]){
+				fillmode = true;
+			}
+			else{
+				fillmode = false;
+			}
 			if (!changedBlock && Main.KEYDOWN[Input.KEY_Q]) {
 				activeBlock = activeBlock.previous();
 				changedBlock = true;
@@ -132,7 +139,6 @@ public class GeneratorState extends BasicGameState {
 				activeBlock = activeBlock.next();
 				changedBlock = true;
 			}
-			
 			if (changedBlock && !Main.KEYDOWN[Input.KEY_Q] && !Main.KEYDOWN[Input.KEY_E]) {
 				changedBlock = false;
 			}
@@ -140,7 +146,12 @@ public class GeneratorState extends BasicGameState {
 			if (Main.MOUSEDOWN[0]) {
 				float x = generatorWorld.viewport.getX()+Main.MOUSEX/Main.GULOL;
 				float y = generatorWorld.viewport.getY()+Main.MOUSEY/Main.GULOL;
-				 generatorWorld.terrain.fillCell(x,y,activeBlock);
+				if(fillmode){
+					generatorWorld.terrain.fillCell(x,y,activeBlock,0);
+				}
+				else{
+					generatorWorld.terrain.fillCell(x,y,activeBlock);
+				}
 			}
 			if (Main.MOUSEDOWN[1]) {
 				float x = generatorWorld.viewport.getX()+Main.MOUSEX/Main.GULOL;

@@ -19,7 +19,7 @@ public class QuadTree implements Serializable {
 	Node startNode;
 	public float initialSize;
 	int depth;
-	int maxDepth;
+	private int maxDepth;
 	int numberOfNodes;
 	int numberOfLeaves;
 	int dummy;
@@ -36,7 +36,7 @@ public class QuadTree implements Serializable {
 		y = _y;
 		initialSize = _size;
 		depth = 0;
-		maxDepth = _maxDepth;
+		setMaxDepth(_maxDepth);
 		numberOfNodes = 1;
 		numberOfLeaves = 1;
 		world = _world;
@@ -92,7 +92,7 @@ public class QuadTree implements Serializable {
 //		 if (viewport.contains(node.rect) || viewport.intersects(node.rect)) {
 			 if(true){
 			// draw the box if we reached a leaf...
-			if ((node.leaf) || (depth > maxDepth)) {
+			if ((node.leaf) || (depth > getMaxDepth())) {
 				if (node.type != Block.EMPTY) {
 					switch (node.type) {
 					case METAL:
@@ -205,7 +205,7 @@ public class QuadTree implements Serializable {
 
 	
 	public void fillCell(float _x, float _y, Block _type){
-		fillCell(_x, _y, _type, maxDepth);
+		fillCell(_x, _y, _type, getMaxDepth());
 	}
 	
 	public void fillCell(float _x, float _y, Block _type, int level) {
@@ -243,7 +243,7 @@ public class QuadTree implements Serializable {
 		Node temp = getLeaf(_x, _y);
 		if (temp != null) {
 			if (temp.type != Block.EMPTY) {
-				while (temp.level < maxDepth) {
+				while (temp.level < getMaxDepth()) {
 					temp.split();
 					temp = temp.getLeaf(_x, _y);
 					numberOfLeaves += 3;
@@ -283,6 +283,14 @@ public class QuadTree implements Serializable {
 	
 	public int getNumberOfLeaves(){
 		return numberOfLeaves;
+	}
+
+	public void setMaxDepth(int maxDepth) {
+		this.maxDepth = maxDepth;
+	}
+
+	public int getMaxDepth() {
+		return maxDepth;
 	}
 	
 }
