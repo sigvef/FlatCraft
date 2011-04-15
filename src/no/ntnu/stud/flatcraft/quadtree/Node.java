@@ -42,7 +42,7 @@ public class Node implements Serializable {
 		world.add(body);
 		body.setUserData(this);
 		body.setRestitution(0);
-		body.setFriction(0.001f);
+		body.setFriction(0.01f);
 
 	}
 	public void physDisable(){

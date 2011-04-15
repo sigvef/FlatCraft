@@ -26,7 +26,7 @@ public class GameEntity {
 
 	Body body;
 	public boolean grounded = false;
-	private boolean moving = false;
+	protected boolean moving = false;
 	private boolean falling = false;
 	protected boolean facingRight = true;
 	public Rectangle physrect; // physical bounding box of the entity
@@ -96,9 +96,15 @@ public class GameEntity {
 	// update(GameContainer, StateBasedGame, int) - Updates the entity one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		setFlags();
-		if(grounded && body.getYVelocity() > 0){
-			body.setVelocity(body.getXVelocity(), 0);
+		if(body.getXVelocity() > 50){
+			body.setVelocity(50, body.getYVelocity());
 		}
+		if(body.getXVelocity() > 50){
+			body.setVelocity(body.getYVelocity(),50);
+		}
+//		if(grounded && body.getYVelocity() < 0){
+//			body.setVelocity(body.getXVelocity(), -100);
+//		}
 		physrect.setLocation(
 				body.getX()-physrect.getWidth()*0.5f, body
 						.getY()-physrect.getHeight()*0.5f);
@@ -111,7 +117,7 @@ public class GameEntity {
 		if (gameworld.world == null) {
 			return;
 		}
-		Node botnode1 = gameworld.terrain.getLeaf(physrect.getMinX(), physrect.getMaxY()+1);
+		Node botnode1 = gameworld.terrain.getLeaf(physrect.getMinX()+1, physrect.getMaxY()+1);
 		Node botnode2 = gameworld.terrain.getLeaf(physrect.getMaxX(), physrect.getMaxY()+1);		
 		if(botnode1 != null && botnode1.type != Block.EMPTY && botnode1.type != Block.WATER && botnode1.type != Block.START){
 			grounded = true;
@@ -126,6 +132,12 @@ public class GameEntity {
 			swimming = true;
 		}else swimming = false;
 		
+		if(Math.abs(body.getXVelocity()) > 0 || Math.abs(body.getYVelocity())>0)
+			moving = true;
+		else
+			moving = false;
+				
+	
 	}
 }
 

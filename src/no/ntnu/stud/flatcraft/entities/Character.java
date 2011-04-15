@@ -12,10 +12,13 @@ import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+
 public class Character extends GameEntity {
 
 	Animation runningLeftAnimation;
 	Animation runningRightAnimation;
+	Image standingLeftSprite;
+	Image standingRightSprite;
 
 	public Character(GameWorld gw, float _x, float _y, float _width,
 			float _height, float _mass) {
@@ -27,6 +30,8 @@ public class Character extends GameEntity {
 					50, 50), 0, 0, 4, 0, true, 50, true);
 			runningRightAnimation = new Animation(new SpriteSheet("res/runningRight_ss.png",
 					50, 50), 0, 0, 4, 0, true, 50, true);
+			standingLeftSprite = new Image("res/standingLeft.png");
+			standingRightSprite = new Image("res/standingRight.png");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -45,14 +50,18 @@ public class Character extends GameEntity {
 //		g.scale(Main.GULOL, Main.GULOL);
 		// g.drawImage(image, body.getPosition().getX(),
 		// body.getPosition().getY());
-		if(facingRight)
+		if(facingRight && moving)
 			runningRightAnimation.draw(physrect.getX()*Main.GULOL, physrect.getY()*Main.GULOL);
-		else	runningLeftAnimation.draw(physrect.getX()*Main.GULOL, physrect.getY()*Main.GULOL);
+		else if (moving)	runningLeftAnimation.draw(physrect.getX()*Main.GULOL, physrect.getY()*Main.GULOL);
+		else if (facingRight) standingRightSprite.draw(physrect.getX()*Main.GULOL, physrect.getY()*Main.GULOL);
+		else standingLeftSprite.draw(physrect.getX()*Main.GULOL, physrect.getY()*Main.GULOL);
 		g.popTransform();
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		super.update(container, game, delta);
+		runningRightAnimation.setSpeed(Math.abs(body.getXVelocity()*0.15f));
+		runningLeftAnimation.setSpeed(Math.abs(body.getXVelocity()*0.15f));
 	}
 
 	public void spawn(Vector2f pos) {

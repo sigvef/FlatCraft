@@ -87,10 +87,10 @@ public class Player {
 			}
 		}	
 		if (Main.KEYDOWN[Input.KEY_LEFT] || Main.KEYDOWN[Input.KEY_A]) {
-			character.applyForce(-Main.UPDATES*500, 0);
+			character.applyForce(-Main.UPDATES*1000, 0);
 		}
 		if (Main.KEYDOWN[Input.KEY_RIGHT] || Main.KEYDOWN[Input.KEY_D]) {
-			character.applyForce(Main.UPDATES*500, 0);
+			character.applyForce(Main.UPDATES*1000, 0);
 		}
 //		if (Main.KEYDOWN[Input.KEY_DOWN] || Main.KEYDOWN[Input.KEY_S]) {
 //			character.body.addForce((new Vector2f(0, Main.GU * 1000)));
