@@ -15,9 +15,9 @@ public class Inventory {
 	
 	public Inventory() {
 		inventory = new HashMap<Block, Integer>();
-		inventory.put(Block.ROCK, 99);
-		inventory.put(Block.RUBBER, 99);
-		inventory.put(Block.WATER, 99);
+		inventory.put(Block.ROCK, 0);
+		inventory.put(Block.RUBBER, 0);
+		inventory.put(Block.WATER, 0);
 	}
 	
 	public void render(Graphics g) {

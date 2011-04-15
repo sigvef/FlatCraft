@@ -100,16 +100,18 @@ public class GameWorld {
 	
 	public void load(String s){
 		BufferedReader bufferedReader;
+		String level = "";
 		try {
 			bufferedReader = new BufferedReader(new FileReader(s));
-			String level = bufferedReader.readLine();
-			for(String node : level.split("\\|")){
-				String[] n = node.split(",");
-				terrain.fillCell(Float.parseFloat(n[0]), Float.parseFloat(n[1]), Block.valueOf(n[3]),Integer.parseInt(n[2]));
-			}
+			level = bufferedReader.readLine();
 			bufferedReader.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			level = "";
+		}
+		for(String node : level.split("\\|")){
+			String[] n = node.split(",");
+			terrain.fillCell(Float.parseFloat(n[0]), Float.parseFloat(n[1]), Block.valueOf(n[3]),Integer.parseInt(n[2]));
 		}
 	}
 
@@ -158,6 +160,7 @@ public class GameWorld {
 	// children one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		terrain.update();
+		System.out.println(world.getBodyCount());
 		for(int i=Main.UPDATES;i --> 0;) world.update(1/60f);
 //		System.out.println("numberOfNodes: "+terrain.getNumberOfNodes());
 //		System.out.println("numberOfLeaves: "+terrain.getNumberOfLeaves());
