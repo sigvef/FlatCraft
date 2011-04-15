@@ -146,7 +146,7 @@ public class GeneratorState extends BasicGameState {
 			if (Main.MOUSEDOWN[0]) {
 				float x = generatorWorld.viewport.getX()+Main.MOUSEX/Main.GULOL;
 				float y = generatorWorld.viewport.getY()+Main.MOUSEY/Main.GULOL;
-				if(fillmode){
+				if(fillmode && activeBlock != Block.WATER){
 					generatorWorld.terrain.fillCell(x,y,activeBlock,0);
 				}
 				else{
