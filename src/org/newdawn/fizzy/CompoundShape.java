@@ -19,7 +19,6 @@ public class CompoundShape implements Shape {
 	public CompoundShape() {
 	}
 	
-	@Override
 	public Body getBody() {
 		return body;
 	}
@@ -52,14 +51,12 @@ public class CompoundShape implements Shape {
 		return children.get(i);
 	}
 	
-	@Override
 	public void createInBody(Body body) {
 		for (int i=0;i<children.size();i++) {
 			children.get(i).createInBody(body);
 		}
 	}
 
-	@Override
 	public ArrayList<org.jbox2d.collision.Shape> getJBoxShapes() {
 		ArrayList<org.jbox2d.collision.Shape> shapes = new ArrayList<org.jbox2d.collision.Shape>();
 
@@ -70,21 +67,18 @@ public class CompoundShape implements Shape {
 		return shapes;
 	}
 
-	@Override
 	public void setDensity(float density) {
 		for (int i=0;i<children.size();i++) {
 			children.get(i).setDensity(density);
 		}
 	}
 
-	@Override
 	public void setFriction(float friction) {
 		for (int i=0;i<children.size();i++) {
 			children.get(i).setFriction(friction);
 		}
 	}
 
-	@Override
 	public void setRestitution(float rest) {
 		for (int i=0;i<children.size();i++) {
 			children.get(i).setRestitution(rest);
