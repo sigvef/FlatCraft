@@ -56,7 +56,7 @@ public class Node implements Serializable {
 		leaf = false;
 //		body.setEnabled(false);
 		physEnable();
-		if(type != Block.WATER && type != Block.EMPTY){
+		if(type != Block.WATER && type != Block.ACID && type != Block.EMPTY){
 			world.remove(body);
 			physDisable();
 		}
@@ -80,7 +80,7 @@ public class Node implements Serializable {
 //			child.body.setPosition(child.body.getX()+child.rect.getWidth()*0.5f, child.body.getY()+child.rect.getHeight()*0.5f);
 		}
 		for(int i=0;i<4;i++){
-			if(children[i].type == Block.EMPTY || children[i].type == Block.WATER){
+			if(children[i].type == Block.EMPTY || children[i].type == Block.WATER || children[i].type == Block.ACID){
 				physDisable();
 			}
 			else{
