@@ -125,7 +125,7 @@ public class GameEntity {
 		if(botnode1 != null && botnode1.type != Block.EMPTY && botnode1.type != Block.WATER && botnode1.type != Block.ACID && botnode1.type != Block.START){
 			grounded = true;
 		}
-		else if(botnode2 != null && botnode2.type != Block.EMPTY && botnode1.type != Block.WATER && botnode2.type != Block.ACID && botnode2.type != Block.START){
+		else if(botnode2 != null && botnode2.type != Block.EMPTY && botnode2.type != Block.WATER && botnode2.type != Block.ACID && botnode2.type != Block.START){
 			grounded = true;
 		}else grounded = false;
 		if(botnode1 != null && botnode1.type == Block.WATER){

@@ -32,7 +32,6 @@ public class Node implements Serializable {
 //		body = new Body(new Rectangle((float)(_tree.initialSize/(Math.pow(2, level))),(float)(_tree.initialSize/(Math.pow(2, level)))));
 //		physrect = new org.newdawn.fizzy.Rectangle((float)(_tree.initialSize/(Math.pow(2, level))),(float)(_tree.initialSize/(Math.pow(2, level))) );
 		physrect = new Rectangle(0, 0, (float)(_tree.initialSize/(Math.pow(2, level))), (float)(_tree.initialSize/(Math.pow(2, level))));
-		
 //		body = new Body(new Rectangle((float)(_tree.initialSize/(Math.pow(2, level))),(float)(_tree.initialSize/(Math.pow(2, level)))));
 		rect = new Rectangle(0,0,(float)(_tree.initialSize*Main.GULOL/(Math.pow(2, level))),(float)(_tree.initialSize*Main.GULOL/(Math.pow(2, level))));
 	}
@@ -55,11 +54,11 @@ public class Node implements Serializable {
 	public void split() {
 		leaf = false;
 //		body.setEnabled(false);
-		physEnable();
-		if(type != Block.WATER && type != Block.ACID && type != Block.EMPTY){
-			world.remove(body);
-			physDisable();
-		}
+		physDisable();
+//		if(type != Block.WATER && type != Block.ACID && type != Block.EMPTY){
+//			world.remove(body);
+//			physDisable();
+//		}
 		for (int i = 0; i < 4; i++) {
 			children[i] = new Node(level + 1, tree, world);
 			children[i].parent = this;
@@ -81,10 +80,10 @@ public class Node implements Serializable {
 		}
 		for(int i=0;i<4;i++){
 			if(children[i].type == Block.EMPTY || children[i].type == Block.WATER || children[i].type == Block.ACID){
-				physDisable();
+				children[i].physDisable();
 			}
 			else{
-				physEnable();
+				children[i].physEnable();
 			}
 		}
 	}
