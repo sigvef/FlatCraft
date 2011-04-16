@@ -7,13 +7,13 @@ package no.ntnu.stud.flatcraft;
 
 import no.ntnu.stud.flatcraft.entities.Player;
 import no.ntnu.stud.flatcraft.quadtree.Block;
+import no.ntnu.stud.flatcraft.messagesystem.Message;
+import no.ntnu.stud.flatcraft.messagesystem.MessageSystem;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -22,6 +22,7 @@ public class GameState extends BasicGameState {
 
 	private StateBasedGame game;
 	private GameWorld gameworld;
+	private MessageSystem ms;
 	Player player;
 	int timer;
 	
@@ -31,6 +32,7 @@ public class GameState extends BasicGameState {
 		g.pushTransform();
 		gameworld.render(g);
 		player.render(g);
+		ms.render(g);
 		g.popTransform();
 	}
 
@@ -42,8 +44,9 @@ public class GameState extends BasicGameState {
 				game.enterState(0); // go back to MainMenuState
 			}
 
-			player.update(container, game, delta);
-			gameworld.update(container, game, delta);
+			player.update(container, game, 20);
+			gameworld.update(container, game, 20);
+			ms.update(20);
 			timer -= 20;
 		}
 	}
@@ -61,7 +64,7 @@ try {
 	// TODO Auto-generated catch block
 	e.printStackTrace();
 }
-		
+		ms = new MessageSystem();
 		Vector2f startPos = gameworld.terrain.findBlockPosition(Block.START);
 		if (startPos != null) {
 			gameworld.terrain.emptyCell(startPos.getX(), startPos.getY());
@@ -73,6 +76,7 @@ try {
 		timer = 0;
 		gameworld.reset();
 		player.reset();
+		ms.addMessage((new Message(gameworld.getLevelName(),10000)));
 	}
 
 	public void leave(GameContainer container, StateBasedGame game) {

@@ -33,9 +33,9 @@ public class GeneratorState extends BasicGameState {
 		BufferedWriter bufferedWriter;
 		try {
 			bufferedWriter = new BufferedWriter(new FileWriter("level.flt"));
-			String level = generatorWorld.terrain.toString();
+			String level = "Unnamed level"+generatorWorld.terrain.toString();
 			if(level.length() > 0){
-				bufferedWriter.write(generatorWorld.terrain.toString().substring(1));
+				bufferedWriter.write(level);
 			}
 			bufferedWriter.flush();
 			bufferedWriter.close();

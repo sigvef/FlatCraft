@@ -40,6 +40,7 @@ public class GameWorld {
 	Image bg;
 	public Rectangle viewport;
 	Music music;
+	private String levelName = "";
 
 	public GameWorld(String level) throws SlickException {
 //		world = new World(Main.GRAVITY, Main.ITERATIONS);//, new QuadSpaceStrategy(16,4));
@@ -113,9 +114,16 @@ public class GameWorld {
 //			e.printStackTrace();
 			level = "";
 		}
+		boolean first = true;
 		for(String node : level.split("\\|")){
-			String[] n = node.split(",");
-			terrain.fillCell(Float.parseFloat(n[0]), Float.parseFloat(n[1]), Block.valueOf(n[3]),Integer.parseInt(n[2]));
+			if(first){
+				setLevelName(node);
+				first = false;
+			}
+			else{
+				String[] n = node.split(",");
+				terrain.fillCell(Float.parseFloat(n[0]), Float.parseFloat(n[1]), Block.valueOf(n[3]),Integer.parseInt(n[2]));
+			}
 		}
 	}
 
@@ -226,6 +234,14 @@ public class GameWorld {
 
 	public void add(Body body) {
 		world.add(body);		
+	}
+
+	public void setLevelName(String levelName) {
+		this.levelName = levelName;
+	}
+
+	public String getLevelName() {
+		return levelName;
 	}
 
 }
