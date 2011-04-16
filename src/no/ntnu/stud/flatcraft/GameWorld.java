@@ -15,6 +15,8 @@ import no.ntnu.stud.flatcraft.entities.GameEntity;
 import no.ntnu.stud.flatcraft.quadtree.Block;
 import no.ntnu.stud.flatcraft.quadtree.QuadTree;
 
+import org.jbox2d.collision.PairManager;
+import org.jbox2d.common.Settings;
 import org.newdawn.fizzy.Body;
 import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.World;
@@ -41,6 +43,8 @@ public class GameWorld {
 
 	public GameWorld(String level) throws SlickException {
 //		world = new World(Main.GRAVITY, Main.ITERATIONS);//, new QuadSpaceStrategy(16,4));
+		System.out.println("JBox2D maxPairs: "+Settings.maxPairs);
+		System.out.println();
 		world = new World(0, 0, 320*Main.GU, 320*Main.GU, Main.GRAVITY.getY(), Main.ITERATIONS);
 		bg = new Image("res/bgtex.png");
 		terrain = new QuadTree(0, 0, 320 * Main.GU, 6, world,this); // hardcoded

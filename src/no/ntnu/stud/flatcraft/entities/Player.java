@@ -58,8 +58,17 @@ public class Player {
 																	// locations
 	}
 
+	public void die(){
+		System.out.println("DIE DIE DIE");
+		Main.KEYDOWN[Input.KEY_ESCAPE] = true;
+	}
+	
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 
+		if(character.touchingAcid){
+			die();
+		}
+		
 		if (Main.KEYDOWN[Input.KEY_Q] && !blockSelected) {
 			inventory.prev();
 			blockSelected = true;

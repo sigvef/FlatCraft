@@ -50,7 +50,17 @@ public class GameState extends BasicGameState {
 
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		gameworld = new GameWorld("level.flt");
+		
+
+	}
+
+	public void enter(GameContainer container, StateBasedGame game) {
+try {
+	gameworld = new GameWorld("level.flt");
+} catch (SlickException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
 		
 		Vector2f startPos = gameworld.terrain.findBlockPosition(Block.START);
 		if (startPos != null) {
@@ -61,10 +71,6 @@ public class GameState extends BasicGameState {
 		player = new Player(gameworld, startPos.getX(), startPos.getY(), Main.GU * 5, Main.GU * 5, 1);
 		gameworld.add(player.getCharacter());
 		timer = 0;
-
-	}
-
-	public void enter(GameContainer container, StateBasedGame game) {
 		gameworld.reset();
 		player.reset();
 	}

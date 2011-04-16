@@ -32,7 +32,7 @@ public class MainMenuState extends BasicGameState {
 		if (Main.KEYDOWN[Input.KEY_ENTER] || Main.MOUSEDOWN[0]) {
 			game.enterState(1); // enter GameState
 		}
-		if (Main.KEYDOWN[Input.KEY_A]) {
+		if (Main.KEYDOWN[Input.KEY_F11]) {
 			game.enterState(1337);
 		}
 		if (Main.KEYDOWN[Input.KEY_ESCAPE]) {

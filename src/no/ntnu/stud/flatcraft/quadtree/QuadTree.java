@@ -26,6 +26,7 @@ public class QuadTree implements Serializable {
 	float x;
 	float y;
 	ArrayList<Node> waternodes;
+	ArrayList<Node> acidnodes;
 	public World world;
 	public GameWorld gameworld;
 
@@ -41,6 +42,7 @@ public class QuadTree implements Serializable {
 		numberOfLeaves = 1;
 		world = _world;
 		waternodes = new ArrayList<Node>();
+		acidnodes = new ArrayList<Node>();
 		startNode = new Node(0, this, world);
 //		fillCell(105, 605, Block.METAL);
 	}
@@ -62,6 +64,25 @@ public class QuadTree implements Serializable {
 					emptyCell(x, y);
 				} else if (getLeaf(x - width, y).type == Block.EMPTY) {
 					fillCell(x - width, y, Block.WATER);
+					emptyCell(x, y);
+				}
+			}
+		}
+		for (int i = 0; i < acidnodes.size(); i++) {
+			float x = acidnodes.get(i).physrect.getX();
+			float y = acidnodes.get(i).physrect.getY();
+			float width = acidnodes.get(i).physrect.getWidth();
+			float height = acidnodes.get(i).physrect.getHeight();
+			Node leaf = getLeaf(x, y + height);
+			if(leaf != null){
+				if (leaf.type == Block.EMPTY) {
+					fillCell(x, y + height, Block.ACID);
+					emptyCell(x, y);
+				} else if (getLeaf(x + width, y).type == Block.EMPTY) {
+					fillCell(x + width, y, Block.ACID);
+					emptyCell(x, y);
+				} else if (getLeaf(x - width, y).type == Block.EMPTY) {
+					fillCell(x - width, y, Block.ACID);
 					emptyCell(x, y);
 				}
 			}
@@ -172,7 +193,8 @@ public class QuadTree implements Serializable {
 					&& n.children[0].type == n.children[1].type
 					&& n.children[1].type == n.children[2].type
 					&& n.children[2].type == n.children[3].type
-					&& n.children[0].type != Block.WATER) {
+					&& n.children[0].type != Block.WATER
+					&& n.children[0].type != Block.ACID) {
 				n.type = n.children[0].type;
 				for (int i = 0; i < 4; i++) {
 //					n.children[i].body.setEnabled(false);
@@ -180,12 +202,14 @@ public class QuadTree implements Serializable {
 					n.children[i].physDisable();
 					if (waternodes.contains(n.children[i]))
 						waternodes.remove(n.children[i]);
+					if (acidnodes.contains(n.children[i]))
+						acidnodes.remove(n.children[i]);
 					n.children[i] = null;
 				}
 				numberOfLeaves -= 3;
 				numberOfNodes -= 4;
 				n.leaf = true;
-			if (n.type == Block.EMPTY || n.type == Block.WATER){
+			if (n.type == Block.EMPTY || n.type == Block.WATER || n.type == Block.ACID){
 //				n.body.setEnabled(false);
 //				world.remove(n.body);
 				n.physDisable();
@@ -197,6 +221,9 @@ public class QuadTree implements Serializable {
 			}
 			if (n.type == Block.WATER) {
 				waternodes.add(n);
+			}
+			if (n.type == Block.ACID) {
+				acidnodes.add(n);
 			}
 				trySimplify(n);
 			}
@@ -220,11 +247,15 @@ public class QuadTree implements Serializable {
 				}
 				if (temp.type == Block.WATER)
 					waternodes.remove(temp);
+				if (temp.type == Block.ACID)
+					acidnodes.remove(temp);
 				temp.type = _type;
 				trySimplify(temp);
 				if (temp.type == Block.WATER)
 					waternodes.add(temp);
-				if (temp.type == Block.EMPTY || temp.type == Block.WATER){
+				if (temp.type == Block.ACID)
+					acidnodes.add(temp);
+				if (temp.type == Block.EMPTY || temp.type == Block.WATER || temp.type == Block.ACID){
 //					temp.body.setEnabled(false);
 //					world.remove(temp.body);
 					temp.physDisable();
@@ -252,6 +283,9 @@ public class QuadTree implements Serializable {
 
 				if (temp.type == Block.WATER){
 					waternodes.remove(temp);
+				}
+				if (temp.type == Block.ACID){
+					acidnodes.remove(temp);
 				}
 				temp.type = Block.EMPTY;
 //				temp.body.setEnabled(false);

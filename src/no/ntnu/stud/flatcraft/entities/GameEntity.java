@@ -34,6 +34,7 @@ public class GameEntity {
 	private int offGroundTimer;
 	private boolean jumped;
 	boolean swimming = false;
+	boolean touchingAcid;
 
 	public void init(GameWorld gw, float _x, float _y, float _width,
 			float _height, float _mass) {
@@ -117,12 +118,14 @@ public class GameEntity {
 		if (gameworld.world == null) {
 			return;
 		}
+		Node centernode = gameworld.terrain.getLeaf(physrect.getMinX()+physrect.getWidth()*0.5f, physrect.getMinY()+physrect.getHeight()*0.5f);
 		Node botnode1 = gameworld.terrain.getLeaf(physrect.getMinX()+1, physrect.getMaxY()+1);
-		Node botnode2 = gameworld.terrain.getLeaf(physrect.getMaxX(), physrect.getMaxY()+1);		
-		if(botnode1 != null && botnode1.type != Block.EMPTY && botnode1.type != Block.WATER && botnode1.type != Block.START){
+		Node botnode2 = gameworld.terrain.getLeaf(physrect.getMaxX(), physrect.getMaxY()+1);	
+		
+		if(botnode1 != null && botnode1.type != Block.EMPTY && botnode1.type != Block.WATER && botnode1.type != Block.ACID && botnode1.type != Block.START){
 			grounded = true;
 		}
-		else if(botnode2 != null && botnode2.type != Block.EMPTY && botnode1.type != Block.WATER && botnode2.type != Block.START){
+		else if(botnode2 != null && botnode2.type != Block.EMPTY && botnode1.type != Block.WATER && botnode2.type != Block.ACID && botnode2.type != Block.START){
 			grounded = true;
 		}else grounded = false;
 		if(botnode1 != null && botnode1.type == Block.WATER){
@@ -137,7 +140,9 @@ public class GameEntity {
 		else
 			moving = false;
 				
-	
+		if(centernode !=null && centernode.type == Block.ACID ){
+			touchingAcid = true;
+		}
 	}
 }
 
