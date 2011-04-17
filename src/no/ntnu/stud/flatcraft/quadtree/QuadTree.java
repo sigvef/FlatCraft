@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import no.ntnu.stud.flatcraft.GameWorld;
+import no.ntnu.stud.flatcraft.Hack;
 import no.ntnu.stud.flatcraft.Main;
 
 import org.newdawn.fizzy.World;
@@ -22,6 +23,8 @@ public class QuadTree implements Serializable {
 	private int maxDepth;
 	int numberOfNodes;
 	int numberOfLeaves;
+
+	int nodesVisited = 0;
 	int dummy;
 	float x;
 	float y;
@@ -114,6 +117,8 @@ public class QuadTree implements Serializable {
 	public void render(Graphics g, Rectangle viewport) {
 		dummy = 0;
 		depth = 0;
+
+		nodesVisited = 0;
 		g.pushTransform();
 		g.translate(-gameworld.viewport.getX()*Main.GULOL, -gameworld.viewport.getY()*Main.GULOL);
 		g.scale(Main.GULOL, Main.GULOL);
@@ -122,6 +127,7 @@ public class QuadTree implements Serializable {
 		// enter the recursive render traversing
 		g.setDrawMode(Graphics.MODE_NORMAL);
 		traverseTree(startNode, g, viewport);
+		System.out.println("Nodesvisited: "+nodesVisited);
 		g.popTransform();
 	}
 
@@ -132,8 +138,10 @@ public class QuadTree implements Serializable {
 		depth++;
 		dummy++;
 		// check to see if node is in the viewport
-//		 if (viewport.contains(node.rect) || viewport.intersects(node.rect)) {
-			 if(true){
+//		Rectangle renderRect = new Rectangle(node.physrect.getX(), node.physrect.getY(), node.physrect.getWidth()-1/Main.GULOL, node.physrect.getHeight()-1/Main.GULOL);
+		 if (viewport.contains(node.physrect) || viewport.intersects(node.physrect)) {
+//		if(Hack.contains(viewport, node.physrect) || Hack.intersects(viewport, node.physrect)){
+		//			 if(true){
 			// draw the box if we reached a leaf...
 			if ((node.leaf) || (depth > getMaxDepth())) {
 				if (node.type != Block.EMPTY) {
@@ -163,12 +171,16 @@ public class QuadTree implements Serializable {
 						g.setColor(Color.magenta);
 						break;
 					}
+
+					nodesVisited++;
 					//g.fill(node.rect);
 					g.fillRect(node.physrect.getX(), node.physrect.getY(), node.physrect.getWidth()-1/Main.GULOL, node.physrect.getHeight()-1/Main.GULOL);
+//					g.fill(renderRect);
 					// draw outline of node - this is for debugging
-					g.setColor(Color.pink);
+					g.setColor(Color.white);
 					if (Main.DEBUG) {
 						g.drawRect(node.physrect.getX(), node.physrect.getY(), node.physrect.getWidth()-1/Main.GULOL, node.physrect.getHeight()-1/Main.GULOL);
+//						g.draw(renderRect);
 					}
 
 				}

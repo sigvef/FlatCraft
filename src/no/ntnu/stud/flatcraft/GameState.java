@@ -29,11 +29,13 @@ public class GameState extends BasicGameState {
 	
 
 	public void render(GameContainer container, StateBasedGame game, Graphics g) {
+		long profileTime = System.currentTimeMillis();
 		g.pushTransform();
 		gameworld.render(g);
 		player.render(g);
 		ms.render(g);
 		g.popTransform();
+		System.out.println("Time spendt rendering (millis): "+(System.currentTimeMillis()-profileTime));
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
@@ -43,7 +45,6 @@ public class GameState extends BasicGameState {
 			if (Main.KEYDOWN[Input.KEY_ESCAPE]) {
 				game.enterState(0); // go back to MainMenuState
 			}
-
 			player.update(container, game, 20);
 			gameworld.update(container, game, 20);
 			ms.update(20);

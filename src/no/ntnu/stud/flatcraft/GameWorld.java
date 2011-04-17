@@ -54,7 +54,7 @@ public class GameWorld {
 																// the with of
 																// the screen.
 		load(level);
-		viewport = new Rectangle(0, 0, Main.SCREEN_W, Main.SCREEN_H);
+		viewport = new Rectangle(0, 0, Main.SCREEN_W/Main.GULOL, Main.SCREEN_H/Main.GULOL);
 		viewportgoal = new Vector2f(viewport.getX(), viewport.getY());
 		viewportzoom = 1;
 		entities = new ArrayList<GameEntity>();
@@ -96,7 +96,7 @@ public class GameWorld {
 			e.reset();
 		}
 		
-		viewport = new Rectangle(0, 0, Main.SCREEN_W, Main.SCREEN_H);
+		viewport = new Rectangle(0, 0, Main.SCREEN_W/Main.GULOL, Main.SCREEN_H/Main.GULOL);
 		// music.playAsMusic(1, 1, true);
 //		music.play();
 		viewportzoom = 1;
@@ -172,7 +172,6 @@ public class GameWorld {
 	// children one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		terrain.update();
-		System.out.println(world.getBodyCount());
 		for(int i=Main.UPDATES;i --> 0;) world.update(1/60f);
 //		System.out.println("numberOfNodes: "+terrain.getNumberOfNodes());
 //		System.out.println("numberOfLeaves: "+terrain.getNumberOfLeaves());
