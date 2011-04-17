@@ -76,7 +76,7 @@ public class MusicPlayer {
 				soundStore.setSoundVolume(1.0f);
 			}
 
-			if (ambientMusic == null) {
+			if (ambientMusicPlaying == null) {
 				ambientMusicDelay -= delta;
 				
 				if (ambientMusicDelay <= 0) {
