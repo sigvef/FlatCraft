@@ -59,12 +59,23 @@ public class QuadTree implements Serializable {
 				if (leaf.type == Block.EMPTY) {
 					fillCell(x, y + height, Block.WATER);
 					emptyCell(x, y);
-				} else if (getLeaf(x + width, y).type == Block.EMPTY) {
-					fillCell(x + width, y, Block.WATER);
+					continue;
+				}
+			}
+			leaf = getLeaf(x+width, y);
+			if(leaf != null){
+				if (leaf.type == Block.EMPTY) {
+					fillCell(x+width, y, Block.WATER);
 					emptyCell(x, y);
-				} else if (getLeaf(x - width, y).type == Block.EMPTY) {
-					fillCell(x - width, y, Block.WATER);
+					continue;
+				}
+			}
+			leaf = getLeaf(x-width, y);
+			if(leaf != null){
+				if (leaf.type == Block.EMPTY) {
+					fillCell(x-width, y, Block.WATER);
 					emptyCell(x, y);
+					continue;
 				}
 			}
 		}
@@ -78,12 +89,23 @@ public class QuadTree implements Serializable {
 				if (leaf.type == Block.EMPTY) {
 					fillCell(x, y + height, Block.ACID);
 					emptyCell(x, y);
-				} else if (getLeaf(x + width, y).type == Block.EMPTY) {
-					fillCell(x + width, y, Block.ACID);
+					continue;
+				}
+			}
+			leaf = getLeaf(x+width, y);
+			if(leaf != null){
+				if (leaf.type == Block.EMPTY) {
+					fillCell(x+width, y, Block.ACID);
 					emptyCell(x, y);
-				} else if (getLeaf(x - width, y).type == Block.EMPTY) {
-					fillCell(x - width, y, Block.ACID);
+					continue;
+				}
+			}
+			leaf = getLeaf(x-width, y);
+			if(leaf != null){
+				if (leaf.type == Block.EMPTY) {
+					fillCell(x-width, y, Block.ACID);
 					emptyCell(x, y);
+					continue;
 				}
 			}
 		}
