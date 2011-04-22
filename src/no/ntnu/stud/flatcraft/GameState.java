@@ -103,12 +103,20 @@ public class GameState extends BasicGameState {
 					"res/shaders/vertblur.frg");
 			if (Main.SOUND) {
 				mp = new MusicPlayer();
-				mp.addMusic("res/sounds/mus1.ogg");
-				System.out.println("Loaded mus1.ogg");
+//				mp.addMusic("res/sounds/mus1.ogg");
+//				System.out.println("Loaded mus1.ogg");
+//				mp.addMusic("res/sounds/flatcraft5.ogg");
+//				System.out.println("Loaded flatcraft5.ogg");
+//				mp.addMusic("res/sounds/flatcraft7.ogg");
+//				System.out.println("Loaded flatcraft7.ogg");
+				
+				mp.addMusic("res/sounds/flatcraft2.ogg");
+				System.out.println("Loaded flatcraft2.ogg");
 				mp.addMusic("res/sounds/flatcraft5.ogg");
 				System.out.println("Loaded flatcraft5.ogg");
-				mp.addMusic("res/sounds/flatcraft7.ogg");
-				System.out.println("Loaded flatcraft7.ogg");
+				mp.addMusic("res/sounds/flatcraft8.ogg");
+				System.out.println("Loaded flatcraft8.ogg");
+				
 				mp.addAmbientNoise("res/sounds/amb1.ogg");
 				System.out.println("Loaded amb1.ogg");
 				mp.addAmbientNoise("res/sounds/amb2.ogg");

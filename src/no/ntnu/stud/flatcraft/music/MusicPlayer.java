@@ -68,13 +68,13 @@ public class MusicPlayer {
 					musicPlaying = music.get((int) (Math.random() * music
 							.size()));
 					musicPlaying.playAsMusic(1.0f, 1.0f, false);
-					soundStore.setSoundVolume(0.75f);
+					soundStore.setSoundVolume(0.1f);
 				}
 			} else if (!soundStore.isMusicPlaying()) {
 				musicPlaying.stop();
 				musicDelay = (int) (Math.random() * 90000) + 30000;
 				musicPlaying = null;
-				soundStore.setSoundVolume(1.0f);
+				soundStore.setSoundVolume(0.75f);
 			}
 
 			if (ambientMusicPlaying == null) {

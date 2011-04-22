@@ -7,12 +7,14 @@ import no.ntnu.stud.flatcraft.GameWorld;
 //import no.ntnu.stud.flatcraft.Hack;
 import no.ntnu.stud.flatcraft.Main;
 
+import org.lwjgl.opengl.GL11;
 import org.newdawn.fizzy.World;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.opengl.SlickCallable;
 
 public class QuadTree implements Serializable {
 	private static final long serialVersionUID = -8798887499766580371L;
