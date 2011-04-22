@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 import no.ntnu.stud.flatcraft.GameWorld;
-import no.ntnu.stud.flatcraft.Hack;
+//import no.ntnu.stud.flatcraft.Hack;
 import no.ntnu.stud.flatcraft.Main;
 
 import org.newdawn.fizzy.World;
@@ -33,8 +33,8 @@ public class QuadTree implements Serializable {
 	public World world;
 	public GameWorld gameworld;
 
-	public QuadTree(float _x, float _y, float _size, int _maxDepth, World _world, GameWorld _gameworld)
-			throws SlickException {
+	public QuadTree(float _x, float _y, float _size, int _maxDepth,
+			World _world, GameWorld _gameworld) throws SlickException {
 		gameworld = _gameworld;
 		x = _x;
 		y = _y;
@@ -47,36 +47,36 @@ public class QuadTree implements Serializable {
 		waternodes = new ArrayList<Node>();
 		acidnodes = new ArrayList<Node>();
 		startNode = new Node(0, this, world);
-//		fillCell(105, 605, Block.METAL);
+		// fillCell(105, 605, Block.METAL);
 	}
 
 	public void update() {
-		
+
 		for (int i = 0; i < waternodes.size(); i++) {
 			float x = waternodes.get(i).physrect.getX();
 			float y = waternodes.get(i).physrect.getY();
 			float width = waternodes.get(i).physrect.getWidth();
 			float height = waternodes.get(i).physrect.getHeight();
 			Node leaf = getLeaf(x, y + height);
-			if(leaf != null){
+			if (leaf != null) {
 				if (leaf.type == Block.EMPTY) {
 					fillCell(x, y + height, Block.WATER);
 					emptyCell(x, y);
 					continue;
 				}
 			}
-			leaf = getLeaf(x+width, y);
-			if(leaf != null){
+			leaf = getLeaf(x + width, y);
+			if (leaf != null) {
 				if (leaf.type == Block.EMPTY) {
-					fillCell(x+width, y, Block.WATER);
+					fillCell(x + width, y, Block.WATER);
 					emptyCell(x, y);
 					continue;
 				}
 			}
-			leaf = getLeaf(x-width, y);
-			if(leaf != null){
+			leaf = getLeaf(x - width, y);
+			if (leaf != null) {
 				if (leaf.type == Block.EMPTY) {
-					fillCell(x-width, y, Block.WATER);
+					fillCell(x - width, y, Block.WATER);
 					emptyCell(x, y);
 					continue;
 				}
@@ -88,25 +88,25 @@ public class QuadTree implements Serializable {
 			float width = acidnodes.get(i).physrect.getWidth();
 			float height = acidnodes.get(i).physrect.getHeight();
 			Node leaf = getLeaf(x, y + height);
-			if(leaf != null){
+			if (leaf != null) {
 				if (leaf.type == Block.EMPTY) {
 					fillCell(x, y + height, Block.ACID);
 					emptyCell(x, y);
 					continue;
 				}
 			}
-			leaf = getLeaf(x+width, y);
-			if(leaf != null){
+			leaf = getLeaf(x + width, y);
+			if (leaf != null) {
 				if (leaf.type == Block.EMPTY) {
-					fillCell(x+width, y, Block.ACID);
+					fillCell(x + width, y, Block.ACID);
 					emptyCell(x, y);
 					continue;
 				}
 			}
-			leaf = getLeaf(x-width, y);
-			if(leaf != null){
+			leaf = getLeaf(x - width, y);
+			if (leaf != null) {
 				if (leaf.type == Block.EMPTY) {
-					fillCell(x-width, y, Block.ACID);
+					fillCell(x - width, y, Block.ACID);
 					emptyCell(x, y);
 					continue;
 				}
@@ -120,14 +120,13 @@ public class QuadTree implements Serializable {
 
 		nodesVisited = 0;
 		g.pushTransform();
-		g.translate(-gameworld.viewport.getX()*Main.GULOL, -gameworld.viewport.getY()*Main.GULOL);
+		g.translate(-gameworld.viewport.getX() * Main.GULOL,
+				-gameworld.viewport.getY() * Main.GULOL);
 		g.scale(Main.GULOL, Main.GULOL);
-//		g.translate(-viewport.getX(), -viewport.getY());
-//		g.scale(Main.GULOL,Main.GULOL);
 		// enter the recursive render traversing
 		g.setDrawMode(Graphics.MODE_NORMAL);
 		traverseTree(startNode, g, viewport);
-		System.out.println("Nodesvisited: "+nodesVisited);
+		System.out.println("Nodesvisited: " + nodesVisited);
 		g.popTransform();
 	}
 
@@ -138,10 +137,8 @@ public class QuadTree implements Serializable {
 		depth++;
 		dummy++;
 		// check to see if node is in the viewport
-//		Rectangle renderRect = new Rectangle(node.physrect.getX(), node.physrect.getY(), node.physrect.getWidth()-1/Main.GULOL, node.physrect.getHeight()-1/Main.GULOL);
-		 if (viewport.contains(node.physrect) || viewport.intersects(node.physrect)) {
-//		if(Hack.contains(viewport, node.physrect) || Hack.intersects(viewport, node.physrect)){
-		//			 if(true){
+		if (viewport.contains(node.physrect)
+				|| viewport.intersects(node.physrect)) {
 			// draw the box if we reached a leaf...
 			if ((node.leaf) || (depth > getMaxDepth())) {
 				if (node.type != Block.EMPTY) {
@@ -173,24 +170,26 @@ public class QuadTree implements Serializable {
 					}
 
 					nodesVisited++;
-					//g.fill(node.rect);
-					g.fillRect(node.physrect.getX(), node.physrect.getY(), node.physrect.getWidth()-1/Main.GULOL, node.physrect.getHeight()-1/Main.GULOL);
-//					g.fill(renderRect);
+					g.fillRect(node.physrect.getX(), node.physrect.getY(),
+							node.physrect.getWidth() - 1 / Main.GULOL,
+							node.physrect.getHeight() - 1 / Main.GULOL);
 					// draw outline of node - this is for debugging
 					g.setColor(Color.white);
 					if (Main.DEBUG) {
-						g.drawRect(node.physrect.getX(), node.physrect.getY(), node.physrect.getWidth()-1/Main.GULOL, node.physrect.getHeight()-1/Main.GULOL);
-//						g.draw(renderRect);
+						g.drawRect(node.physrect.getX(), node.physrect.getY(),
+								node.physrect.getWidth() - 1 / Main.GULOL,
+								node.physrect.getHeight() - 1 / Main.GULOL);
+						// g.draw(renderRect);
 					}
-
 				}
 			}
 			// ...or go deeper until we find a leaf to draw
 			else {
 				// draw outline of node - this is for debugging
 				g.setColor(Color.darkGray);
-				if (Main.DEBUG){
-					g.drawRect(node.physrect.getX(), node.physrect.getY(), node.physrect.getWidth(), node.physrect.getHeight());
+				if (Main.DEBUG) {
+					g.drawRect(node.physrect.getX(), node.physrect.getY(),
+							node.physrect.getWidth(), node.physrect.getHeight());
 				}
 				for (int i = 0; i < 4; i++) {
 					traverseTree(node.children[i], g, viewport);
@@ -199,18 +198,18 @@ public class QuadTree implements Serializable {
 		}
 		depth--;
 	}
-	
+
 	public Vector2f findBlockPosition(Block block) {
 		return findBlockPosition(block, startNode);
 	}
-	
+
 	public Vector2f findBlockPosition(Block block, Node node) {
 		for (Node child : node.children) {
 			if (child.leaf && child.type == block) {
 				return new Vector2f(child.body.getX(), child.body.getY());
 			} else if (!child.leaf) {
 				Vector2f temp;
-				
+
 				if ((temp = findBlockPosition(block, child)) != null) {
 					return temp;
 				}
@@ -231,8 +230,6 @@ public class QuadTree implements Serializable {
 					&& n.children[0].type != Block.ACID) {
 				n.type = n.children[0].type;
 				for (int i = 0; i < 4; i++) {
-//					n.children[i].body.setEnabled(false);
-//					world.remove(n.children[i].body);
 					n.children[i].physDisable();
 					if (waternodes.contains(n.children[i]))
 						waternodes.remove(n.children[i]);
@@ -243,32 +240,27 @@ public class QuadTree implements Serializable {
 				numberOfLeaves -= 3;
 				numberOfNodes -= 4;
 				n.leaf = true;
-			if (n.type == Block.EMPTY || n.type == Block.WATER || n.type == Block.ACID){
-//				n.body.setEnabled(false);
-//				world.remove(n.body);
-				n.physDisable();
-			}
-			else{
-//				n.body.setEnabled(true);
-//				world.add(n.body);
-				n.physEnable();
-			}
-			if (n.type == Block.WATER) {
-				waternodes.add(n);
-			}
-			if (n.type == Block.ACID) {
-				acidnodes.add(n);
-			}
+				if (n.type == Block.EMPTY || n.type == Block.WATER
+						|| n.type == Block.ACID) {
+					n.physDisable();
+				} else {
+					n.physEnable();
+				}
+				if (n.type == Block.WATER) {
+					waternodes.add(n);
+				}
+				if (n.type == Block.ACID) {
+					acidnodes.add(n);
+				}
 				trySimplify(n);
 			}
 		}
 	}
 
-	
-	public void fillCell(float _x, float _y, Block _type){
+	public void fillCell(float _x, float _y, Block _type) {
 		fillCell(_x, _y, _type, getMaxDepth());
 	}
-	
+
 	public void fillCell(float _x, float _y, Block _type, int level) {
 		Node temp = getLeaf(_x, _y);
 		if (temp != null) {
@@ -289,16 +281,11 @@ public class QuadTree implements Serializable {
 					waternodes.add(temp);
 				if (temp.type == Block.ACID)
 					acidnodes.add(temp);
-				if (temp.type == Block.EMPTY || temp.type == Block.WATER || temp.type == Block.ACID){
-//					temp.body.setEnabled(false);
-//					world.remove(temp.body);
+				if (temp.type == Block.EMPTY || temp.type == Block.WATER
+						|| temp.type == Block.ACID) {
 					temp.physDisable();
-				}
-				else{
-//					temp.body.setEnabled(true);
-//					world.add(temp.body);
+				} else {
 					temp.physEnable();
-					//body already added in constructor
 				}
 			}
 		}
@@ -315,14 +302,14 @@ public class QuadTree implements Serializable {
 					numberOfNodes += 4;
 				}
 
-				if (temp.type == Block.WATER){
+				if (temp.type == Block.WATER) {
 					waternodes.remove(temp);
 				}
-				if (temp.type == Block.ACID){
+				if (temp.type == Block.ACID) {
 					acidnodes.remove(temp);
 				}
 				temp.type = Block.EMPTY;
-//				temp.body.setEnabled(false);
+				// temp.body.setEnabled(false);
 				temp.physDisable();
 				trySimplify(temp);
 			}
@@ -341,15 +328,14 @@ public class QuadTree implements Serializable {
 	// toString
 	// --------------------------------
 	public String toString() {
-		//return ("Quadtree: nodes:" + numberOfNodes + ", leaves:" + numberOfLeaves);
 		return startNode.toString();
 	}
-	
-	public int getNumberOfNodes(){
+
+	public int getNumberOfNodes() {
 		return numberOfNodes;
 	}
-	
-	public int getNumberOfLeaves(){
+
+	public int getNumberOfLeaves() {
 		return numberOfLeaves;
 	}
 
@@ -360,5 +346,5 @@ public class QuadTree implements Serializable {
 	public int getMaxDepth() {
 		return maxDepth;
 	}
-	
+
 }

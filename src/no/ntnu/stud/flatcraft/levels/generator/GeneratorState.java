@@ -2,13 +2,8 @@ package no.ntnu.stud.flatcraft.levels.generator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 import no.ntnu.stud.flatcraft.GameWorld;
 import no.ntnu.stud.flatcraft.Main;
@@ -94,7 +89,6 @@ public class GeneratorState extends BasicGameState {
 		g.fillRect(Main.SCREEN_W-32, 0, 32, 32);
 		g.setColor(Color.magenta);
 		g.drawRect(Main.SCREEN_W-32, 0, 32, 32);
-//		g.scale(generatorWorld.viewportzoom,generatorWorld.viewportzoom);
 		g.popTransform();
 	}
 	
@@ -146,7 +140,7 @@ public class GeneratorState extends BasicGameState {
 			if (Main.MOUSEDOWN[0]) {
 				float x = generatorWorld.viewport.getX()+Main.MOUSEX/Main.GULOL;
 				float y = generatorWorld.viewport.getY()+Main.MOUSEY/Main.GULOL;
-				if(fillmode && activeBlock != Block.WATER){
+				if(fillmode && activeBlock != Block.WATER && activeBlock != Block.ACID){
 					generatorWorld.terrain.fillCell(x,y,activeBlock,0);
 				}
 				else{

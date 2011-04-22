@@ -16,21 +16,20 @@ public class MessageSystem {
 		for (Message message : messages) {
 			message.update(dt);
 		}
-		for(int i=0;i<messages.size();){
-			if(messages.get(i).isDone()){
+		for (int i = 0; i < messages.size();) {
+			if (messages.get(i).isDone()) {
 				messages.remove(i);
-			}
-			else{
+			} else {
 				i++;
 			}
 		}
 	}
 
-	public void render(Graphics g){
-	for(Message message : messages){
-		message.render(g);
+	public void render(Graphics g) {
+		for (Message message : messages) {
+			message.render(g);
+		}
 	}
-}
 
 	public boolean addMessage(Message message) {
 		if (!messages.contains(message)) {

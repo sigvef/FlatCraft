@@ -21,6 +21,7 @@ import org.newdawn.fizzy.Body;
 import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.World;
 import org.newdawn.fizzy.WorldListener;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -39,15 +40,15 @@ public class GameWorld {
 	public Vector2f viewportgoal;
 	Image bg;
 	public Rectangle viewport;
-	Music music;
 	private String levelName = "";
+	private BackgroundParticles backgroundparticles;
 
 	public GameWorld(String level) throws SlickException {
-//		world = new World(Main.GRAVITY, Main.ITERATIONS);//, new QuadSpaceStrategy(16,4));
 		System.out.println("JBox2D maxPairs: "+Settings.maxPairs);
 		System.out.println();
 		world = new World(0, 0, 320*Main.GU, 320*Main.GU, Main.GRAVITY.getY(), Main.ITERATIONS);
 		bg = new Image("res/bgtex.png");
+		backgroundparticles = new BackgroundParticles();
 		terrain = new QuadTree(0, 0, 320 * Main.GU, 6, world,this); // hardcoded
 																// level width:
 																// a square 10x
@@ -58,36 +59,6 @@ public class GameWorld {
 		viewportgoal = new Vector2f(viewport.getX(), viewport.getY());
 		viewportzoom = 1;
 		entities = new ArrayList<GameEntity>();
-//		world.addListener(new WorldListener() {
-//			
-//			@Override
-//			public void separated(CollisionEvent event) {
-//				if(event.getBodyA().getUserData() instanceof GameEntity){
-//					GameEntity A = (GameEntity) event.getBodyA().getUserData();
-//					A.grounded = false;
-//				}
-//				if(event.getBodyB().getUserData() instanceof GameEntity){
-//					GameEntity B = (GameEntity) event.getBodyB().getUserData();
-//					B.grounded = false;
-//				}
-//			}
-//			
-//			@Override
-//			public void collided(CollisionEvent event) {
-//				if(event.getBodyA().getUserData() instanceof GameEntity){
-//					GameEntity A = (GameEntity) event.getBodyA().getUserData();
-//					A.grounded = true;
-//				}
-//				if(event.getBodyB().getUserData() instanceof GameEntity){
-//					GameEntity B = (GameEntity) event.getBodyB().getUserData();
-//					B.grounded = true;
-//				}
-//			}
-//		});
-		
-		// music = new StreamSound(new OpenALStreamPlayer(0,
-		// "res/flatcraft2.ogg"));
-//		music = new Music("res/flatcraft2.ogg");
 	}
 
 	// reset() - resets the map, calls reset on all the things it controls.
@@ -97,10 +68,7 @@ public class GameWorld {
 		}
 		
 		viewport = new Rectangle(0, 0, Main.SCREEN_W/Main.GULOL, Main.SCREEN_H/Main.GULOL);
-		// music.playAsMusic(1, 1, true);
-//		music.play();
 		viewportzoom = 1;
-		// reload terrain also TODO
 	}
 	
 	public void load(String s){
@@ -111,7 +79,6 @@ public class GameWorld {
 			level = bufferedReader.readLine();
 			bufferedReader.close();
 		} catch (Exception e) {
-//			e.printStackTrace();
 			level = "";
 		}
 		boolean first = true;
@@ -133,11 +100,14 @@ public class GameWorld {
 
 	public void setViewportPositionGoal(Vector2f pos) {
 		viewportgoal = pos;
-//		viewportagoal.scale(Main.GULOL);
 	}
 
 	public Vector2f getViewportPosition() {
 		return new Vector2f(viewport.getX(), viewport.getY());
+	}
+	
+	public Vector2f getViewportPositionGoal() {
+		return new Vector2f(viewportgoal.getX(), viewportgoal.getY());
 	}
 
 	// removeEntities() - removes all the GameEntities it controls.
@@ -172,10 +142,8 @@ public class GameWorld {
 	// children one tick.
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		terrain.update();
+		backgroundparticles.update(delta);
 		for(int i=Main.UPDATES;i --> 0;) world.update(1/60f);
-//		System.out.println("numberOfNodes: "+terrain.getNumberOfNodes());
-//		System.out.println("numberOfLeaves: "+terrain.getNumberOfLeaves());
-//		System.out.println("numberOfBodies: "+world.getBodies().size());
 
 		for (GameEntity entity : entities) {
 			entity.update(container, game, delta);
@@ -193,29 +161,18 @@ public class GameWorld {
 
 	public void render(Graphics g) {
 		
-		g.drawImage(bg, -viewport.getX() / Main.GU, -viewport.getY() / Main.GU);
+		g.pushTransform();
+		g.scale(Main.GULOL*0.1f, Main.GULOL*0.1f);
+		g.drawImage(bg, -viewport.getX()*0.25f, -viewport.getY()*0.25f);
+		g.popTransform();
 		
+		if(Main.BACKGROUND_PARTICLES) {
+			backgroundparticles.render(g);
+		}
 		for (GameEntity entity : entities) {
 			entity.render(g);
 		}
-		g.pushTransform();
 		terrain.render(g, viewport);
-		g.popTransform();
-//		g.pushTransform();
-//		g.translate(-viewport.getX(), -viewport.getY());
-//		for(int i=world.getBodies().size();i-->0;)
-//			if(!world.getBodies().get(i).disabled())g.fill(new Rectangle(world.getBodies().get(i).getPosition().getX()
-//														, world.getBodies().get(i).getPosition().getY(), 
-//															Main.GU, Main.GU));
-//		g.popTransform();
-		
-		
-		
-//		g.setColor(Color.red);
-//		g.pushTransform();
-//		g.translate(-viewport.getX(), -viewport.getY());
-//		g.draw(viewport);
-//		g.popTransform();
 	}
 
 	public void addBody(Body body) {
@@ -224,7 +181,6 @@ public class GameWorld {
 	}
 
 	public void leave() {
-//		music.stop();
 	}
 
 	public void add(Character character) {
