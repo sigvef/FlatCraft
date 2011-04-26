@@ -1,5 +1,7 @@
 package no.ntnu.stud.flatcraft.settings;
 
+import no.ntnu.stud.flatcraft.quadtree.Block;
+
 public enum Resolution {
 	WVGA, QHD, WSVGA, HD, HDPLUS, FULLHD;
 
@@ -27,4 +29,8 @@ public enum Resolution {
 		}
 	}
 	
+	public Resolution next() {
+		int index = (this.ordinal() + 1) % Resolution.values().length;
+		return Resolution.values()[index];
+	}
 }

@@ -87,6 +87,19 @@ public class SettingsMenuState extends BasicGameState {
 			}
 
 		});
+		
+		menu.addMenuItem(new MenuItem() {
+			public String getText() {
+				return "Screen resolution";
+			}
+
+			public void actionCallback() {
+				Main.SETTINGS.setResolution(Main.SETTINGS.getResolution().next());
+					Main.MS.addMessage(new Message(
+							"Resolution is now "+Main.SETTINGS.getResolution().getWidth()+"x"+Main.SETTINGS.getResolution().getHeight()));
+			}
+
+		});
 
 		menu.addMenuItem(new MenuItem() {
 			public String getText() {
