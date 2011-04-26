@@ -5,15 +5,12 @@
 
 package no.ntnu.stud.flatcraft;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import no.ntnu.stud.flatcraft.entities.Player;
 import no.ntnu.stud.flatcraft.quadtree.Block;
 import no.ntnu.stud.flatcraft.shader.Shader;
 import no.ntnu.stud.flatcraft.messagesystem.Message;
-import no.ntnu.stud.flatcraft.messagesystem.MessageSystem;
 import no.ntnu.stud.flatcraft.music.MusicPlayer;
 
 import org.newdawn.slick.GameContainer;

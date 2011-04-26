@@ -1,6 +1,5 @@
 package no.ntnu.stud.flatcraft.menu;
 
-import java.awt.Font;
 import java.util.ArrayList;
 
 import no.ntnu.stud.flatcraft.Main;
@@ -8,7 +7,6 @@ import no.ntnu.stud.flatcraft.Main;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.state.StateBasedGame;
 
 

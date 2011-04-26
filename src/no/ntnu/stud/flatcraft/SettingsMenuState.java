@@ -12,12 +12,10 @@ import org.newdawn.slick.state.StateBasedGame;
 import no.ntnu.stud.flatcraft.menu.Menu;
 import no.ntnu.stud.flatcraft.menu.MenuItem;
 import no.ntnu.stud.flatcraft.messagesystem.Message;
-import no.ntnu.stud.flatcraft.settings.Settings;
 
-public class SettingsMenuState extends BasicGameState{
+public class SettingsMenuState extends BasicGameState {
 	Menu menu;
-	
-	
+
 	public void enter(GameContainer container, StateBasedGame game) {
 		Arrays.fill(Main.KEYDOWN, false);
 	}
@@ -29,11 +27,12 @@ public class SettingsMenuState extends BasicGameState{
 			public String getText() {
 				return "Sound";
 			}
+
 			public void actionCallback() {
 				Main.SETTINGS.setSound(!Main.SETTINGS.getSound());
-				if(Main.SETTINGS.getSound()){
+				if (Main.SETTINGS.getSound()) {
 					Main.MS.addMessage(new Message("Sound has been turned on"));
-				}else{
+				} else {
 					Main.MS.addMessage(new Message("Sound has been turned off"));
 				}
 			}
@@ -43,52 +42,61 @@ public class SettingsMenuState extends BasicGameState{
 			public String getText() {
 				return "Bloom";
 			}
+
 			public void actionCallback() {
 				Main.SETTINGS.setBloom(!Main.SETTINGS.getBloom());
-				if(Main.SETTINGS.getBloom()){
+				if (Main.SETTINGS.getBloom()) {
 					Main.MS.addMessage(new Message("Bloom has been turned on"));
-				}else{
+				} else {
 					Main.MS.addMessage(new Message("Bloom has been turned off"));
 				}
 			}
 		});
-		
+
 		menu.addMenuItem(new MenuItem() {
 			public String getText() {
 				return "B.G. Effects";
 			}
+
 			public void actionCallback() {
 				Main.SETTINGS.setParticles(!Main.SETTINGS.getParticles());
-				if(Main.SETTINGS.getParticles()){
-					Main.MS.addMessage(new Message("B.G. Effects has been turned on"));
-				}else{
-					Main.MS.addMessage(new Message("B.G. Effects has been turned off"));
+				if (Main.SETTINGS.getParticles()) {
+					Main.MS.addMessage(new Message(
+							"B.G. Effects has been turned on"));
+				} else {
+					Main.MS.addMessage(new Message(
+							"B.G. Effects has been turned off"));
 				}
 			}
 		});
-		
+
 		menu.addMenuItem(new MenuItem() {
 			public String getText() {
 				return "Fullscreen";
 			}
+
 			public void actionCallback() {
 				Main.SETTINGS.setFullScreen(!Main.SETTINGS.getFullScreen());
-				if(Main.SETTINGS.getFullScreen()){
-					Main.MS.addMessage(new Message("Fullscreen has been turned on"));
-				}else{
-					Main.MS.addMessage(new Message("Fullscreen has been turned off"));
+				if (Main.SETTINGS.getFullScreen()) {
+					Main.MS.addMessage(new Message(
+							"Fullscreen has been turned on"));
+				} else {
+					Main.MS.addMessage(new Message(
+							"Fullscreen has been turned off"));
 				}
 			}
-			
+
 		});
-		
+
 		menu.addMenuItem(new MenuItem() {
 			public String getText() {
 				return "<- Back";
 			}
+
 			public void actionCallback() {
 				game.enterState(0);
-				Main.MS.addMessage(new Message("Please restart for changes to take effect."));
+				Main.MS.addMessage(new Message(
+						"Please restart for changes to take effect."));
 			}
 		});
 	}
@@ -103,18 +111,14 @@ public class SettingsMenuState extends BasicGameState{
 			throws SlickException {
 		menu.update(delta);
 		Main.MS.update(delta);
-		if(Main.KEYDOWN[Input.KEY_ESCAPE]){
+		if (Main.KEYDOWN[Input.KEY_ESCAPE]) {
 			game.enterState(0);
 		}
 	}
 
-	
 	@Override
 	public int getID() {
 		return 666;
 	}
-	
-	
-	
-	
+
 }

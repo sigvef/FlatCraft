@@ -35,21 +35,23 @@ public class Message {
 		timeout = _timeout;
 		calculateSize();
 	}
-	
-	//lots of hardcodedness in here :)
+
+	// lots of hardcodedness in here :)
 
 	public void calculateSize() {
 		width = Main.FONT_BOLD.getWidth(text);
 		height = Main.FONT_BOLD.getHeight(text);
-		
-		width *= 4/Main.GULOL; //hard-coded constant to scale down the large text, because I don't know how to resize fonts other than making lots of them.
-		height *= 4/Main.GULOL;
-		
-		width += Main.GULOL*4;
-		height += Main.GULOL*4;
-		
-		x = Main.SCREEN_W * 0.5f - width * 0.5f + Main.GULOL*2;
-		y = Main.SCREEN_H * 0.5f - height * 0.5f + Main.GULOL*2;
+
+		width *= 4 / Main.GULOL; // hard-coded constant to scale down the large
+									// text, because I don't know how to resize
+									// fonts other than making lots of them.
+		height *= 4 / Main.GULOL;
+
+		width += Main.GULOL * 4;
+		height += Main.GULOL * 4;
+
+		x = Main.SCREEN_W * 0.5f - width * 0.5f + Main.GULOL * 2;
+		y = Main.SCREEN_H * 0.5f - height * 0.5f + Main.GULOL * 2;
 	}
 
 	public void render(Graphics g) {
@@ -59,8 +61,8 @@ public class Message {
 		g.fillRect(x, y, width, height);
 		g.setColor(Color.gray);
 		g.setFont(Main.FONT_BOLD);
-		g.translate(x+Main.GULOL*2, y+Main.GULOL*2);
-		g.scale(4/Main.GULOL, 4/Main.GULOL);
+		g.translate(x + Main.GULOL * 2, y + Main.GULOL * 2);
+		g.scale(4 / Main.GULOL, 4 / Main.GULOL);
 		g.drawString(text, 0, 0);
 		g.popTransform();
 	}
