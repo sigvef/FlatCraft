@@ -44,8 +44,6 @@ public class GameWorld {
 	private BackgroundParticles backgroundparticles;
 
 	public GameWorld(String level) throws SlickException {
-		System.out.println("JBox2D maxPairs: "+Settings.maxPairs);
-		System.out.println();
 		world = new World(0, 0, 320*Main.GU, 320*Main.GU, Main.GRAVITY.getY(), Main.ITERATIONS);
 		bg = new Image("res/bgtex.png");
 		backgroundparticles = new BackgroundParticles();

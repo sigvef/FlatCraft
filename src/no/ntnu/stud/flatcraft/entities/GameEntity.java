@@ -26,11 +26,9 @@ public class GameEntity {
 	Body body;
 	public boolean grounded = false;
 	protected boolean moving = false;
-	private boolean falling = false;
 	protected boolean facingRight = true;
 	public Rectangle physrect; // physical bounding box of the entity
 	GameWorld gameworld; // handle back to the parent GameWorld.
-	private int offGroundTimer;
 	private boolean jumped;
 	boolean swimming = false;
 	boolean touchingAcid;

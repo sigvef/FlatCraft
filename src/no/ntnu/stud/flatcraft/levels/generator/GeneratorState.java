@@ -90,11 +90,13 @@ public class GeneratorState extends BasicGameState {
 		g.setColor(Color.magenta);
 		g.drawRect(Main.SCREEN_W-32, 0, 32, 32);
 		g.popTransform();
+		Main.MS.render(g);
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta){
 		timer += delta;
 		while(timer > 20){
+			Main.MS.update(delta);
 			if(Main.KEYDOWN[Input.KEY_ESCAPE]){
 				game.enterState(0); //go back to MainMenuState
 			}

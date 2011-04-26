@@ -8,11 +8,12 @@ public class MenuLevelItem implements MenuItem {
 
 	String text;
 	StateBasedGame game;
-	public MenuLevelItem(String level, StateBasedGame game){
+
+	public MenuLevelItem(String level, StateBasedGame game) {
 		text = level;
 		this.game = game;
 	}
-	
+
 	public String getText() {
 		return text;
 	}
@@ -21,5 +22,5 @@ public class MenuLevelItem implements MenuItem {
 		Main.LEVEL = text;
 		game.enterState(1);
 	}
-	
+
 }
