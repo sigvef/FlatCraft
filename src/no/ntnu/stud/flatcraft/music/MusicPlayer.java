@@ -32,6 +32,7 @@ public class MusicPlayer {
 	public MusicPlayer() {
 		soundStore = SoundStore.get();
 		soundStore.setMaxSources(4);
+		soundStore.setDeferredLoading(true);
 		soundStore.init();
 
 		music = new ArrayList<Audio>();

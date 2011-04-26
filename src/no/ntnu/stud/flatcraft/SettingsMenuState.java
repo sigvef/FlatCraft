@@ -18,16 +18,13 @@ public class SettingsMenuState extends BasicGameState{
 	
 	
 
-	@Override
 	public void init(GameContainer app, final StateBasedGame game)
 			throws SlickException {
 		menu = new Menu(game);
 		menu.addMenuItem(new MenuItem() {
-			@Override
 			public String getText() {
 				return "Sound";
 			}
-			@Override
 			public void actionCallback() {
 				Main.SETTINGS.setSound(!Main.SETTINGS.getSound());
 				if(Main.SETTINGS.getSound()){
@@ -39,11 +36,9 @@ public class SettingsMenuState extends BasicGameState{
 		});
 
 		menu.addMenuItem(new MenuItem() {
-			@Override
 			public String getText() {
 				return "Bloom";
 			}
-			@Override
 			public void actionCallback() {
 				Main.SETTINGS.setBloom(!Main.SETTINGS.getBloom());
 				if(Main.SETTINGS.getBloom()){
@@ -55,11 +50,9 @@ public class SettingsMenuState extends BasicGameState{
 		});
 		
 		menu.addMenuItem(new MenuItem() {
-			@Override
 			public String getText() {
 				return "B.G. Effects";
 			}
-			@Override
 			public void actionCallback() {
 				Main.SETTINGS.setParticles(!Main.SETTINGS.getParticles());
 				if(Main.SETTINGS.getParticles()){
@@ -71,11 +64,9 @@ public class SettingsMenuState extends BasicGameState{
 		});
 		
 		menu.addMenuItem(new MenuItem() {
-			@Override
 			public String getText() {
 				return "Fullscreen";
 			}
-			@Override
 			public void actionCallback() {
 				Main.SETTINGS.setFullScreen(!Main.SETTINGS.getFullScreen());
 				if(Main.SETTINGS.getFullScreen()){
@@ -88,25 +79,21 @@ public class SettingsMenuState extends BasicGameState{
 		});
 		
 		menu.addMenuItem(new MenuItem() {
-			@Override
 			public String getText() {
 				return "<- Back";
 			}
-			@Override
 			public void actionCallback() {
 				game.enterState(0);
 			}
 		});
 	}
 
-	@Override
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
 		menu.render(g);
 		Main.MS.render(g);
 	}
 
-	@Override
 	public void update(GameContainer arg0, StateBasedGame game, int delta)
 			throws SlickException {
 		menu.update(delta);

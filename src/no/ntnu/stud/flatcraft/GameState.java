@@ -56,13 +56,13 @@ public class GameState extends BasicGameState {
 		g.pushTransform();
 		g.drawImage(buffer, 0, 0);
 		if (Main.SETTINGS.getBloom()) {
-			vertblur.startShader();
-			fbog2.drawImage(buffer, 0, 0);
-			Shader.forceFixedShader();
-			g.setDrawMode(Graphics.MODE_ADD);
-			horblur.startShader();
-			g.drawImage(buffer2, 0, 0);
-			Shader.forceFixedShader();
+//			vertblur.startShader();
+//			fbog2.drawImage(buffer, 0, 0);
+//			Shader.forceFixedShader();
+//			g.setDrawMode(Graphics.MODE_ADD);
+//			horblur.startShader();
+//			g.drawImage(buffer2, 0, 0);
+//			Shader.forceFixedShader();
 		}
 		g.setDrawMode(Graphics.MODE_NORMAL);
 		player.render(g);
@@ -97,10 +97,10 @@ public class GameState extends BasicGameState {
 			buffer2 = new Image(Main.SCREEN_W, Main.SCREEN_H);
 			fbog = new FBOGraphics(buffer);
 			fbog2 = new FBOGraphics(buffer2);
-			horblur = Shader.makeShader("res/shaders/horblur.vrt",
-					"res/shaders/horblur.frg");
-			vertblur = Shader.makeShader("res/shaders/vertblur.vrt",
-					"res/shaders/vertblur.frg");
+//			horblur = Shader.makeShader("res/shaders/horblur.vrt",
+//					"res/shaders/horblur.frg");
+//			vertblur = Shader.makeShader("res/shaders/vertblur.vrt",
+//					"res/shaders/vertblur.frg");
 //			if (Main.SOUND) {
 			if(true){
 				mp = new MusicPlayer();
@@ -146,7 +146,7 @@ public class GameState extends BasicGameState {
 		Main.KEYDOWN[Input.KEY_ENTER] = false;
 		Main.KEYDOWN[Input.KEY_SPACE] = false;
 		try {
-			gameworld = new GameWorld("res/levels/"+Main.LEVEL+".flt"); //TIHIHIHI nå bruker vi globals over en lav sko
+			gameworld = new GameWorld("res/levels/"+Main.LEVEL+".flt"); //TIHIHIHI nï¿½ bruker vi globals over en lav sko
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
