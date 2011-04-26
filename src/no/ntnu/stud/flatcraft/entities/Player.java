@@ -1,5 +1,8 @@
 package no.ntnu.stud.flatcraft.entities;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import no.ntnu.stud.flatcraft.GameWorld;
 import no.ntnu.stud.flatcraft.Main;
 import no.ntnu.stud.flatcraft.quadtree.Block;
@@ -23,9 +26,11 @@ public class Player {
 	private Vector2f startPosition;
 
 	private boolean blockSelected = false;
+	private boolean dead;
 
 	public Player(GameWorld gw, float _x, float _y, float _width,
 			float _height, float _mass) {
+		dead = true;
 		startPosition = new Vector2f(_x, _y);
 		character = new Character(gw, _x, _y, _width / 2, _height / 2, _mass);
 		respawn();
@@ -79,12 +84,23 @@ public class Player {
 	public void die() {
 		System.out.println("DIE DIE DIE");
 		Main.KEYDOWN[Input.KEY_ESCAPE] = true;
+		dead = true;
 	}
-
+	public void win() {
+		System.out.println("WIN WIN WIN");
+		Main.KEYDOWN[Input.KEY_ESCAPE] = true;
+		dead = true;
+	}
+	
+	
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 
 		if (character.touchingAcid) {
 			die();
+		}
+		
+		if (character.touchingGoal) {
+			win();
 		}
 
 		if (Main.KEYDOWN[Input.KEY_Q] && !blockSelected) {
@@ -213,5 +229,9 @@ public class Player {
 
 	public Body getBody() {
 		return character.body;
+	}
+
+	public boolean isDead() {
+		return dead;
 	}
 }

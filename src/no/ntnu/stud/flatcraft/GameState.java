@@ -5,7 +5,9 @@
 
 package no.ntnu.stud.flatcraft;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import no.ntnu.stud.flatcraft.entities.Player;
 import no.ntnu.stud.flatcraft.quadtree.Block;
@@ -26,11 +28,10 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class GameState extends BasicGameState {
 
-	private StateBasedGame game;
 	private GameWorld gameworld;
 	private Image buffer;
 	private Image buffer2;
-
+	
 	private MessageSystem ms;
 	private MusicPlayer mp;
 
@@ -55,7 +56,7 @@ public class GameState extends BasicGameState {
 
 		g.pushTransform();
 		g.drawImage(buffer, 0, 0);
-		if (Main.USE_BLOOM) {
+		if (Main.SETTINGS.getBloom()) {
 			vertblur.startShader();
 			fbog2.drawImage(buffer, 0, 0);
 			Shader.forceFixedShader();
@@ -70,22 +71,21 @@ public class GameState extends BasicGameState {
 		System.out.println("Time spendt rendering (millis): "+ (System.currentTimeMillis() - profileTime));
 
 	}
-
+	
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		timer += delta;
 		while (timer > 20) {
-
-			this.game = game;
-			if (Main.KEYDOWN[Input.KEY_ESCAPE]) {
-				game.enterState(0); // go back to MainMenuState
-			}
-			if (Main.SOUND) {
-				mp.update(20);
-			}
-			player.update(container, game, 20);
-			gameworld.update(container, game, 20);
-			ms.update(20);
-			backgroundparticles.update(20);
+				//play the level
+				if (Main.KEYDOWN[Input.KEY_ESCAPE]) {
+					game.enterState(123); // go back to MainMenuState
+				}
+				if (Main.SETTINGS.getSound()) {
+					mp.update(20);
+				}
+				player.update(container, game, 20);
+				gameworld.update(container, game, 20);
+				ms.update(20);
+				backgroundparticles.update(20);
 			timer -= 20;
 		}
 	}
@@ -101,7 +101,8 @@ public class GameState extends BasicGameState {
 					"res/shaders/horblur.frg");
 			vertblur = Shader.makeShader("res/shaders/vertblur.vrt",
 					"res/shaders/vertblur.frg");
-			if (Main.SOUND) {
+//			if (Main.SOUND) {
+			if(true){
 				mp = new MusicPlayer();
 //				mp.addMusic("res/sounds/mus1.ogg");
 //				System.out.println("Loaded mus1.ogg");
@@ -141,8 +142,11 @@ public class GameState extends BasicGameState {
 	}
 
 	public void enter(GameContainer container, StateBasedGame game) {
+		Main.KEYDOWN[Input.KEY_ESCAPE] = false;
+		Main.KEYDOWN[Input.KEY_ENTER] = false;
+		Main.KEYDOWN[Input.KEY_SPACE] = false;
 		try {
-			gameworld = new GameWorld("level.flt");
+			gameworld = new GameWorld("res/levels/"+Main.LEVEL+".flt"); //TIHIHIHI nå bruker vi globals over en lav sko
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -162,14 +166,14 @@ public class GameState extends BasicGameState {
 		player.reset();
 		ms.addMessage((new Message(gameworld.getLevelName(), 3000)));
 
-		if (Main.SOUND) {
+		if (Main.SETTINGS.getSound()) {
 			mp.startMusic(true);
 		}
 	}
 
 	public void leave(GameContainer container, StateBasedGame game) {
 		gameworld.leave();
-		if (Main.SOUND) {
+		if (Main.SETTINGS.getSound()) {
 			mp.stopMusic();
 		}
 

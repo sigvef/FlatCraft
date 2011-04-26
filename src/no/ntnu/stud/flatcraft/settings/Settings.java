@@ -12,6 +12,10 @@ public class Settings {
 	public boolean getFullScreen() {
 		return settings.getBoolean("fullscreen", false);
 	}
+	
+	public boolean getParticles() {
+		return settings.getBoolean("particles", false);
+	}
 
 	public boolean getSound() {
 		return settings.getBoolean("sound", true);
@@ -27,6 +31,10 @@ public class Settings {
 
 	public void setFullScreen(boolean value) {
 		settings.putBoolean("fullscreen", value);
+	}
+	
+	public void setParticles(boolean value) {
+		settings.putBoolean("particles", value);
 	}
 
 	public void setSound(boolean value) {

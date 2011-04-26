@@ -16,16 +16,19 @@ import no.ntnu.stud.flatcraft.settings.Settings;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
+
 
 public class Main extends StateBasedGame {
 
 	public static final int ITERATIONS = 30;
 	public static final int UPDATES = 8;
-	public static int SCREEN_W = 1280; // hard-coded screen sizes to begin with
-	public static int SCREEN_H = 720;
+	public static String LEVEL = null;
+	public static int SCREEN_W = 1920; // hard-coded screen sizes to begin with
+	public static int SCREEN_H = 1080;
 	public static float GULOL = SCREEN_W / 128;
 	public static float GU = 1;
 	public static boolean[] KEYDOWN;
@@ -35,24 +38,28 @@ public class Main extends StateBasedGame {
 	public static float mu = 0.8f;
 	public static boolean FULLSCREEN = false;
 	public static boolean DEBUG = false;
-	public static boolean USE_BLOOM = true;
-	public static boolean BACKGROUND_PARTICLES = true;
-	public static boolean SOUND = true;
+//	public static boolean USE_BLOOM = true;
+//	public static boolean BACKGROUND_PARTICLES = true;
+//	public static boolean SOUND = true;
 	public static ArrayList<Rectangle> debugrect;
+	public static Settings SETTINGS;
+	public static UnicodeFont FONT;
+	public static UnicodeFont FONT_BOLD;
+	
 
-	public Main() {
+	public Main() throws SlickException {
 		super("FlatCraft");
 		KEYDOWN = new boolean[256];
 		MOUSEDOWN = new boolean[3];
 		debugrect = new ArrayList<Rectangle>();
+		SETTINGS = new Settings();
 	}
 
 	public static void main(String[] args) throws SlickException {
 		AppGameContainer app = new AppGameContainer(new Main());
-		app.setDisplayMode(SCREEN_W, SCREEN_H, FULLSCREEN);
+		app.setDisplayMode(SCREEN_W, SCREEN_H, Main.FULLSCREEN);
 		app.setTargetFrameRate(60);
 		app.start();
-		
 	}
 
 	@Override
@@ -60,6 +67,8 @@ public class Main extends StateBasedGame {
 		addState(new MainMenuState());
 		addState(new GameState());
 		addState(new GeneratorState());
+		addState(new SettingsMenuState());
+		addState(new LevelSelectMenuState());
 	}
 
 	@Override
@@ -75,7 +84,7 @@ public class Main extends StateBasedGame {
 
 		// le hack
 		if (c == 'b')
-			USE_BLOOM = !USE_BLOOM;
+			SETTINGS.setBloom(!SETTINGS.getBloom());
 	}
 
 	@Override

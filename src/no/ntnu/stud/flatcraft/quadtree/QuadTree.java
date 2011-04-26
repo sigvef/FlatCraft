@@ -243,7 +243,7 @@ public class QuadTree implements Serializable {
 				numberOfNodes -= 4;
 				n.leaf = true;
 				if (n.type == Block.EMPTY || n.type == Block.WATER
-						|| n.type == Block.ACID) {
+						|| n.type == Block.ACID || n.type == Block.GOAL) { //in retrospect, this could be less messy ^^
 					n.physDisable();
 				} else {
 					n.physEnable();
@@ -284,7 +284,7 @@ public class QuadTree implements Serializable {
 				if (temp.type == Block.ACID)
 					acidnodes.add(temp);
 				if (temp.type == Block.EMPTY || temp.type == Block.WATER
-						|| temp.type == Block.ACID) {
+						|| temp.type == Block.ACID || temp.type == Block.GOAL) {
 					temp.physDisable();
 				} else {
 					temp.physEnable();

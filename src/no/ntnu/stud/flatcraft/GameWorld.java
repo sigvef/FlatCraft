@@ -166,7 +166,7 @@ public class GameWorld {
 		g.drawImage(bg, -viewport.getX()*0.25f, -viewport.getY()*0.25f);
 		g.popTransform();
 		
-		if(Main.BACKGROUND_PARTICLES) {
+		if(Main.SETTINGS.getParticles()) {
 			backgroundparticles.render(g);
 		}
 		for (GameEntity entity : entities) {

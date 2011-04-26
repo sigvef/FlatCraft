@@ -68,7 +68,7 @@ public class MusicPlayer {
 					musicPlaying = music.get((int) (Math.random() * music
 							.size()));
 					musicPlaying.playAsMusic(1.0f, 1.0f, false);
-					soundStore.setSoundVolume(0.1f);
+					soundStore.setSoundVolume(0.5f);
 				}
 			} else if (!soundStore.isMusicPlaying()) {
 				musicPlaying.stop();

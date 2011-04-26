@@ -83,7 +83,8 @@ public class Node implements Serializable {
 		for (int i = 0; i < 4; i++) {
 			if (children[i].type == Block.EMPTY
 					|| children[i].type == Block.WATER
-					|| children[i].type == Block.ACID) {
+					|| children[i].type == Block.ACID
+					|| children[i].type == Block.GOAL) {
 				children[i].physDisable();
 			} else {
 				children[i].physEnable();

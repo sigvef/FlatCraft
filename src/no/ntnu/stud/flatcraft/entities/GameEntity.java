@@ -34,6 +34,7 @@ public class GameEntity {
 	private boolean jumped;
 	boolean swimming = false;
 	boolean touchingAcid;
+	boolean touchingGoal = false;
 
 	public void init(GameWorld gw, float _x, float _y, float _width,
 			float _height, float _mass) {
@@ -141,6 +142,10 @@ public class GameEntity {
 
 		if (centernode != null && centernode.type == Block.ACID) {
 			touchingAcid = true;
+		}
+		
+		if (centernode != null && centernode.type == Block.GOAL) {
+			touchingGoal  = true;
 		}
 	}
 }
