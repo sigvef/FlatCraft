@@ -39,9 +39,6 @@ public class Main extends StateBasedGame {
 	public static float mu = 0.8f;
 	public static boolean FULLSCREEN = false;
 	public static boolean DEBUG = false;
-//	public static boolean USE_BLOOM = true;
-//	public static boolean BACKGROUND_PARTICLES = true;
-//	public static boolean SOUND = true;
 	public static ArrayList<Rectangle> debugrect;
 	public static Settings SETTINGS;
 	public static UnicodeFont FONT;
@@ -54,10 +51,13 @@ public class Main extends StateBasedGame {
 		KEYDOWN = new boolean[256];
 		MOUSEDOWN = new boolean[3];
 		debugrect = new ArrayList<Rectangle>();
-		SETTINGS = new Settings();
 	}
 
 	public static void main(String[] args) throws SlickException {
+		SETTINGS = new Settings();
+		for(String s : args){
+			System.out.println(s);
+		}
 		AppGameContainer app = new AppGameContainer(new Main());
 		app.setDisplayMode(SCREEN_W, SCREEN_H, Main.FULLSCREEN);
 		app.setTargetFrameRate(60);

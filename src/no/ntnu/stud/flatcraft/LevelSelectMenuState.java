@@ -38,9 +38,6 @@ public class LevelSelectMenuState extends BasicGameState{
 	}
 
 	public void enter(GameContainer app, StateBasedGame game){
-//		Main.KEYDOWN[Input.KEY_ESCAPE] = false;
-//		Main.KEYDOWN[Input.KEY_ENTER] = false;
-//		Main.KEYDOWN[Input.KEY_SPACE] = false;
 		Arrays.fill(Main.KEYDOWN, false);
 		if(menu != null ){
 			pointer = menu.getPointer();

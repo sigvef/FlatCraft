@@ -1,5 +1,7 @@
 package no.ntnu.stud.flatcraft;
 
+import java.util.Arrays;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -16,7 +18,9 @@ public class SettingsMenuState extends BasicGameState{
 	Menu menu;
 	
 	
-	
+	public void enter(GameContainer container, StateBasedGame game) {
+		Arrays.fill(Main.KEYDOWN, false);
+	}
 
 	public void init(GameContainer app, final StateBasedGame game)
 			throws SlickException {
@@ -28,9 +32,9 @@ public class SettingsMenuState extends BasicGameState{
 			public void actionCallback() {
 				Main.SETTINGS.setSound(!Main.SETTINGS.getSound());
 				if(Main.SETTINGS.getSound()){
-					Main.MS.addMessage(new Message("Settings has been turned on"));
+					Main.MS.addMessage(new Message("Sound has been turned on"));
 				}else{
-					Main.MS.addMessage(new Message("Settings has been turned off"));
+					Main.MS.addMessage(new Message("Sound has been turned off"));
 				}
 			}
 		});
@@ -84,6 +88,7 @@ public class SettingsMenuState extends BasicGameState{
 			}
 			public void actionCallback() {
 				game.enterState(0);
+				Main.MS.addMessage(new Message("Please restart for changes to take effect."));
 			}
 		});
 	}
@@ -103,6 +108,7 @@ public class SettingsMenuState extends BasicGameState{
 		}
 	}
 
+	
 	@Override
 	public int getID() {
 		return 666;

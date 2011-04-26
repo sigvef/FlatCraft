@@ -5,8 +5,11 @@ package no.ntnu.stud.flatcraft;
  * 
  */
 
+import java.util.Arrays;
+
 import no.ntnu.stud.flatcraft.menu.Menu;
 import no.ntnu.stud.flatcraft.menu.MenuItem;
+import no.ntnu.stud.flatcraft.messagesystem.Message;
 import no.ntnu.stud.flatcraft.messagesystem.MessageSystem;
 
 import org.newdawn.slick.GameContainer;
@@ -30,9 +33,7 @@ public class MainMenuState extends BasicGameState {
 	}
 
 	public void enter(GameContainer container, StateBasedGame game) {
-		Main.KEYDOWN[Input.KEY_ESCAPE] = false;
-		Main.KEYDOWN[Input.KEY_ENTER] = false;
-		Main.KEYDOWN[Input.KEY_SPACE] = false;
+		Arrays.fill(Main.KEYDOWN, false);
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) {
@@ -109,6 +110,7 @@ public class MainMenuState extends BasicGameState {
 			}
 
 			public void actionCallback() {
+				Main.MS.addMessage(new Message("Restart for changes to take effect."));
 				game.enterState(666);
 			}
 			
