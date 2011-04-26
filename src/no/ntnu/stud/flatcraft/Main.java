@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import no.ntnu.stud.flatcraft.levels.generator.GeneratorState;
 import no.ntnu.stud.flatcraft.messagesystem.MessageSystem;
+import no.ntnu.stud.flatcraft.settings.Resolution;
 import no.ntnu.stud.flatcraft.settings.Settings;
 
 import org.newdawn.slick.AppGameContainer;
@@ -28,9 +29,9 @@ public class Main extends StateBasedGame {
 	public static final int ITERATIONS = 30;
 	public static final int UPDATES = 8;
 	public static String LEVEL = null;
-	public static int SCREEN_W = 800; // hard-coded screen sizes to begin with
-	public static int SCREEN_H = 480;
-	public static float GULOL = SCREEN_W / 128;
+	public static int SCREEN_W;
+	public static int SCREEN_H;
+	public static float GULOL;
 	public static float GU = 1;
 	public static boolean[] KEYDOWN;
 	public static boolean[] MOUSEDOWN;
@@ -68,8 +69,16 @@ public class Main extends StateBasedGame {
 			} else if (args[i].equals("--particles")) {
 				SETTINGS.setParticles(Boolean.parseBoolean(args[i+1]));
 				System.out.println("Particles " + Boolean.parseBoolean(args[i+1]));
+			} else if (args[i].equals("--resolution")) {
+				SETTINGS.setResolution(Resolution.valueOf(args[i+1]));
+				System.out.println("Resolution " + Resolution.valueOf(args[i+1]));
 			}
 		}
+		
+		SCREEN_W = SETTINGS.getResolution().getWidth();
+		SCREEN_H = SETTINGS.getResolution().getHeight();
+		GULOL = SCREEN_W / 128;
+		
 		AppGameContainer app = new AppGameContainer(new Main());
 		app.setDisplayMode(SCREEN_W, SCREEN_H, Main.FULLSCREEN);
 		app.setTargetFrameRate(60);
