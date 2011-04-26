@@ -84,10 +84,6 @@ public class Main extends StateBasedGame {
 	@Override
 	public void keyReleased(int key, char c) {
 		KEYDOWN[key] = false;
-
-		// le hack
-		if (c == 'b')
-			SETTINGS.setBloom(!SETTINGS.getBloom());
 	}
 
 	@Override
