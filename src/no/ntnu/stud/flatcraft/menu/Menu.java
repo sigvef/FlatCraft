@@ -112,7 +112,7 @@ public class Menu {
 			}
 			
 			g.setFont(Main.FONT_BOLD);
-			g.drawString(items.get(i).getText(), 300, (-pointer + i)*10*Main.GULOL);
+			g.drawString(items.get(i).getText(), 5*Main.GULOL, (-pointer + i)*10*Main.GULOL);
 //			Main.FONT_BOLD.drawString(300, i*100, items.get(i).getText(),Color.white);
 		}
 	}

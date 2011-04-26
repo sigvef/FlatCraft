@@ -54,18 +54,15 @@ public class LevelSelectMenuState extends BasicGameState{
 
 	}
 	
-	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
 	}
 
-	@Override
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
 		menu.render(g);
 	}
 
-	@Override
 	public void update(GameContainer arg0, StateBasedGame game, int dt)
 			throws SlickException {
 		menu.update(dt);

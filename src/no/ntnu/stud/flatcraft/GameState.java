@@ -146,7 +146,7 @@ public class GameState extends BasicGameState {
 		Main.KEYDOWN[Input.KEY_ENTER] = false;
 		Main.KEYDOWN[Input.KEY_SPACE] = false;
 		try {
-			gameworld = new GameWorld("res/levels/"+Main.LEVEL+".flt"); //TIHIHIHI nå bruker vi globals over en lav sko
+			gameworld = new GameWorld("res/levels/"+Main.LEVEL+".flt"); //TIHIHIHI nï¿½ bruker vi globals over en lav sko
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}

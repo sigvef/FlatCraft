@@ -79,12 +79,10 @@ public class MainMenuState extends BasicGameState {
 		
 		menu.addMenuItem(new MenuItem(){
 
-			@Override
 			public String getText() {
 				return "Play";
 			}
 
-			@Override
 			public void actionCallback() {
 				game.enterState(123);
 			}
@@ -92,12 +90,10 @@ public class MainMenuState extends BasicGameState {
 		
 		menu.addMenuItem(new MenuItem(){
 
-			@Override
 			public String getText() {
 				return "Level editor";
 			}
 
-			@Override
 			public void actionCallback() {
 				game.enterState(1337);
 			}
@@ -105,12 +101,10 @@ public class MainMenuState extends BasicGameState {
 		
 		menu.addMenuItem(new MenuItem(){
 
-			@Override
 			public String getText() {
 				return "Settings";
 			}
 
-			@Override
 			public void actionCallback() {
 				game.enterState(666);
 			}
@@ -119,12 +113,10 @@ public class MainMenuState extends BasicGameState {
 		
 		menu.addMenuItem(new MenuItem(){
 
-			@Override
 			public String getText() {
 				return "Exit";
 			}
 
-			@Override
 			public void actionCallback() {
 				System.exit(0);
 			}

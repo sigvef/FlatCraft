@@ -13,12 +13,10 @@ public class MenuLevelItem implements MenuItem {
 		this.game = game;
 	}
 	
-	@Override
 	public String getText() {
 		return text;
 	}
 
-	@Override
 	public void actionCallback() {
 		Main.LEVEL = text;
 		game.enterState(1);
