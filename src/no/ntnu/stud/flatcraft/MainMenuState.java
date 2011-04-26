@@ -7,6 +7,7 @@ package no.ntnu.stud.flatcraft;
 
 import no.ntnu.stud.flatcraft.menu.Menu;
 import no.ntnu.stud.flatcraft.menu.MenuItem;
+import no.ntnu.stud.flatcraft.messagesystem.MessageSystem;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -54,6 +55,8 @@ public class MainMenuState extends BasicGameState {
 			 {
 		System.out.println("TRYING TO PRINT FONTS, YO");
 		try {
+			Main.MS = new MessageSystem();
+			
 		Main.FONT_BOLD = new UnicodeFont("res/fontb.ttf",(int) (Main.GULOL*10), false ,false);
 		System.out.println("STAGE 1 COMPLETE");
 		Main.FONT_BOLD.getEffects().add(new ColorEffect());
@@ -79,10 +82,12 @@ public class MainMenuState extends BasicGameState {
 		
 		menu.addMenuItem(new MenuItem(){
 
+			@Override
 			public String getText() {
 				return "Play";
 			}
 
+			@Override
 			public void actionCallback() {
 				game.enterState(123);
 			}
@@ -90,10 +95,12 @@ public class MainMenuState extends BasicGameState {
 		
 		menu.addMenuItem(new MenuItem(){
 
+			@Override
 			public String getText() {
 				return "Level editor";
 			}
 
+			@Override
 			public void actionCallback() {
 				game.enterState(1337);
 			}
@@ -101,10 +108,12 @@ public class MainMenuState extends BasicGameState {
 		
 		menu.addMenuItem(new MenuItem(){
 
+			@Override
 			public String getText() {
 				return "Settings";
 			}
 
+			@Override
 			public void actionCallback() {
 				game.enterState(666);
 			}
@@ -113,10 +122,12 @@ public class MainMenuState extends BasicGameState {
 		
 		menu.addMenuItem(new MenuItem(){
 
+			@Override
 			public String getText() {
 				return "Exit";
 			}
 
+			@Override
 			public void actionCallback() {
 				System.exit(0);
 			}

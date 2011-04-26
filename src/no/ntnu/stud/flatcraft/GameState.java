@@ -32,7 +32,6 @@ public class GameState extends BasicGameState {
 	private Image buffer;
 	private Image buffer2;
 	
-	private MessageSystem ms;
 	private MusicPlayer mp;
 
 	private FBOGraphics fbog;
@@ -51,7 +50,7 @@ public class GameState extends BasicGameState {
 		fbog.pushTransform();
 
 		gameworld.render(fbog);
-		ms.render(fbog);
+		Main.MS.render(fbog);
 		fbog.popTransform();
 
 		g.pushTransform();
@@ -74,6 +73,7 @@ public class GameState extends BasicGameState {
 	
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		timer += delta;
+		Main.SETTINGS.setSound(true);
 		while (timer > 20) {
 				//play the level
 				if (Main.KEYDOWN[Input.KEY_ESCAPE]) {
@@ -84,7 +84,7 @@ public class GameState extends BasicGameState {
 				}
 				player.update(container, game, 20);
 				gameworld.update(container, game, 20);
-				ms.update(20);
+				Main.MS.update(20);
 				backgroundparticles.update(20);
 			timer -= 20;
 		}
@@ -146,12 +146,11 @@ public class GameState extends BasicGameState {
 		Main.KEYDOWN[Input.KEY_ENTER] = false;
 		Main.KEYDOWN[Input.KEY_SPACE] = false;
 		try {
-			gameworld = new GameWorld("res/levels/"+Main.LEVEL+".flt"); //TIHIHIHI nï¿½ bruker vi globals over en lav sko
+			gameworld = new GameWorld("res/levels/"+Main.LEVEL+".flt"); //TIHIHIHI nå bruker vi globals over en lav sko
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 		backgroundparticles = new BackgroundParticles();
-		ms = new MessageSystem();
 		Vector2f startPos = gameworld.terrain.findBlockPosition(Block.START);
 		if (startPos != null) {
 			gameworld.terrain.emptyCell(startPos.getX(), startPos.getY());
@@ -164,7 +163,7 @@ public class GameState extends BasicGameState {
 		timer = 0;
 		gameworld.reset();
 		player.reset();
-		ms.addMessage((new Message(gameworld.getLevelName(), 3000)));
+		Main.MS.addMessage((new Message(gameworld.getLevelName(), 3000)));
 
 		if (Main.SETTINGS.getSound()) {
 			mp.startMusic(true);

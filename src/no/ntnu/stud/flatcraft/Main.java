@@ -11,6 +11,7 @@ package no.ntnu.stud.flatcraft;
 import java.util.ArrayList;
 
 import no.ntnu.stud.flatcraft.levels.generator.GeneratorState;
+import no.ntnu.stud.flatcraft.messagesystem.MessageSystem;
 import no.ntnu.stud.flatcraft.settings.Settings;
 
 import org.newdawn.slick.AppGameContainer;
@@ -27,8 +28,8 @@ public class Main extends StateBasedGame {
 	public static final int ITERATIONS = 30;
 	public static final int UPDATES = 8;
 	public static String LEVEL = null;
-	public static int SCREEN_W = 1280; // hard-coded screen sizes to begin with
-	public static int SCREEN_H = 720;
+	public static int SCREEN_W = 1920; // hard-coded screen sizes to begin with
+	public static int SCREEN_H = 1080;
 	public static float GULOL = SCREEN_W / 128;
 	public static float GU = 1;
 	public static boolean[] KEYDOWN;
@@ -45,6 +46,7 @@ public class Main extends StateBasedGame {
 	public static Settings SETTINGS;
 	public static UnicodeFont FONT;
 	public static UnicodeFont FONT_BOLD;
+	public static MessageSystem MS;
 	
 
 	public Main() throws SlickException {
