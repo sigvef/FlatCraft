@@ -40,4 +40,12 @@ public class Settings {
 	public void setSound(boolean value) {
 		settings.putBoolean("sound", value);
 	}
+
+	public void setResolution(Resolution r){
+		settings.putInt("resolution", r.ordinal());
+	}
+	
+	public Resolution getResolution(){
+		return Resolution.values()[settings.getInt("resolution", 3)]; 
+	}
 }
