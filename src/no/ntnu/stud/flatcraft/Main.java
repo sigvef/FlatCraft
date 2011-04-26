@@ -28,8 +28,8 @@ public class Main extends StateBasedGame {
 	public static final int ITERATIONS = 30;
 	public static final int UPDATES = 8;
 	public static String LEVEL = null;
-	public static int SCREEN_W = 1280; // hard-coded screen sizes to begin with
-	public static int SCREEN_H = 720;
+	public static int SCREEN_W = 800; // hard-coded screen sizes to begin with
+	public static int SCREEN_H = 480;
 	public static float GULOL = SCREEN_W / 128;
 	public static float GU = 1;
 	public static boolean[] KEYDOWN;
@@ -55,8 +55,20 @@ public class Main extends StateBasedGame {
 
 	public static void main(String[] args) throws SlickException {
 		SETTINGS = new Settings();
-		for(String s : args){
-			System.out.println(s);
+		for (int i = 0; i < args.length-1; i+=2) {
+			if (args[i].equals("--sound")) {
+				SETTINGS.setSound(Boolean.parseBoolean(args[i+1]));
+				System.out.println("Sound " + Boolean.parseBoolean(args[i+1]));
+			} else if (args[i].equals("--fullscreen")) {
+				SETTINGS.setFullScreen(Boolean.parseBoolean(args[i+1]));
+				System.out.println("Fullscreen " + Boolean.parseBoolean(args[i+1]));
+			} else if (args[i].equals("--bloom")) {
+				SETTINGS.setBloom(Boolean.parseBoolean(args[i+1]));
+				System.out.println("Bloom " + Boolean.parseBoolean(args[i+1]));
+			} else if (args[i].equals("--particles")) {
+				SETTINGS.setParticles(Boolean.parseBoolean(args[i+1]));
+				System.out.println("Particles " + Boolean.parseBoolean(args[i+1]));
+			}
 		}
 		AppGameContainer app = new AppGameContainer(new Main());
 		app.setDisplayMode(SCREEN_W, SCREEN_H, Main.FULLSCREEN);
