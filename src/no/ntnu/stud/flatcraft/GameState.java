@@ -64,8 +64,6 @@ public class GameState extends BasicGameState {
 		g.setDrawMode(Graphics.MODE_NORMAL);
 		player.render(g);
 		g.popTransform();
-		System.out.println("Time spendt rendering (millis): "+ (System.currentTimeMillis() - profileTime));
-
 	}
 	
 	public void update(GameContainer container, StateBasedGame game, int delta) {

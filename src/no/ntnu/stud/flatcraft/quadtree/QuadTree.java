@@ -128,7 +128,6 @@ public class QuadTree implements Serializable {
 		// enter the recursive render traversing
 		g.setDrawMode(Graphics.MODE_NORMAL);
 		traverseTree(startNode, g, viewport);
-		System.out.println("Nodesvisited: " + nodesVisited);
 		g.popTransform();
 	}
 

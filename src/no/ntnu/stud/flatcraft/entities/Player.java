@@ -1,8 +1,5 @@
 package no.ntnu.stud.flatcraft.entities;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import no.ntnu.stud.flatcraft.GameWorld;
 import no.ntnu.stud.flatcraft.Main;
 import no.ntnu.stud.flatcraft.messagesystem.Message;
@@ -14,7 +11,6 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -49,11 +45,6 @@ public class Player {
 		g.translate(-character.gameworld.viewport.getX()*Main.GULOL,
 				-character.gameworld.viewport.getY()*Main.GULOL);
 		g.setColor(new Color(0,0,0,0.5f));
-//		g.draw(new Line(character.physrect.getCenterX()*Main.GULOL, character.physrect
-//				.getCenterY()*Main.GULOL, character.physrect.getCenterX()*Main.GULOL
-//				+ fireVector.getX()*Main.GULOL, character.physrect.getCenterY()*Main.GULOL
-//				+ fireVector.getY()*Main.GULOL));
-//		
 		
 		float boxSize = (float) (character.gameworld.terrain.initialSize/Math.pow(2, character.gameworld.terrain.getMaxDepth()));
 		float xpos = 
@@ -83,13 +74,11 @@ public class Player {
 	}
 
 	public void die() {
-		System.out.println("DIE DIE DIE");
 		Main.KEYDOWN[Input.KEY_ESCAPE] = true;
 		dead = true;
 		Main.MS.addMessage(new Message("You are dead."));
 	}
 	public void win() {
-		System.out.println("WIN WIN WIN");
 		Main.KEYDOWN[Input.KEY_ESCAPE] = true;
 		dead = true;
 		Main.MS.addMessage(new Message("Level complete!"));

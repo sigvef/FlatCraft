@@ -100,7 +100,6 @@ public class Menu {
 	
 	public void render(Graphics g){
 		g.setColor(Color.white);
-//		g.fillRect(0, 0, Main.SCREEN_W, Main.SCREEN_H);
 		g.translate(0, 25*Main.GULOL);
 		for(int i=0;i<items.size();i++){
 			if(i==pointer){
@@ -111,7 +110,6 @@ public class Menu {
 			
 			g.setFont(Main.FONT_BOLD);
 			g.drawString(items.get(i).getText(), 5*Main.GULOL, (-pointer + i)*10*Main.GULOL);
-//			Main.FONT_BOLD.drawString(300, i*100, items.get(i).getText(),Color.white);
 		}
 	}
 

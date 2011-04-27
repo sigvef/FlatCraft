@@ -44,7 +44,6 @@ public class LevelSelectMenuState extends BasicGameState{
 		}
 		menu = new Menu(getLevels(),game);
 		menu.setPointer(pointer);
-		System.out.println("PPOPOOOOIIINTTERRR: "+pointer);
 	}
 	
 	public void leave(){
