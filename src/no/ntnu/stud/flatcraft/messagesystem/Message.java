@@ -3,7 +3,6 @@ package no.ntnu.stud.flatcraft.messagesystem;
 import no.ntnu.stud.flatcraft.Main;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 

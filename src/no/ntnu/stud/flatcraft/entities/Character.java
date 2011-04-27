@@ -36,10 +36,12 @@ public class Character extends GameEntity {
 		}
 	}
 
+	@Override
 	public void reset() {
 		super.reset();
 	}
 
+	@Override
 	public void render(Graphics g) {
 		super.render(g);
 		g.pushTransform();
@@ -59,6 +61,7 @@ public class Character extends GameEntity {
 		g.popTransform();
 	}
 
+	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		super.update(container, game, delta);
 		runningRightAnimation.setSpeed(Math.abs(body.getXVelocity() * 0.15f));

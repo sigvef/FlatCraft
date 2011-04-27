@@ -29,6 +29,7 @@ public class MainMenuState extends BasicGameState {
 		menu.render(g);
 	}
 
+	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
 		Arrays.fill(Main.KEYDOWN, false);
 	}
@@ -109,6 +110,7 @@ public class MainMenuState extends BasicGameState {
 		});
 	}
 
+	@Override
 	public int getID() {
 		return 0;
 	}

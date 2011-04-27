@@ -16,6 +16,7 @@ import no.ntnu.stud.flatcraft.messagesystem.Message;
 public class SettingsMenuState extends BasicGameState {
 	Menu menu;
 
+	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
 		Arrays.fill(Main.KEYDOWN, false);
 	}

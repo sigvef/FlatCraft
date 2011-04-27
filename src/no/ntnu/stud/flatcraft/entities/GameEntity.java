@@ -7,8 +7,6 @@
 
 package no.ntnu.stud.flatcraft.entities;
 
-import java.util.ArrayList;
-
 import no.ntnu.stud.flatcraft.GameWorld;
 import no.ntnu.stud.flatcraft.Main;
 import no.ntnu.stud.flatcraft.quadtree.Block;

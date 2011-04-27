@@ -15,17 +15,11 @@ import no.ntnu.stud.flatcraft.entities.GameEntity;
 import no.ntnu.stud.flatcraft.quadtree.Block;
 import no.ntnu.stud.flatcraft.quadtree.QuadTree;
 
-import org.jbox2d.collision.PairManager;
-import org.jbox2d.common.Settings;
 import org.newdawn.fizzy.Body;
-import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.World;
-import org.newdawn.fizzy.WorldListener;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;

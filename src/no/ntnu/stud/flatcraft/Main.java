@@ -125,6 +125,7 @@ public class Main extends StateBasedGame {
 		MOUSEY = newy / Main.GU;
 	}
 
+	@Override
 	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
 		MOUSEX = newx / Main.GU;
 		MOUSEY = newy / Main.GU;

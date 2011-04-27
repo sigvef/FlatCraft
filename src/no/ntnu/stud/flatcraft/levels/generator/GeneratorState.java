@@ -164,10 +164,12 @@ public class GeneratorState extends BasicGameState {
 			timer = 0;
 	}
 	
+	@Override
 	public void enter(GameContainer container, StateBasedGame game){
 		generatorWorld.reset();
 	}
 	
+	@Override
 	public void leave(GameContainer container, StateBasedGame game){
 	}
 

@@ -118,12 +118,13 @@ public class GameState extends BasicGameState {
 
 	}
 
+	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
 		Main.KEYDOWN[Input.KEY_ESCAPE] = false;
 		Main.KEYDOWN[Input.KEY_ENTER] = false;
 		Main.KEYDOWN[Input.KEY_SPACE] = false;
 		try {
-			gameworld = new GameWorld("res/levels/"+Main.LEVEL+".flt"); //TIHIHIHI nå bruker vi globals over en lav sko
+			gameworld = new GameWorld("res/levels/"+Main.LEVEL+".flt"); //TIHIHIHI nï¿½ bruker vi globals over en lav sko
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -147,6 +148,7 @@ public class GameState extends BasicGameState {
 		}
 	}
 
+	@Override
 	public void leave(GameContainer container, StateBasedGame game) {
 		gameworld.leave();
 		if (Main.SETTINGS.getSound()) {
@@ -155,6 +157,7 @@ public class GameState extends BasicGameState {
 
 	}
 
+	@Override
 	public int getID() {
 		return 1;
 	}

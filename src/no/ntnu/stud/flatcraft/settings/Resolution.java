@@ -1,7 +1,5 @@
 package no.ntnu.stud.flatcraft.settings;
 
-import no.ntnu.stud.flatcraft.quadtree.Block;
-
 public enum Resolution {
 	WVGA, QHD, WSVGA, HD, HDPLUS, FULLHD;
 

@@ -1,16 +1,10 @@
 package no.ntnu.stud.flatcraft.music;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.newdawn.slick.openal.Audio;
-import org.newdawn.slick.openal.OggInputStream;
-import org.newdawn.slick.openal.OpenALStreamPlayer;
 import org.newdawn.slick.openal.SoundStore;
-import org.newdawn.slick.openal.StreamSound;
 
 public class MusicPlayer {
 	private SoundStore soundStore;
