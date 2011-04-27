@@ -98,8 +98,6 @@ public class Main extends StateBasedGame {
 	@Override
 	public void keyPressed(int key, char c) {
 		KEYDOWN[key] = true;
-		if (key == 57)
-			DEBUG = !DEBUG; // spacebar
 	}
 
 	@Override

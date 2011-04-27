@@ -102,28 +102,17 @@ public class GameState extends BasicGameState {
 			if (Main.SETTINGS.getSound()) {
 				mp = new MusicPlayer();
 				mp.addMusic("res/sounds/flatcraft2.ogg");
-				System.out.println("Loaded flatcraft2.ogg");
 				mp.addMusic("res/sounds/flatcraft5.ogg");
-				System.out.println("Loaded flatcraft5.ogg");
 				mp.addMusic("res/sounds/flatcraft8.ogg");
-				System.out.println("Loaded flatcraft8.ogg");
 				
 				mp.addAmbientNoise("res/sounds/amb1.ogg");
-				System.out.println("Loaded amb1.ogg");
 				mp.addAmbientNoise("res/sounds/amb2.ogg");
-				System.out.println("Loaded amb2.ogg");
 				mp.addAmbientNoise("res/sounds/amb3.ogg");
-				System.out.println("Loaded amb3.ogg");
 				mp.addAmbientNoise("res/sounds/amb4.ogg");
-				System.out.println("Loaded amb4.ogg");
 				mp.addAmbientNoise("res/sounds/amb5.ogg");
-				System.out.println("Loaded amb5.ogg");
 				mp.addAmbientNoise("res/sounds/amb6.ogg");
-				System.out.println("Loaded amb6.ogg");
 				mp.addAmbientNoise("res/sounds/amb7.ogg");
-				System.out.println("Loaded amb7.ogg");
 				mp.addAmbientMusic("res/sounds/ambientloop.ogg");
-				System.out.println("Loaded ambientloop.ogg");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
