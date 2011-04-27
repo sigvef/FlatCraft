@@ -1,7 +1,7 @@
 package no.ntnu.stud.flatcraft.quadtree;
 
 public enum Block {
-	METAL, ROCK, EARTH, RUBBER, WATER, ACID, EMPTY, GOAL, START;
+	METAL, ROCK, RUBBER, WATER, ACID, EMPTY, GOAL, START;
 
 	public Block next() {
 		int index = (this.ordinal() + 1) % Block.values().length;

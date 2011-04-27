@@ -148,9 +148,6 @@ public class QuadTree implements Serializable {
 					case METAL:
 						g.setColor(Color.darkGray);
 						break;
-					case EARTH:
-						g.setColor(Color.orange);
-						break;
 					case ROCK:
 						g.setColor(Color.lightGray);
 						break;
@@ -164,7 +161,7 @@ public class QuadTree implements Serializable {
 						g.setColor(new Color(0f, 1f, 0f, 0.4f));
 						break;
 					case GOAL:
-						g.setColor(Color.white);
+						g.setColor(Color.orange);
 						break;
 					case START:
 						g.setColor(Color.magenta);

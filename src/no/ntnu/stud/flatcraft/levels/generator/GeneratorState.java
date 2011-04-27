@@ -63,9 +63,6 @@ public class GeneratorState extends BasicGameState {
 		case METAL:
 			g.setColor(Color.darkGray);
 			break;
-		case EARTH:
-			g.setColor(Color.orange);
-			break;
 		case ROCK:
 			g.setColor(Color.lightGray);
 			break;
@@ -79,7 +76,7 @@ public class GeneratorState extends BasicGameState {
 			g.setColor(Color.green);
 			break;
 		case GOAL:
-			g.setColor(Color.white);
+			g.setColor(Color.orange);
 			break;
 		case START:
 			g.setColor(Color.magenta);

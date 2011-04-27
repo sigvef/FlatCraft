@@ -1,10 +1,11 @@
-#######                          #####
-#        #         ##     ##### #     #  #####     ##    ######   #####
-#        #        #  #      #   #        #    #   #  #   #          #
-#####    #       #    #     #   #        #    #  #    #  #####      #
-#        #       ######     #   #        #####   ######  #          #
-#        #       #    #     #   #     #  #   #   #    #  #          #
-#        ######  #    #     #    #####   #    #  #    #  #          #
+  #######                          #####
+  #        #         ##     ##### #     #  #####     ##    ######   #####
+  #        #        #  #      #   #        #    #   #  #   #          #
+  #####    #       #    #     #   #        #    #  #    #  #####      #
+  #        #       ######     #   #        #####   ######  #          #
+  #        #       #    #     #   #     #  #   #   #    #  #          #
+  #        ######  #    #     #    #####   #    #  #    #  #          #
+
 
 Villains have stolen the 3rd dimension, and it's YOUR job to travel through
 action-packed puzzles to get the 3rd dimension back.
@@ -23,9 +24,8 @@ colour.
 - Light grey: Rock
   - These blocks are similar to metal, except that they can be picked up, and
     also placed down other places by the player.
-- Orange: Soil
-  - Blocks that can be removed by the player, they are destroyed in the process
-    however, so you cannot place them down other places.
+- Orange: Goal
+  - Touch one of these blocks to win a level.
 - Pink: Rubber
   - These blocks will allow you to jump much higher than usual. They can also
     be picked up and placed down other places by the player.
@@ -36,20 +36,34 @@ colour.
   - You don't want to touch these blocks! They act similarly to water, but
     if the player touches one of these blocks he dies instantly. Acid blocks
     can't be picked up either.
-
-####### #######    #    #     #
-   #    #         # #   ##   ##
-   #    #        #   #  # # # #
-   #    #####   #     # #  #  #
-   #    #       ####### #     #
-   #    #       #     # #     #
-   #    ####### #     # #     #
-
- #####  #######
-#     # #         ####   ######    ##    #    #  #        #####
-#       #        #    #  #        #  #   #    #  #          #
- #####  #####    #       #####   #    #  #    #  #          #
-      # #        #  ###  #       ######  #    #  #          #
-#     # #        #    #  #       #    #  #    #  #          #
- #####  #######   ####   #       #    #   ####   ######     #
    
+   
+When starting the program from the command line, you can use the following
+parameters to choose settings:
+
+--sound true/false
+	This enables or disables sound.
+	
+--fullscreen true/false
+	This enables or disables fullscreen.
+	
+--bloom true/false
+	This enables or disables bloom.
+	
+--particles true/false
+	This enables or disables background particle effects.
+	
+--resolution res
+	This changes the resolution. res can be one of:
+	"WVGA"     -   800x480
+	"QHD"      -   960x540
+	"WSVGA"    -   1024x526
+	"HD"       -   1280x720
+	"HDPLUS"   -   1600x900
+	"FULLHD"   -   1920x1080
+	
+	
+Jiggling around with these settings can be a good idea if the game does not run
+properly, or at all.
+
+Good luck, and have fun ^^

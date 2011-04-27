@@ -58,11 +58,13 @@ public class LevelSelectMenuState extends BasicGameState{
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
 		menu.render(g);
+		Main.MS.render(g);
 	}
 
 	public void update(GameContainer arg0, StateBasedGame game, int dt)
 			throws SlickException {
 		menu.update(dt);
+		Main.MS.update(dt);
 		if(Main.KEYDOWN[Input.KEY_ESCAPE]){
 			game.enterState(0);
 		}

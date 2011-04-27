@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import no.ntnu.stud.flatcraft.GameWorld;
 import no.ntnu.stud.flatcraft.Main;
+import no.ntnu.stud.flatcraft.messagesystem.Message;
 import no.ntnu.stud.flatcraft.quadtree.Block;
 import no.ntnu.stud.flatcraft.quadtree.Node;
 
@@ -85,11 +86,13 @@ public class Player {
 		System.out.println("DIE DIE DIE");
 		Main.KEYDOWN[Input.KEY_ESCAPE] = true;
 		dead = true;
+		Main.MS.addMessage(new Message("You are dead."));
 	}
 	public void win() {
 		System.out.println("WIN WIN WIN");
 		Main.KEYDOWN[Input.KEY_ESCAPE] = true;
 		dead = true;
+		Main.MS.addMessage(new Message("Level complete!"));
 	}
 	
 	
@@ -178,7 +181,6 @@ public class Player {
 				case RUBBER:
 				case WATER:
 					inventory.push(block.type);
-				case EARTH:
 					character.gameworld.terrain
 							.emptyCell(character.physrect.getCenterX()
 									+ fireVector.getX(),
