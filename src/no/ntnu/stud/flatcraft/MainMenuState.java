@@ -44,7 +44,6 @@ public class MainMenuState extends BasicGameState {
 	}
 
 	public void init(GameContainer container, final StateBasedGame game) {
-		System.out.println("TRYING TO PRINT FONTS, YO");
 		try {
 			Main.MS = new MessageSystem();
 
@@ -56,9 +55,7 @@ public class MainMenuState extends BasicGameState {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
-		System.out.println("STAGE 8 COMPLETE");
 		menu = new Menu(game);
-		System.out.println("STAGE 9 COMPLETE");
 
 		menu.addMenuItem(new MenuItem() {
 
