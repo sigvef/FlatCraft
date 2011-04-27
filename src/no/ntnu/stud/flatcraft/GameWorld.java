@@ -9,6 +9,8 @@ package no.ntnu.stud.flatcraft;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import no.ntnu.stud.flatcraft.entities.Character;
 import no.ntnu.stud.flatcraft.entities.GameEntity;
@@ -63,13 +65,22 @@ public class GameWorld {
 		viewportzoom = 1;
 	}
 	
-	public void load(String s){
+	public void load(String s) {
 		BufferedReader bufferedReader;
 		String level = "";
 		try {
 			bufferedReader = new BufferedReader(new FileReader(s));
 			level = bufferedReader.readLine();
 			bufferedReader.close();
+		} catch (IOException e) {
+			System.out.println("Jar!");
+			bufferedReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(s)));
+			try {
+				level = bufferedReader.readLine();
+				bufferedReader.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		} catch (Exception e) {
 			level = "";
 		}
