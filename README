@@ -13,7 +13,7 @@ action-packed puzzles to get the 3rd dimension back.
 You move through the world using the WASD- or arrow keys. You can also pick up
 blocks by moving the mouse pointer around the character and pressing the left
 mouse button. This will pick up the block adjacent to the player in that
-direction (if possible). In the same manner you can place blocks with the
+direction (if possible). Similarly you can place blocks with the
 right mouse button. To cycle which block you want to place, use q and e.
 
 The world of FlatCraft is built by 6 different elements, each with a distinct
